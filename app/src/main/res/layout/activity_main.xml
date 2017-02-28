@@ -10,8 +10,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.rvkdt.rvkapp.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <fragment
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:name="com.example.rvkdt.rvkapp.Fragments.BarFragment"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/fragment"
+        tools:layout="@layout/fragment_bar" />
 </RelativeLayout>
