@@ -54,8 +54,8 @@ public class BarFragment extends Fragment {
             });
         }
 
-        TextView barTitle = (TextView) getActivity().findViewById(R.id.barTitle);
-        barTitle.setText("Austur");
+        /*TextView barTitle = (TextView) getActivity().findViewById(R.id.barTitle);
+        barTitle.setText("Austur");*/
 
         return view;
     }
