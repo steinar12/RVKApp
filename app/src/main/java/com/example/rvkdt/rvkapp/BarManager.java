@@ -8,35 +8,39 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+
+
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by Oskar on 28.2.2017.
  */
 
 
-public class BarManager {/*
+public class BarManager {
     private ArrayList<Integer> barids;
     private ArrayList<Bar> bars;
 
     // Instantiate the RequestQueue.
     private RequestQueue queue;
-    private String idurl ="http://localhost:3000/api/ids";
-    private String barurl ="http://localhost:3000/api/bars";
+    private String idurl ="http://10.0.2.2:3000/api/ids";
+    private String barurl ="http://10.0.2.2:3000/api/bars";
 
     // constructor býr til nýtt requestqueue og nær í öll barids, sækir lýka 5 bari
     public BarManager(Context ctx){
         queue = Volley.newRequestQueue(ctx);
         barids = new ArrayList<Integer>();
         bars = new ArrayList<Bar>();
-        barids = fetchIds();
+        fetchIds();
+        fetchBars(new int[] {1,2,3});
+        //barids = fetchIds();
         //sækja bari útfrá random ids
-        int[] barsToFetch = randomIds(barids, 5);
-        fetchBars(barsToFetch);
+        //int[] barsToFetch = randomIds(barids, 5);
+        //fetchBars(barsToFetch);
     }
 
     //skilar random tölu frá 0 til max
@@ -58,31 +62,57 @@ public class BarManager {/*
         return output;
     }
 
-    // fall sem að sækir þá bari sem samsvara idum sem eru send
+    // fall sem að sækir frá api þá bari sem samsvara idum sem eru send
     private void fetchBars(int[] ids) {
-        // bæta við aðferð sem að postar
+
+        JSONArray jsonarray = new JSONArray();
+        for (int i = 0; i < ids.length; i++) {
+            jsonarray.put(ids[i]);
+        }
+
+        // Define the POST request
+        JsonArrayRequest jsArrRequest = new JsonArrayRequest
+                (Request.Method.POST, barurl, jsonarray, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.d("Response: ", response.toString());
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO Auto-generated method stub
+                        Log.d("Response: ", "error", error);
+
+                    }
+                });
+        // Add the request to the RequestQueue.
+        queue.add(jsArrRequest);
     }
 
     // fall sem að sækir öll id fyrir bari frá api
-    private ArrayList<Integer> fetchIds() {
+    private void fetchIds() {
         // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, idurl,
-                new Response.Listener<String>() {
+        JsonArrayRequest jsArrRequest = new JsonArrayRequest
+                (Request.Method.GET, idurl, null, new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        Log.d("response", response.substring(0,500));
+                    public void onResponse(JSONArray response) {
+                       Log.d("Response: ", response.toString());
                     }
                 }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
-        });
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO Auto-generated method stub
+                        Log.d("Response: ", "error", error);
+
+                    }
+                });
         // Add the request to the RequestQueue.
-        queue.add(stringRequest);
+        queue.add(jsArrRequest);
     }
 
-    // fall sem að skilar bar úr bar fylki og bætir í bar fylki ef það er að verða tómt
+   /* // fall sem að skilar bar úr bar fylki og bætir í bar fylki ef það er að verða tómt
     public Bar getBar() {
         if (bars.size() < 3){
             int[] barsToFetch = randomIds(barids, 5);
