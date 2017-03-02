@@ -35,8 +35,8 @@ public class BarManager {
 
     // Instantiate the RequestQueue.
     private RequestQueue queue;
-    private String idurl ="http://10.0.2.2:3000/api/ids";
-    private String barurl ="http://10.0.2.2:3000/api/bars";
+    private String idurl ="https://rvkapp.herokuapp.com/api/ids";
+    private String barurl ="https://rvkapp.herokuapp.com/api/bars";
 
     // constructor býr til nýtt requestqueue og nær í öll barids, sækir líka 5 bari
     public BarManager(Context ctx){
