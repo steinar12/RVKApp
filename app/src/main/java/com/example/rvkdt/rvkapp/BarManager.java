@@ -11,8 +11,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.rvkdt.rvkapp.DataObjects.Bar;
+import com.example.rvkdt.rvkapp.DataObjects.Event;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 import java.util.ArrayList;
@@ -22,7 +25,7 @@ import java.util.ArrayList;
  */
 
 
-public class BarManager {
+public class BarManager {/*
     private ArrayList<Integer> barids;
     private ArrayList<Bar> bars;
 
@@ -31,17 +34,73 @@ public class BarManager {
     private String idurl ="http://10.0.2.2:3000/api/ids";
     private String barurl ="http://10.0.2.2:3000/api/bars";
 
-    // constructor býr til nýtt requestqueue og nær í öll barids, sækir lýka 5 bari
+    // constructor býr til nýtt requestqueue og nær í öll barids, sækir líka 5 bari
     public BarManager(Context ctx){
         queue = Volley.newRequestQueue(ctx);
         barids = new ArrayList<Integer>();
         bars = new ArrayList<Bar>();
-        fetchIds();
-        fetchBars(new int[] {1,2,3});
-        //barids = fetchIds();
-        //sækja bari útfrá random ids
-        //int[] barsToFetch = randomIds(barids, 5);
-        //fetchBars(barsToFetch);
+        fetchIds(new Callback() {
+            @Override
+            public void onResponse(JSONArray response) {
+                barids = responseToIntList(response);
+                int[] barsToFetch = randomIds(barids, 5);
+                fetchBars(barsToFetch, new Callback() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        bars = responseToBarList(response);
+                    }
+                });
+
+            }
+        });
+    }
+
+    private ArrayList<Integer> responseToIntList ( JSONArray data) {
+        int length = data.length();
+        ArrayList<Integer> output = new ArrayList<Integer>();
+        for( int i = 0; i < length; i++ ){
+            try {
+                int result = data.getInt(i);
+                output.add(result);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return output;
+    }
+    
+    private ArrayList<Bar> responseToBarList (JSONArray data) {
+        int length = data.length();
+        ArrayList<Bar> output = new ArrayList<Bar>();
+        for (int i = 0; i < length; i++){
+            try {
+                JSONObject obj = data.getJSONObject(i);
+                String name = obj.getString("name");
+                String menu = obj.getString("menu");
+                String image = obj.getString("image");
+                JSONObject coords = obj.getJSONObject("coords");
+                double lat = coords.getDouble("lat");
+                double lng = coords.getDouble("lng");
+                String link = obj.getString("link");
+                String description = obj.getString("description");
+                double rating = obj.getDouble("rating");
+                String opens = obj.getString("opens");
+                String closes = obj.getString("closes");
+                Event event = new Event("342","342","2342","#42","324");
+                Event[] events = new Event[] {event,event};
+
+                Bar bar = new Bar( name, menu, image, lat, lng, link, description, rating, opens, closes, events);
+                output.add(bar);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        Log.d("output", output.toString());
+        return  output;
+    }
+
+    private interface Callback{
+        void onResponse(JSONArray response);
     }
 
     //skilar random tölu frá 0 til max
@@ -63,8 +122,30 @@ public class BarManager {
         return output;
     }
 
+    // fall sem að sækir öll id fyrir bari frá api
+    private void fetchIds( final Callback callback) {
+        // Request a string response from the provided URL.
+        JsonArrayRequest jsArrRequest = new JsonArrayRequest
+                (Request.Method.GET, idurl, null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        callback.onResponse(response);
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO Auto-generated method stub
+                        Log.d("Response: ", "error", error);
+
+                    }
+                });
+        // Add the request to the RequestQueue.
+        queue.add(jsArrRequest);
+    }
+
     // fall sem að sækir frá api þá bari sem samsvara idum sem eru send
-    private void fetchBars(int[] ids) {
+    private void fetchBars(int[] ids, final Callback callback) {
 
         JSONArray jsonarray = new JSONArray();
         for (int i = 0; i < ids.length; i++) {
@@ -77,6 +158,7 @@ public class BarManager {
                     @Override
                     public void onResponse(JSONArray response) {
                         Log.d("Response: ", response.toString());
+                        callback.onResponse(response);
                     }
                 }, new Response.ErrorListener() {
 
@@ -91,37 +173,19 @@ public class BarManager {
         queue.add(jsArrRequest);
     }
 
-    // fall sem að sækir öll id fyrir bari frá api
-    private void fetchIds() {
-        // Request a string response from the provided URL.
-        JsonArrayRequest jsArrRequest = new JsonArrayRequest
-                (Request.Method.GET, idurl, null, new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                       Log.d("Response: ", response.toString());
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO Auto-generated method stub
-                        Log.d("Response: ", "error", error);
-
-                    }
-                });
-        // Add the request to the RequestQueue.
-        queue.add(jsArrRequest);
-    }
-
-   /* // fall sem að skilar bar úr bar fylki og bætir í bar fylki ef það er að verða tómt
+   // fall sem að skilar bar úr bar fylki og bætir í bar fylki ef það er að verða tómt
     public Bar getBar() {
         if (bars.size() < 3){
             int[] barsToFetch = randomIds(barids, 5);
-            fetchBars(barsToFetch);
+            fetchBars(barsToFetch, new Callback() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    bars = responseToBarList(response);
+                }
+            });
         }
         Bar output  = bars.get(0);
         bars.remove(0);
         return output;
-
     }*/
 }

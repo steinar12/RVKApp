@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //BarManager barManager = new BarManager(getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -103,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public Bar createBar() {
+    /*public Bar createBar() {
         Event[] events = new Event[0];
         String[] menu = new String[0];
         String[] img = new String[0];
@@ -114,5 +115,5 @@ public class MainActivity extends AppCompatActivity {
         double rating = 4.22;
 
         return new Bar(events,menu,img,coords,link,descr,name,rating);
-    }
+    }*/
 }
