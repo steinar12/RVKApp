@@ -1,4 +1,4 @@
-package com.example.rvkdt.rvkapp;
+package com.example.rvkdt.rvkapp.DataObjects;
 
 /**
  * Created by Oskar on 28.2.2017.
@@ -12,7 +12,7 @@ public class Event {
     private String link;
     public Event (String tme, String nme, String descr, String ven, String lnk) {
         time = tme;
-        name =nme;
+        name = nme;
         description = descr;
         venue = ven;
         description = descr;

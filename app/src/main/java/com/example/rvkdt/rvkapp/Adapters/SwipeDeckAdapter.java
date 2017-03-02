@@ -1,14 +1,13 @@
-package com.example.rvkdt.rvkapp.Fragments;
+package com.example.rvkdt.rvkapp.Adapters;
 
-
+import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.rvkdt.rvkapp.DataObjects.Bar;
@@ -24,46 +23,77 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.List;
+
 /**
- * A simple {@link Fragment} subclass.
+ * Created by Steinar on 3/1/2017.
  */
-public class BarFragment extends Fragment {
+
+public class SwipeDeckAdapter extends BaseAdapter {
 
     MapView mapView;
     GoogleMap googleMap;
 
     Bar bar;
 
-    public BarFragment() {
-        // Required empty public constructor
+    private List<String> data;
+    private Context context;
+
+    public SwipeDeckAdapter(List<String> data, Context context) {
+        this.data = data;
+        this.context = context;
     }
 
+    @Override
+    public int getCount() {
+        return data.size();
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_bar, container, false);
+    public Object getItem(int position) {
+        return data.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
+
+        View v = convertView;
+        if(v == null){
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+            // normally use a viewholder
+            v = inflater.inflate(R.layout.card_view, parent, false);
+        }
+        //((TextView) v.findViewById(R.id.textView2)).setText(data.get(position));
+
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String item = (String)getItem(position);
+                Log.i("MainActivity", item);
+            }
+        });
 
         // Creates the map
-        mapView = (MapView) view.findViewById(R.id.map);
-        mapView.onCreate(savedInstanceState);
+        mapView = (MapView) v.findViewById(R.id.map);
+        //mapView.onCreate(savedInstanceState);
         if (mapView != null) {
             mapView.getMapAsync(new OnMapReadyCallback() {
                 @Override
                 public void onMapReady(GoogleMap googleMap) {
+                    System.out.println("123123123123123");
                     configureMap(googleMap);
                 }
             });
         }
 
-        /*TextView barTitle = (TextView) getActivity().findViewById(R.id.barTitle);
-        barTitle.setText("Austur");*/
-
-        Bundle arguments = getArguments();
-
-        return view;
+        return v;
     }
+
     private void configureMap(GoogleMap googleMap) {
         googleMap.addMarker(new MarkerOptions()
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.common_full_open_on_phone))
@@ -71,15 +101,17 @@ public class BarFragment extends Fragment {
                 .position(new LatLng(55.854049, 13.661331)));
         googleMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(64.148661854835, -21.94014787674) , 15.0f) );
         googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-        if (ActivityCompat.checkSelfPermission(getActivity(),
+        if (ActivityCompat.checkSelfPermission(context,
                 android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getActivity(),
+                && ActivityCompat.checkSelfPermission(context,
                 android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
+        System.out.println("HEHE");
         googleMap.setMyLocationEnabled(true);
         googleMap.getUiSettings().setZoomControlsEnabled(true);
-        MapsInitializer.initialize(this.getActivity());
+        googleMap.getUiSettings().setScrollGesturesEnabled(false);
+        MapsInitializer.initialize(context);
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         builder.include(new LatLng(55.854049, 13.661331));
         LatLngBounds bounds = builder.build();
