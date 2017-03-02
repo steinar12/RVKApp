@@ -32,10 +32,11 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private SwipeDeck cardStack;
+    private BarManager barManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //BarManager barManager = new BarManager(getApplicationContext());
+        barManager = new BarManager(getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 

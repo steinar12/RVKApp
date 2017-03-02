@@ -18,14 +18,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Oskar on 28.2.2017.
  */
 
 
-public class BarManager {/*
+public class BarManager {
     private ArrayList<Integer> barids;
     private ArrayList<Bar> bars;
 
@@ -43,11 +47,11 @@ public class BarManager {/*
             @Override
             public void onResponse(JSONArray response) {
                 barids = responseToIntList(response);
-                int[] barsToFetch = randomIds(barids, 5);
+                int[] barsToFetch = randomIds(barids, 15);
                 fetchBars(barsToFetch, new Callback() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        bars = responseToBarList(response);
+                        responseToBarList(response);
                     }
                 });
 
@@ -55,6 +59,7 @@ public class BarManager {/*
         });
     }
 
+    // breytir JSONArray í ArrayList integer og skilar
     private ArrayList<Integer> responseToIntList ( JSONArray data) {
         int length = data.length();
         ArrayList<Integer> output = new ArrayList<Integer>();
@@ -68,10 +73,10 @@ public class BarManager {/*
         }
         return output;
     }
-    
-    private ArrayList<Bar> responseToBarList (JSONArray data) {
+
+    // Tekur gögn um bari í data og breytir í bar objcet og addar þeim í bars ArrayListann
+    private void responseToBarList (JSONArray data) {
         int length = data.length();
-        ArrayList<Bar> output = new ArrayList<Bar>();
         for (int i = 0; i < length; i++){
             try {
                 JSONObject obj = data.getJSONObject(i);
@@ -84,21 +89,42 @@ public class BarManager {/*
                 String link = obj.getString("link");
                 String description = obj.getString("description");
                 double rating = obj.getDouble("rating");
+                // á eftir að útfæra opens og closes rétt
                 String opens = obj.getString("opens");
                 String closes = obj.getString("closes");
-                Event event = new Event("342","342","2342","#42","324");
-                Event[] events = new Event[] {event,event};
 
+                JSONArray jsonEvent = obj.getJSONArray("events");
+                int eventLength = jsonEvent.length();
+                Event[] events = new Event[eventLength];
+                for (int k = 0; k < eventLength; k++){
+                    JSONObject eventObject = jsonEvent.getJSONObject(k);
+                    String eventName = eventObject.getString("name");
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.ENGLISH);
+                    String startTime = eventObject.getString("startTime");
+                    Date startTimeDate = dateFormat.parse(startTime);
+                    String endTime = eventObject.getString("endTime");
+                    Date endTimeDate = dateFormat.parse(endTime);
+                    int guests = eventObject.getInt("guests");
+                    String venue = eventObject.getString("venue");
+                    String eventLink = eventObject.getString("link");
+                    Event event = new Event(eventName, startTimeDate, endTimeDate, guests, venue, eventLink);
+                    events[k] = event;
+                }
+                if (events.length > 1){
+                    Log.d("events", events[0].getStartTime().toString());
+                }
                 Bar bar = new Bar( name, menu, image, lat, lng, link, description, rating, opens, closes, events);
-                output.add(bar);
+                bars.add(bar);
             } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
-        Log.d("output", output.toString());
-        return  output;
+        Log.d("output", bars.toString());
     }
 
+    // interface sem að er notað í callbökkum
     private interface Callback{
         void onResponse(JSONArray response);
     }
@@ -110,12 +136,12 @@ public class BarManager {/*
         return randomNumber;
     }
 
-    // skilar fylki af id af stærð size úr fylki input
+    // skilar fylki af idum sem er jafn stórt size úr fylki input
     private int[] randomIds (ArrayList<Integer>  input, int size){
         int[] output = new int[size];
         for (int i = 0; i < size; i++){
             int inputSize= input.size();
-            int index = random(inputSize);
+            int index = random(inputSize - 1);
             output[i] = input.get(index);
             input.remove(index);
         }
@@ -173,19 +199,24 @@ public class BarManager {/*
         queue.add(jsArrRequest);
     }
 
-   // fall sem að skilar bar úr bar fylki og bætir í bar fylki ef það er að verða tómt
+   // fall sem að skilar bar úr bars fylki og bætir í bars fylki ef það er að verða tómt
     public Bar getBar() {
-        if (bars.size() < 3){
-            int[] barsToFetch = randomIds(barids, 5);
+        Log.d("ststst",bars.toString());
+        int size = bars.size();
+        Log.d("hi",String.valueOf(size));
+
+
+        if (bars.size() < 10){
+            int[] barsToFetch = randomIds(barids, 10);
             fetchBars(barsToFetch, new Callback() {
                 @Override
                 public void onResponse(JSONArray response) {
-                    bars = responseToBarList(response);
+                    responseToBarList(response);
                 }
             });
         }
         Bar output  = bars.get(0);
         bars.remove(0);
         return output;
-    }*/
+    }
 }
