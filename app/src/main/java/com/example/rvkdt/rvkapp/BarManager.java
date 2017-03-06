@@ -7,6 +7,7 @@ import android.util.Log;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
@@ -32,6 +33,7 @@ import java.util.Locale;
 public class BarManager {
     private ArrayList<Integer> barids;
     private ArrayList<Bar> bars;
+    private boolean ready = false;
 
     // Instantiate the RequestQueue.
     private RequestQueue queue;
@@ -52,6 +54,7 @@ public class BarManager {
                     @Override
                     public void onResponse(JSONArray response) {
                         responseToBarList(response);
+                        ready = true;
                     }
                 });
 
@@ -59,6 +62,9 @@ public class BarManager {
         });
     }
 
+    public boolean isReady() {
+        return ready;
+    }
     // breytir JSONArray í ArrayList integer og skilar
     private ArrayList<Integer> responseToIntList ( JSONArray data) {
         int length = data.length();
@@ -109,9 +115,6 @@ public class BarManager {
                     String eventLink = eventObject.getString("link");
                     Event event = new Event(eventName, startTimeDate, endTimeDate, guests, venue, eventLink);
                     events[k] = event;
-                }
-                if (events.length > 1){
-                    Log.d("events", events[0].getStartTime().toString());
                 }
                 Bar bar = new Bar( name, menu, image, lat, lng, link, description, rating, opens, closes, events);
                 bars.add(bar);
@@ -166,6 +169,22 @@ public class BarManager {
 
                     }
                 });
+        jsArrRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 10000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 10;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
         // Add the request to the RequestQueue.
         queue.add(jsArrRequest);
     }
