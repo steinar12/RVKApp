@@ -25,4 +25,5 @@
             swipedeck:rotation_degrees="15" />
 
     </com.daprlabs.cardstack.SwipeFrameLayout>
+
 </RelativeLayout>
