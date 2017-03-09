@@ -15,6 +15,7 @@ import com.example.rvkdt.rvkapp.DataObjects.Bar;
 import com.example.rvkdt.rvkapp.DataObjects.Event;
 import com.example.rvkdt.rvkapp.DataObjects.Hours;
 import com.example.rvkdt.rvkapp.DataObjects.Pair;
+import com.example.rvkdt.rvkapp.Database.DBHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +38,7 @@ import java.util.Locale;
 public class BarManager implements  Callback{
     private ArrayList<Integer> barids;
     private ArrayList<Bar> bars;
+    private DBHandler db;
 
     @Override
     public  void onResponse(){
@@ -49,14 +51,17 @@ public class BarManager implements  Callback{
     private String barurl ="https://rvkapp.herokuapp.com/api/bars";
 
     // constructor býr til nýtt requestqueue og nær í öll barids, sækir líka 5 bari
-    public BarManager(Context ctx, final Callback mainCallback){
+    public BarManager(Context ctx, final Callback mainCallback, DBHandler dataBase){
         queue = Volley.newRequestQueue(ctx);
         barids = new ArrayList<Integer>();
         bars = new ArrayList<Bar>();
+        db = dataBase;
         fetchIds(new ResponseCallback() {
             @Override
             public void onResponse(JSONArray response) {
                 barids = responseToIntList(response);
+                int[] idsToRemove = db.getLikedBarIds();
+                barids = removeIds(barids,idsToRemove );
                 int[] barsToFetch = randomIds(barids, 15);
                 fetchBars(barsToFetch, new ResponseCallback() {
                     @Override
@@ -68,6 +73,18 @@ public class BarManager implements  Callback{
 
             }
         });
+    }
+
+    private ArrayList<Integer> removeIds (ArrayList<Integer> id, int[] idsToRemove){
+        for(int i = 0; i < idsToRemove.length; i++){
+            for (int j = 0; j < id.size(); j++) {
+                if (id.get(j) == idsToRemove[i]){
+                    id.remove(j);
+                    break;
+                }
+            }
+        }
+        return id;
     }
 
     // breytir JSONArray í ArrayList integer og skilar
