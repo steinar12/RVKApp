@@ -175,6 +175,8 @@ public class BarManager implements  Callback{
 
     // skilar fylki af idum sem er jafn stórt size úr fylki input
     private int[] randomIds (ArrayList<Integer>  input, int size){
+        if(input.size() == 0) return null;
+        if (size > input.size()) size = input.size();
         int[] output = new int[size];
         for (int i = 0; i < size; i++){
             int inputSize= input.size();
@@ -286,10 +288,11 @@ public class BarManager implements  Callback{
 
         if (bars.size() < 10){
             int[] barsToFetch = randomIds(barids, 10);
+            if(barsToFetch == null) return null;
             fetchBars(barsToFetch, new ResponseCallback() {
                 @Override
                 public void onResponse(JSONArray response) {
-                    responseToBarList(response);
+                    bars.addAll(responseToBarList(response));
                 }
             });
         }

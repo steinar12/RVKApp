@@ -49,37 +49,18 @@ public class MainActivity extends AppCompatActivity implements Callback {
 
         barManager = new BarManager(getApplicationContext(), new Callback() {
             @Override
-            public void onResponse() { final ArrayList<String> testData = new ArrayList<>();
-                testData.add("0");
-                testData.add("1");
-                testData.add("2");
-                testData.add("3");
-                testData.add("4");
-                testData.add("0");
-                testData.add("1");
-                testData.add("2");
-                testData.add("3");
-                testData.add("4");
-                testData.add("0");
-                testData.add("1");
-                testData.add("2");
-                testData.add("3");
-                testData.add("4");
-                testData.add("0");
-                testData.add("1");
-                testData.add("2");
-                testData.add("3");
-                testData.add("4");
-                testData.add("0");
-                testData.add("1");
-                testData.add("2");
-                testData.add("3");
-                testData.add("4");
-                testData.add("0");
-                testData.add("1");
-                testData.add("2");
-                testData.add("3");
-                testData.add("4");
+            public void onResponse() {
+                final ArrayList<Bar> testData = new ArrayList<Bar>();
+                testData.add(barManager.getBar());
+                testData.add(barManager.getBar());
+                testData.add(barManager.getBar());
+                testData.add(barManager.getBar());
+                testData.add(barManager.getBar());
+                testData.add(barManager.getBar());
+                testData.add(barManager.getBar());
+                testData.add(barManager.getBar());
+                testData.add(barManager.getBar());
+
 
                 final SwipeDeckAdapter adapter = new SwipeDeckAdapter(testData, androidCTX);
                 cardStack.setAdapter(adapter);
@@ -88,11 +69,19 @@ public class MainActivity extends AppCompatActivity implements Callback {
                     @Override
                     public void cardSwipedLeft(int position) {
                         Log.i("MainActivity", "card was swiped left, position in adapter: " + position);
+                        Bar bar = barManager.getBar();
+                        if (bar != null){
+                            testData.add(bar);
+                        }
                     }
 
                     @Override
                     public void cardSwipedRight(int position) {
                         Log.i("MainActivity", "card was swiped right, position in adapter: " + position);
+                        Bar bar = barManager.getBar();
+                        if (bar != null){
+                            testData.add(bar);
+                        }
                     }
 
                     @Override
@@ -113,7 +102,4 @@ public class MainActivity extends AppCompatActivity implements Callback {
         },db);
     }
 
-    public Bar createBar() {
-        return barManager.getBar();
-    }
 }
