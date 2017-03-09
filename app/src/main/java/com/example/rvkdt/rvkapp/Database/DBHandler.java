@@ -54,19 +54,17 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
 
     }
+    public void removeBarId (int id) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(TABLE_LIKED_BARS, LIKED_BARS_COLUMN_ID + "=" + id, null);
+        db.close();
+    }
     public int[] getLikedBarIds (){
         SQLiteDatabase db = getWritableDatabase();
 
-        //String idString = Arrays.toString(ids);
-        //idString = idString.replace("[","(");
-        //idString = idString.replace("]",")");
-
-        //Cursor resultSet = db.rawQuery("SELECT * FROM " + TABLE_LIKED_BARS + " WHERE " +
-        //        LIKED_BARS_COLUMN_ID + " in " + idString + ";",null);
-
         Cursor resultSet = db.rawQuery("SELECT * FROM " + TABLE_LIKED_BARS + ";",null);
 
-
+        db.close();
         int resultCount = resultSet.getCount();
         if(resultCount == 0) return null;
 
@@ -78,10 +76,6 @@ public class DBHandler extends SQLiteOpenHelper {
             resultSet.moveToNext();
             returnIds[i] = resultSet.getInt(0);
         }
-
-        Log.d("tag",String.valueOf(returnIds[0]));
-        Log.d("tag",String.valueOf(returnIds[1]));
-
         return returnIds;
 
     }

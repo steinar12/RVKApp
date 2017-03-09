@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
 
         //db.addLikedBarId(1);
         //db.addLikedBarId(2);;
+        //db.removeBarId(1);
         //db.getLikedBarIds();
 
         cardStack = (SwipeDeck) findViewById(R.id.swipe_deck);
