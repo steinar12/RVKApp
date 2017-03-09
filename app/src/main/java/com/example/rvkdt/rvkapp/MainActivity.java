@@ -39,7 +39,8 @@ public class MainActivity extends AppCompatActivity implements Callback {
         setContentView(R.layout.activity_main);
 
         //db.addLikedBarId(1);
-        //db.addLikedBarId(2);;
+        //db.addLikedBarId(88);
+        //db.addLikedBarId(2);
         //db.removeBarId(1);
         //db.getLikedBarIds();
 
@@ -109,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
                         Log.i("MainActivity", "down");
                     }
                 });}
-        });
+        },db);
     }
 
     public Bar createBar() {

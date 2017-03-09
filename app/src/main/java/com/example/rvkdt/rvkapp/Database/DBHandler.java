@@ -64,9 +64,13 @@ public class DBHandler extends SQLiteOpenHelper {
 
         Cursor resultSet = db.rawQuery("SELECT * FROM " + TABLE_LIKED_BARS + ";",null);
 
-        db.close();
+
+        Log.d("hello",resultSet.toString());
         int resultCount = resultSet.getCount();
+
         if(resultCount == 0) return null;
+
+
 
         resultSet.moveToFirst();
 
@@ -76,6 +80,7 @@ public class DBHandler extends SQLiteOpenHelper {
             resultSet.moveToNext();
             returnIds[i] = resultSet.getInt(0);
         }
+        db.close();
         return returnIds;
 
     }
