@@ -7,6 +7,7 @@ package com.example.rvkdt.rvkapp.DataObjects;
 
 public class Bar {
 
+    private int id;
     private String name;
     private String menu;
     private String image;
@@ -17,7 +18,8 @@ public class Bar {
     private double rating;
     private Hours hours;
     private Event[] events;
-    public Bar(String nme,String men, String img, double lt, double lg, String lnk, String desc, double rat, Hours hrs, Event[] evt){
+    public Bar(int idvalue, String nme,String men, String img, double lt, double lg, String lnk, String desc, double rat, Hours hrs, Event[] evt){
+        id = idvalue;
         name = nme;
         menu = men;
         image = img;
@@ -28,6 +30,10 @@ public class Bar {
         rating = rat;
         hours = hrs;
         events = evt;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {

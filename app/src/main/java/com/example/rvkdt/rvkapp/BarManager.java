@@ -34,9 +34,14 @@ import java.util.Locale;
  */
 
 
-public class BarManager {
+public class BarManager implements  Callback{
     private ArrayList<Integer> barids;
     private ArrayList<Bar> bars;
+
+    @Override
+    public  void onResponse(){
+
+    }
 
     // Instantiate the RequestQueue.
     private RequestQueue queue;
@@ -44,19 +49,20 @@ public class BarManager {
     private String barurl ="https://rvkapp.herokuapp.com/api/bars";
 
     // constructor býr til nýtt requestqueue og nær í öll barids, sækir líka 5 bari
-    public BarManager(Context ctx){
+    public BarManager(Context ctx, final Callback mainCallback){
         queue = Volley.newRequestQueue(ctx);
         barids = new ArrayList<Integer>();
         bars = new ArrayList<Bar>();
-        fetchIds(new Callback() {
+        fetchIds(new ResponseCallback() {
             @Override
             public void onResponse(JSONArray response) {
                 barids = responseToIntList(response);
                 int[] barsToFetch = randomIds(barids, 15);
-                fetchBars(barsToFetch, new Callback() {
+                fetchBars(barsToFetch, new ResponseCallback() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        responseToBarList(response);
+                        bars.addAll(responseToBarList(response));
+                        mainCallback.onResponse();
                     }
                 });
 
@@ -80,11 +86,14 @@ public class BarManager {
     }
 
     // Tekur gögn um bari í data og breytir í bar objcet og addar þeim í bars ArrayListann
-    private void responseToBarList (JSONArray data) {
+    private ArrayList<Bar> responseToBarList (JSONArray data) {
+        ArrayList<Bar> output = new ArrayList<Bar>();
+
         int length = data.length();
         for (int i = 0; i < length; i++){
             try {
                 JSONObject obj = data.getJSONObject(i);
+                int id = obj.getInt("id");
                 String name = obj.getString("name");
                 String menu = obj.getString("menu");
                 String image = obj.getString("image");
@@ -123,8 +132,8 @@ public class BarManager {
                 if (events.length > 1){
                     Log.d("events", events[0].getStartTime().toString());
                 }
-                Bar bar = new Bar(name, menu, image, lat, lng, link, description, rating, hours, events);
-                bars.add(bar);
+                Bar bar = new Bar(id, name, menu, image, lat, lng, link, description, rating, hours, events);
+                output.add(bar);
             } catch (JSONException e) {
                 e.printStackTrace();
             } catch (ParseException e) {
@@ -132,10 +141,11 @@ public class BarManager {
             }
         }
         Log.d("output", bars.toString());
+        return output;
     }
 
     // interface sem að er notað í callbökkum
-    private interface Callback{
+    private interface ResponseCallback{
         void onResponse(JSONArray response);
     }
 
@@ -159,7 +169,7 @@ public class BarManager {
     }
 
     // fall sem að sækir öll id fyrir bari frá api
-    private void fetchIds( final Callback callback) {
+    private void fetchIds( final ResponseCallback callback) {
         // Request a string response from the provided URL.
         JsonArrayRequest jsArrRequest = new JsonArrayRequest
                 (Request.Method.GET, idurl, null, new Response.Listener<JSONArray>() {
@@ -197,7 +207,7 @@ public class BarManager {
     }
 
     // fall sem að sækir frá api þá bari sem samsvara idum sem eru send
-    private void fetchBars(int[] ids, final Callback callback) {
+    private void fetchBars(int[] ids, final ResponseCallback callback) {
 
         JSONArray jsonarray = new JSONArray();
         for (int i = 0; i < ids.length; i++) {
@@ -259,7 +269,7 @@ public class BarManager {
 
         if (bars.size() < 10){
             int[] barsToFetch = randomIds(barids, 10);
-            fetchBars(barsToFetch, new Callback() {
+            fetchBars(barsToFetch, new ResponseCallback() {
                 @Override
                 public void onResponse(JSONArray response) {
                     responseToBarList(response);
@@ -269,5 +279,16 @@ public class BarManager {
         Bar output  = bars.get(0);
         bars.remove(0);
         return output;
+    }
+
+    public ArrayList<Bar> getLikedBars (int [] likedIds) {
+        final ArrayList<Bar> likedBars = new ArrayList<Bar>();
+        fetchBars(likedIds, new ResponseCallback() {
+            @Override
+            public void onResponse(JSONArray response) {
+                likedBars.addAll(responseToBarList(response));
+            }
+        });
+        return likedBars;
     }
 }
