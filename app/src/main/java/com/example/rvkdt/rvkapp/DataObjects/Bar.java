@@ -15,10 +15,9 @@ public class Bar {
     private String link;
     private String description;
     private double rating;
-    private String opens;
-    private String closes;
+    private Hours hours;
     private Event[] events;
-    public Bar(String nme,String men, String img, double lt, double lg, String lnk, String desc, double rat, String opn, String cls, Event[] evt){
+    public Bar(String nme,String men, String img, double lt, double lg, String lnk, String desc, double rat, Hours hrs, Event[] evt){
         name = nme;
         menu = men;
         image = img;
@@ -27,8 +26,7 @@ public class Bar {
         link = lnk;
         description = desc;
         rating = rat;
-        opens = opn;
-        closes = cls;
+        hours = hrs;
         events = evt;
     }
 
@@ -64,13 +62,7 @@ public class Bar {
         return rating;
     }
 
-    public String getOpens() {
-        return opens;
-    }
-
-    public String getCloses() {
-        return closes;
-    }
+    public Hours getHours() {return hours;}
 
     public Event[] getEvents() {
         return events;

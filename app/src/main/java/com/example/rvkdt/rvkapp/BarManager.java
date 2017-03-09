@@ -13,16 +13,20 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.rvkdt.rvkapp.DataObjects.Bar;
 import com.example.rvkdt.rvkapp.DataObjects.Event;
+import com.example.rvkdt.rvkapp.DataObjects.Hours;
+import com.example.rvkdt.rvkapp.DataObjects.Pair;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Locale;
 
 /**
@@ -33,7 +37,6 @@ import java.util.Locale;
 public class BarManager {
     private ArrayList<Integer> barids;
     private ArrayList<Bar> bars;
-    private boolean ready = false;
 
     // Instantiate the RequestQueue.
     private RequestQueue queue;
@@ -54,7 +57,6 @@ public class BarManager {
                     @Override
                     public void onResponse(JSONArray response) {
                         responseToBarList(response);
-                        ready = true;
                     }
                 });
 
@@ -62,9 +64,6 @@ public class BarManager {
         });
     }
 
-    public boolean isReady() {
-        return ready;
-    }
     // breytir JSONArray í ArrayList integer og skilar
     private ArrayList<Integer> responseToIntList ( JSONArray data) {
         int length = data.length();
@@ -96,9 +95,14 @@ public class BarManager {
                 String description = obj.getString("description");
                 double rating = obj.getDouble("rating");
                 // á eftir að útfæra opens og closes rétt
-                String opens = obj.getString("opens");
-                String closes = obj.getString("closes");
-
+                JSONObject opens_obj = obj.getJSONObject("opens");
+                JSONObject closes_obj = obj.getJSONObject("closes");
+                ArrayList<Pair> parsed_opens = parseHours(opens_obj);
+                ArrayList<Pair> parsed_closes = parseHours(closes_obj);
+                Hours hours = new Hours(parsed_opens,parsed_closes);
+                String hour_format = hours.getHours();
+                Log.d("About to print hours","-----Message-----");
+                Log.d("**HOURS**: ",hour_format);
                 JSONArray jsonEvent = obj.getJSONArray("events");
                 int eventLength = jsonEvent.length();
                 Event[] events = new Event[eventLength];
@@ -116,7 +120,10 @@ public class BarManager {
                     Event event = new Event(eventName, startTimeDate, endTimeDate, guests, venue, eventLink);
                     events[k] = event;
                 }
-                Bar bar = new Bar( name, menu, image, lat, lng, link, description, rating, opens, closes, events);
+                if (events.length > 1){
+                    Log.d("events", events[0].getStartTime().toString());
+                }
+                Bar bar = new Bar(name, menu, image, lat, lng, link, description, rating, hours, events);
                 bars.add(bar);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -216,6 +223,31 @@ public class BarManager {
                 });
         // Add the request to the RequestQueue.
         queue.add(jsArrRequest);
+    }
+
+    /**
+     * Parses hours into a integer array containing hours in correct weekday order
+     *
+     * @param {JSONObject} hours - hours that are to be parsed
+     * @returns {String[]} - hours in correct order
+     */
+    private ArrayList<Pair> parseHours(JSONObject hours){
+        Iterator<String> iter = hours.keys();
+        ArrayList<Pair> res = new ArrayList<Pair>();
+        while (iter.hasNext()) {
+            String key = iter.next();
+            try {
+
+                String hour = hours.getString(key);
+                Pair pair = new Pair(key,hour);
+                res.add(pair);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                // Something went wrong!
+            }
+        }
+        return res;
     }
 
    // fall sem að skilar bar úr bars fylki og bætir í bars fylki ef það er að verða tómt
