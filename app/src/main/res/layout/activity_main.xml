@@ -4,7 +4,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.rvkdt.rvkapp.MainActivity"
+    tools:context="com.example.rvkdt.rvkapp.Activities.MainActivity"
     android:background="#e7e7e7">
 
     <com.daprlabs.cardstack.SwipeFrameLayout

@@ -1,22 +1,20 @@
-package com.example.rvkdt.rvkapp;
+package com.example.rvkdt.rvkapp.Activities;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.daprlabs.cardstack.SwipeDeck;
 import com.example.rvkdt.rvkapp.Adapters.SwipeDeckAdapter;
+import com.example.rvkdt.rvkapp.BarManager;
+import com.example.rvkdt.rvkapp.Callback;
 import com.example.rvkdt.rvkapp.DataObjects.Bar;
-import com.example.rvkdt.rvkapp.DataObjects.Event;
 import com.example.rvkdt.rvkapp.Database.DBHandler;
+import com.example.rvkdt.rvkapp.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
 
 import java.util.ArrayList;
 
@@ -27,7 +25,6 @@ public class MainActivity extends AppCompatActivity implements Callback {
 
     DBHandler db = new DBHandler(this,"Likedbars",null ,1);
 
-    GoogleMap googleMap;
     @Override
     public  void onResponse(){
 
@@ -51,16 +48,10 @@ public class MainActivity extends AppCompatActivity implements Callback {
             @Override
             public void onResponse() {
                 final ArrayList<Bar> testData = new ArrayList<Bar>();
-                testData.add(barManager.getBar());
-                testData.add(barManager.getBar());
-                testData.add(barManager.getBar());
-                testData.add(barManager.getBar());
-                testData.add(barManager.getBar());
-                testData.add(barManager.getBar());
-                testData.add(barManager.getBar());
-                testData.add(barManager.getBar());
-                testData.add(barManager.getBar());
 
+                for(int i = 0; i < 100; i++){
+                    testData.add(barManager.getBar());
+                }
 
                 final SwipeDeckAdapter adapter = new SwipeDeckAdapter(testData, androidCTX);
                 cardStack.setAdapter(adapter);

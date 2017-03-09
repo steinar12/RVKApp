@@ -1,4 +1,4 @@
-package com.example.rvkdt.rvkapp;
+package com.example.rvkdt.rvkapp.Utils;
 
 import android.support.v4.view.ViewPager;
 import android.view.View;

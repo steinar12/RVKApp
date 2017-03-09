@@ -30,7 +30,6 @@
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:srcCompat="@drawable/cast_abc_scrubber_control_off_mtrl_alpha"
                 android:layout_weight="1"/>
             <LinearLayout
                 android:orientation="vertical"
