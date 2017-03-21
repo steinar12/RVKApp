@@ -1,5 +1,8 @@
 package com.example.rvkdt.rvkapp.Activities;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -11,16 +14,23 @@ import com.example.rvkdt.rvkapp.Utils.MapSetup;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
 
 public class ProfileActivity extends AppCompatActivity {
 
     ArrayAdapter <String> eventAdapter;
     MapFragment mapFragment;
     GoogleMap googleMap;
+    Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        this.activity = this;
+
+        ActivityCompat.requestPermissions( this, new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
+                1 );
         setContentView(R.layout.activity_profile);
 
         ListView list = (ListView) findViewById(R.id.eventListi);
@@ -49,7 +59,18 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setupMap(GoogleMap map) {
-        MapSetup mapSetup = new MapSetup(this);
-        this.googleMap = mapSetup.setupMap(map, 64.148661854835, -21.94014787674);
+
+        map.getUiSettings().setZoomControlsEnabled(false);
+        map.getUiSettings().setScrollGesturesEnabled(false);
+
+        MapSetup mapSetup = new MapSetup(this, map);
+        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                Intent i = new Intent(activity, MapActivity.class);
+                startActivityForResult(i, 0);
+            }
+        });
+        this.googleMap = mapSetup.setupMap(64.148661854835, -21.94014787674);
     }
 }
