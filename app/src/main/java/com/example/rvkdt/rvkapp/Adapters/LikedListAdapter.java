@@ -36,7 +36,7 @@ public class LikedListAdapter extends ArrayAdapter<Bar> {
     {
         Log.d("called getview", "lalala");
         LayoutInflater inflater = ctx.getLayoutInflater();
-        View rowView= inflater.inflate(R.layout.liked_bar, null, true);
+        View rowView = inflater.inflate(R.layout.liked_bar, null, true);
         TextView bar_name = (TextView) rowView.findViewById(R.id.name);
         TextView bar_description = (TextView) rowView.findViewById(R.id.description);
         ImageView bar_image = (ImageView) rowView.findViewById(R.id.image);

@@ -49,7 +49,7 @@ public class BarManager implements Callback {
     }
 
     @Override
-    public void onClick(int id){
+    public void onClick(){
 
     }
 
@@ -62,7 +62,7 @@ public class BarManager implements Callback {
     // constructor býr til nýtt requestqueue og nær í öll barids, sækir líka 5 bari
     public BarManager(Context ctx, final Callback mainCallback, DBHandler dataBase){
         queue = Volley.newRequestQueue(ctx);
-        barStorage = ((BarStorage)ctx);
+        barStorage = ((BarStorage) ctx);
         barStorage.setBarIds(new ArrayList<Integer>());
         barStorage.setListedBars(new ArrayList<Bar>());
         db = dataBase;
