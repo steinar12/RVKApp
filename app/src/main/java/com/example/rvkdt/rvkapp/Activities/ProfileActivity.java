@@ -63,14 +63,24 @@ public class ProfileActivity extends AppCompatActivity {
         map.getUiSettings().setZoomControlsEnabled(false);
         map.getUiSettings().setScrollGesturesEnabled(false);
 
+        final LatLng origin = new LatLng(64.148661854835, -21.94014787674);
+        final LatLng dest = new LatLng(64.148661854835, -21.94014787674+0.01);
+
         MapSetup mapSetup = new MapSetup(this, map);
         map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
                 Intent i = new Intent(activity, MapActivity.class);
+
+                i.putExtra("origin-lat", origin.latitude);
+                i.putExtra("origin-long", origin.longitude);
+                i.putExtra("dest-lat", dest.latitude);
+                i.putExtra("dest-long", dest.longitude);
+
                 startActivityForResult(i, 0);
             }
         });
-        this.googleMap = mapSetup.setupMap(64.148661854835, -21.94014787674);
+
+        this.googleMap = mapSetup.setupMap(origin, dest);
     }
 }

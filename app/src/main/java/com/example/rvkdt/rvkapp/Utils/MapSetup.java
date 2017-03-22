@@ -48,15 +48,9 @@ public class MapSetup {
         this.map = map;
     }
 
-    public GoogleMap setupMap(double latitude, double longitude) {
+    public GoogleMap setupMap(LatLng origin, LatLng dest) {
 
-        LatLng coords = new LatLng(latitude, longitude);
-
-        map.addMarker(new MarkerOptions()
-                .anchor(0.0f, 1.0f)
-                .position(coords));
-
-        map.moveCamera( CameraUpdateFactory.newLatLngZoom( coords, 14.0f) );
+        map.moveCamera( CameraUpdateFactory.newLatLngZoom( origin, 14.0f) );
 
         map.getUiSettings().setMyLocationButtonEnabled(false);
 
@@ -79,8 +73,13 @@ public class MapSetup {
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding);
         map.moveCamera(cameraUpdate);*/
 
-        LatLng origin = coords;
-        LatLng dest = new LatLng(latitude, longitude - 0.01);
+        map.addMarker(new MarkerOptions()
+                .anchor(0.35f, 0.87f)
+                .position(origin));
+
+        map.addMarker(new MarkerOptions()
+                .anchor(0.35f, 0.87f)
+                .position(dest));
 
         // Getting URL to the Google Directions API
         String url = getDirectionsUrl(origin, dest);
@@ -93,7 +92,7 @@ public class MapSetup {
         return map;
     }
 
-    private String getDirectionsUrl(LatLng origin,LatLng dest){
+    private String getDirectionsUrl(LatLng origin, LatLng dest){
 
         // Origin of route
         String str_origin = "origin="+origin.latitude+","+origin.longitude;
@@ -239,7 +238,7 @@ public class MapSetup {
                 // Adding all the points in the route to LineOptions
                 lineOptions.addAll(points);
                 lineOptions.width(10);
-                lineOptions.color(Color.BLUE);
+                lineOptions.color(Color.RED);
             }
 
             // Drawing polyline in the Google Map for the i-th route

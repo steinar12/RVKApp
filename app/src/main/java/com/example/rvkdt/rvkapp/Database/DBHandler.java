@@ -2,18 +2,10 @@ package com.example.rvkdt.rvkapp.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.SyncAdapterType;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.Settings;
 import android.util.Log;
-
-import com.example.rvkdt.rvkapp.BarManager;
-import com.example.rvkdt.rvkapp.DataObjects.Bar;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class DBHandler extends SQLiteOpenHelper {
 

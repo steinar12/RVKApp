@@ -1,4 +1,4 @@
-package com.example.rvkdt.rvkapp;
+package com.example.rvkdt.rvkapp.Managers;
 
 
 import android.content.Context;
@@ -11,6 +11,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.rvkdt.rvkapp.Callback;
 import com.example.rvkdt.rvkapp.DataObjects.Bar;
 import com.example.rvkdt.rvkapp.DataObjects.Event;
 import com.example.rvkdt.rvkapp.DataObjects.Hours;
@@ -35,20 +36,20 @@ import java.util.Locale;
  */
 
 
-public class BarManager implements  Callback{
+public class BarManager implements Callback {
     private ArrayList<Integer> barids;
     private ArrayList<Bar> bars;
     private DBHandler db;
 
     @Override
-    public  void onResponse(){
+    public void onResponse(){
 
     }
 
     // Instantiate the RequestQueue.
     private RequestQueue queue;
-    private String idurl ="https://rvkapp.herokuapp.com/api/ids";
-    private String barurl ="https://rvkapp.herokuapp.com/api/bars";
+    private String idurl = "https://rvkapp.herokuapp.com/api/ids";
+    private String barurl = "https://rvkapp.herokuapp.com/api/bars";
 
     // constructor býr til nýtt requestqueue og nær í öll barids, sækir líka 5 bari
     public BarManager(Context ctx, final Callback mainCallback, DBHandler dataBase){

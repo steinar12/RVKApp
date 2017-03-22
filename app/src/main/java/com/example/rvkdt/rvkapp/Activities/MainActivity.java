@@ -1,20 +1,18 @@
 package com.example.rvkdt.rvkapp.Activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.daprlabs.cardstack.SwipeDeck;
 import com.example.rvkdt.rvkapp.Adapters.SwipeDeckAdapter;
-import com.example.rvkdt.rvkapp.BarManager;
+import com.example.rvkdt.rvkapp.Managers.BarManager;
 import com.example.rvkdt.rvkapp.Callback;
 import com.example.rvkdt.rvkapp.DataObjects.Bar;
 import com.example.rvkdt.rvkapp.Database.DBHandler;
 import com.example.rvkdt.rvkapp.R;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.maps.GoogleMap;
 
 import java.util.ArrayList;
 
@@ -35,11 +33,11 @@ public class MainActivity extends AppCompatActivity implements Callback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //db.addLikedBarId(1);
-        //db.addLikedBarId(88);
-        //db.addLikedBarId(2);
-        //db.removeBarId(1);
-        //db.getLikedBarIds();
+        db.addLikedBarId(1);
+        db.addLikedBarId(88);
+        db.addLikedBarId(2);
+        db.removeBarId(1);
+        db.getLikedBarIds();
 
         cardStack = (SwipeDeck) findViewById(R.id.swipe_deck);
         final Context androidCTX = this;
@@ -49,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
             public void onResponse() {
                 final ArrayList<Bar> testData = new ArrayList<Bar>();
 
-                for(int i = 0; i < 100; i++){
+                for(int i = 0; i < 10; i++){
                     testData.add(barManager.getBar());
                 }
 
@@ -73,6 +71,9 @@ public class MainActivity extends AppCompatActivity implements Callback {
                         if (bar != null){
                             testData.add(bar);
                         }
+
+                        Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
+                        startActivityForResult(i, 0);
                     }
 
                     @Override
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
                         Log.i("MainActivity", "down");
                     }
                 });}
-        },db);
+        }, db);
     }
 
 }
