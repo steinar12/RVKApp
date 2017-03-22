@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
 
     private SwipeDeck cardStack;
     private BarManager barManager;
+    private Bar currentBar;
 
     DBHandler db = new DBHandler(this,"Likedbars",null ,1);
 
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
     }
 
     @Override
-    public  void onClick(int id){
+    public  void onClick(){
 
     }
 
@@ -56,26 +57,30 @@ public class MainActivity extends AppCompatActivity implements Callback {
             }
 
             @Override
-            public void onClick(int id) {
+            public void onClick() {
                 Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
+                int id = currentBar.getId();
+                i.putExtra("bar_id",id);
                 startActivityForResult(i, 0);
             }
         };
 
         barManager = new BarManager(getApplicationContext(), new Callback() {
             @Override
-            public void onClick(int id) {
+            public void onClick() {
 
             }
             @Override
             public void onResponse() {
-                final ArrayList<Bar> testData = new ArrayList<Bar>();
+                final ArrayList<Bar> bars = new ArrayList<Bar>();
 
                 for(int i = 0; i < 10; i++){
-                    testData.add(barManager.getBar());
+                    Bar bar = barManager.getBar();
+                    currentBar = bar;
+                    bars.add(bar);
                 }
 
-                final SwipeDeckAdapter adapter = new SwipeDeckAdapter(testData, androidCTX, onClickCallback);
+                final SwipeDeckAdapter adapter = new SwipeDeckAdapter(bars, androidCTX, onClickCallback);
                 cardStack.setAdapter(adapter);
 
                 cardStack.setEventCallback(new SwipeDeck.SwipeEventCallback() {
@@ -84,7 +89,8 @@ public class MainActivity extends AppCompatActivity implements Callback {
                         Log.i("MainActivity", "card was swiped left, position in adapter: " + position);
                         Bar bar = barManager.getBar();
                         if (bar != null){
-                            testData.add(bar);
+                            currentBar = bar;
+                            bars.add(bar);
                         }
                     }
 
@@ -93,7 +99,8 @@ public class MainActivity extends AppCompatActivity implements Callback {
                         Log.i("MainActivity", "card was swiped right, position in adapter: " + position);
                         Bar bar = barManager.getBar();
                         if (bar != null){
-                            testData.add(bar);
+                            currentBar = bar;
+                            bars.add(bar);
                         }
                     }
 

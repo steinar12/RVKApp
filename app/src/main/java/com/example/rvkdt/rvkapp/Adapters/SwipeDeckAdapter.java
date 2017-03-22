@@ -50,7 +50,7 @@ public class SwipeDeckAdapter extends BaseAdapter implements Callback {
     }
 
     @Override
-    public void onClick(int id){
+    public void onClick(){
 
     }
 
@@ -94,7 +94,7 @@ public class SwipeDeckAdapter extends BaseAdapter implements Callback {
             @Override
             public void onClick(View v) {
                 Log.d("tag", "tag");
-                onClickCallback.onClick(v.getId());
+                onClickCallback.onClick();
             }
         });
 

@@ -7,5 +7,5 @@ package com.example.rvkdt.rvkapp;
 public interface Callback {
     void onResponse();
 
-    void onClick(int id);
+    void onClick();
 }
