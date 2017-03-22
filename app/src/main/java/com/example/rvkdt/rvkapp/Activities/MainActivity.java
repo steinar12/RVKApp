@@ -1,12 +1,19 @@
 package com.example.rvkdt.rvkapp.Activities;
 
+import android.animation.TimeInterpolator;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import com.daprlabs.cardstack.SwipeDeck;
+import com.daprlabs.cardstack.SwipeFrameLayout;
 import com.example.rvkdt.rvkapp.Adapters.SwipeDeckAdapter;
 import com.example.rvkdt.rvkapp.Managers.BarManager;
 import com.example.rvkdt.rvkapp.Callback;
@@ -45,6 +52,22 @@ public class MainActivity extends AppCompatActivity implements Callback {
         db.removeBarId(1);
         db.getLikedBarIds();*/
 
+        // width of the screen
+        final int width = getWindowManager().getDefaultDisplay().getWidth();
+
+        final SwipeFrameLayout swipe_frame = (SwipeFrameLayout) findViewById(R.id.swipe_frame);
+        swipe_frame.animate().setInterpolator(new DecelerateInterpolator()).setDuration(300);
+
+        // Switch onClick listener stuff
+        Switch switch_button = (Switch) findViewById(R.id.switch_button);
+        switch_button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) swipe_frame.animate().translationX(-width);
+                else swipe_frame.animate().translationX(0);
+            }
+        });
+
         cardStack = (SwipeDeck) findViewById(R.id.swipe_deck);
         final Context androidCTX = this;
 
@@ -62,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
                 int id = currentBar.getId();
                 i.putExtra("bar_id",id);
                 startActivityForResult(i, 0);
+                overridePendingTransition(0, 0);
             }
         };
 
@@ -121,9 +145,4 @@ public class MainActivity extends AppCompatActivity implements Callback {
                 });}
         }, db);
     }
-
-    public interface onClickInterface {
-
-    }
-
 }

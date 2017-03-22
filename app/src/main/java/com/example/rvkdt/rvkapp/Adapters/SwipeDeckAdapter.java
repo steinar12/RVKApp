@@ -116,7 +116,7 @@ public class SwipeDeckAdapter extends BaseAdapter implements Callback {
 
                     }
                 });
-                onClickCallback.onClick();
+
             }
         });
 

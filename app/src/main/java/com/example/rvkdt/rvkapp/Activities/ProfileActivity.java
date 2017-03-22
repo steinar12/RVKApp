@@ -38,13 +38,12 @@ public class ProfileActivity extends AppCompatActivity {
 
         this.activity = this;
 
-        ActivityCompat.requestPermissions( this, new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
-                1 );
+        ActivityCompat.requestPermissions( this, new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  }, 1 );
         setContentView(R.layout.activity_profile);
-//(int idvalue, String nme,String men,
-// String img, double lt, double lg,
-// String lnk, String desc, double rat,
-// Hours hrs, Event[] evt){
+        //(int idvalue, String nme,String men,
+        // String img, double lt, double lg,
+        // String lnk, String desc, double rat,
+        // Hours hrs, Event[] evt){
         Bar barData = new Bar(1, "KoKo Bar", null, "https://scontent-arn2-1.xx.fbcdn.net/v/t1.0-9/10407812_637843283004053_8987368172014209754_n.jpg?oh=c1f1a5170f469e5b6d0f9bd3dbce8326&oe=5973A783",
                 1.0, 2.0, "https://www.facebook.com/hurra.is/", "sSpooOOKY TEXT IsA DescRipTIonTeXteRinoO", 2.0, null, null);
 
