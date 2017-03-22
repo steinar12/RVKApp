@@ -9,7 +9,6 @@ import android.util.Log;
 import com.daprlabs.cardstack.SwipeDeck;
 import com.example.rvkdt.rvkapp.Adapters.SwipeDeckAdapter;
 import com.example.rvkdt.rvkapp.Managers.BarManager;
-
 import com.example.rvkdt.rvkapp.Callback;
 import com.example.rvkdt.rvkapp.DataObjects.Bar;
 import com.example.rvkdt.rvkapp.DataManagers.DBHandler;
@@ -30,21 +29,44 @@ public class MainActivity extends AppCompatActivity implements Callback {
     }
 
     @Override
+    public  void onClick(int id){
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        db.addLikedBarId(1);
+        /*db.addLikedBarId(1);
         db.addLikedBarId(88);
         db.addLikedBarId(2);
         db.removeBarId(1);
-        db.getLikedBarIds();
+        db.getLikedBarIds();*/
 
         cardStack = (SwipeDeck) findViewById(R.id.swipe_deck);
         final Context androidCTX = this;
 
+        // Interface that is passed into the SwipeDeckAdapter so
+        // the adapter can use the onClick function in the MainActivity context.
+        final Callback onClickCallback = new Callback() {
+            @Override
+            public void onResponse() {
+
+            }
+
+            @Override
+            public void onClick(int id) {
+                Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivityForResult(i, 0);
+            }
+        };
+
         barManager = new BarManager(getApplicationContext(), new Callback() {
+            @Override
+            public void onClick(int id) {
+
+            }
             @Override
             public void onResponse() {
                 final ArrayList<Bar> testData = new ArrayList<Bar>();
@@ -53,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
                     testData.add(barManager.getBar());
                 }
 
-                final SwipeDeckAdapter adapter = new SwipeDeckAdapter(testData, androidCTX);
+                final SwipeDeckAdapter adapter = new SwipeDeckAdapter(testData, androidCTX, onClickCallback);
                 cardStack.setAdapter(adapter);
 
                 cardStack.setEventCallback(new SwipeDeck.SwipeEventCallback() {
@@ -73,9 +95,6 @@ public class MainActivity extends AppCompatActivity implements Callback {
                         if (bar != null){
                             testData.add(bar);
                         }
-
-                        Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
-                        startActivityForResult(i, 0);
                     }
 
                     @Override
@@ -94,6 +113,10 @@ public class MainActivity extends AppCompatActivity implements Callback {
                     }
                 });}
         }, db);
+    }
+
+    public interface onClickInterface {
+
     }
 
 }

@@ -48,6 +48,11 @@ public class BarManager implements Callback {
 
     }
 
+    @Override
+    public void onClick(int id){
+
+    }
+
     // Instantiate the RequestQueue.
     private RequestQueue queue;
     private String idurl = "https://rvkapp.herokuapp.com/api/ids";

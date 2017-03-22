@@ -5,7 +5,7 @@
             <!-- solid background -->
             <solid android:color="#ffffffff"/>
             <!-- draw 35 dp radius for each corner -->
-            <corners android:radius="20dp"/>
+            <corners android:radius="5dp"/>
         </shape>
     </item>
 </selector>

@@ -1,6 +1,7 @@
 package com.example.rvkdt.rvkapp.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
@@ -13,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.example.rvkdt.rvkapp.Activities.ProfileActivity;
+import com.example.rvkdt.rvkapp.Callback;
 import com.example.rvkdt.rvkapp.DataObjects.Bar;
 import com.example.rvkdt.rvkapp.R;
 import com.google.android.gms.maps.CameraUpdate;
@@ -35,14 +38,26 @@ import java.util.List;
  * Created by Steinar on 3/1/2017.
  */
 
-public class SwipeDeckAdapter extends BaseAdapter {
+public class SwipeDeckAdapter extends BaseAdapter implements Callback {
 
     private ArrayList<Bar> data;
     private Context context;
+    private Callback onClickCallback;
 
-    public SwipeDeckAdapter(ArrayList<Bar> data, Context context) {
+    @Override
+    public void onResponse(){
+
+    }
+
+    @Override
+    public void onClick(int id){
+
+    }
+
+    public SwipeDeckAdapter(ArrayList<Bar> data, Context context, Callback onClickCallback) {
         this.data = data;
         this.context = context;
+        this.onClickCallback = onClickCallback;
     }
 
     @Override
@@ -78,13 +93,10 @@ public class SwipeDeckAdapter extends BaseAdapter {
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //String item = (String)getItem(position);
                 Log.d("tag", "tag");
-                //Log.i("MainActivity", item);
+                onClickCallback.onClick(v.getId());
             }
         });
-
-
 
         return v;
     }
