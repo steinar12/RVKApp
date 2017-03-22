@@ -15,10 +15,11 @@ public class Bar {
     private double lng;
     private String link;
     private String description;
+    private String about;
     private double rating;
     private Hours hours;
     private Event[] events;
-    public Bar(int idvalue, String nme,String men, String img, double lt, double lg, String lnk, String desc, double rat, Hours hrs, Event[] evt){
+    public Bar(int idvalue, String nme,String men, String img, double lt, double lg, String lnk, String desc, String abt, double rat, Hours hrs, Event[] evt){
         id = idvalue;
         name = nme;
         menu = men;
@@ -27,6 +28,7 @@ public class Bar {
         lng = lg;
         link = lnk;
         description = desc;
+        about = abt;
         rating = rat;
         hours = hrs;
         events = evt;
@@ -63,6 +65,8 @@ public class Bar {
     public String getDescription() {
         return description;
     }
+
+    public String getAbout() {return about; }
 
     public double getRating() {
         return rating;
