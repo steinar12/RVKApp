@@ -89,7 +89,7 @@ public class SwipeDeckAdapter extends BaseAdapter implements Callback {
         ((TextView) v.findViewById(R.id.barTitle)).setText(data.get(position).getName());
         ((TextView) v.findViewById(R.id.textView)).setText(data.get(position).getAbout());
         ((RatingBar) v.findViewById(R.id.rating)).setRating((float)data.get(position).getRating());
-        Picasso.with(context).load("http://i.imgur.com/DvpvklR.png").into(((ImageView) v.findViewById(R.id.imageView)));
+        Picasso.with(context).load(data.get(position).getImage()).into(((ImageView) v.findViewById(R.id.imageView)));
 
         v.setOnClickListener(new View.OnClickListener() {
             @Override

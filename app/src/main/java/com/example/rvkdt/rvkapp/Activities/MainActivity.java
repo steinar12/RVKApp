@@ -15,6 +15,7 @@ import android.widget.Switch;
 import com.daprlabs.cardstack.SwipeDeck;
 import com.daprlabs.cardstack.SwipeFrameLayout;
 import com.example.rvkdt.rvkapp.Adapters.SwipeDeckAdapter;
+import com.example.rvkdt.rvkapp.DataManagers.BarStorage;
 import com.example.rvkdt.rvkapp.Managers.BarManager;
 import com.example.rvkdt.rvkapp.Callback;
 import com.example.rvkdt.rvkapp.DataObjects.Bar;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
     private SwipeDeck cardStack;
     private BarManager barManager;
     private Bar currentBar;
+    private BarStorage barStorage;
 
     DBHandler db = new DBHandler(this,"Likedbars",null ,1);
 
@@ -48,9 +50,9 @@ public class MainActivity extends AppCompatActivity implements Callback {
 
         /*db.addLikedBarId(1);
         db.addLikedBarId(88);
-        db.addLikedBarId(2);
+        db.addLikedBarId(2);*/
         db.removeBarId(1);
-        db.getLikedBarIds();*/
+        /*db.getLikedBarIds();*/
 
         // width of the screen
         final int width = getWindowManager().getDefaultDisplay().getWidth();
@@ -121,6 +123,8 @@ public class MainActivity extends AppCompatActivity implements Callback {
                     @Override
                     public void cardSwipedRight(int position) {
                         Log.i("MainActivity", "card was swiped right, position in adapter: " + position);
+                        //db.addLikedBarId(bars.get(position).getId()); setur liked bar í database
+                        //barStorage.pushLiked(bars.get(position)); bætir liked bar í barstorage
                         Bar bar = barManager.getBar();
                         if (bar != null){
                             currentBar = bar;
