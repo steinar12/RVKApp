@@ -46,7 +46,7 @@ public class ProfileActivity extends AppCompatActivity {
 // String lnk, String desc, double rat,
 // Hours hrs, Event[] evt){
         Bar barData = new Bar(1, "KoKo Bar", null, "https://scontent-arn2-1.xx.fbcdn.net/v/t1.0-9/10407812_637843283004053_8987368172014209754_n.jpg?oh=c1f1a5170f469e5b6d0f9bd3dbce8326&oe=5973A783",
-                1.0, 2.0, "https://www.facebook.com/hurra.is/", "sSpooOOKY TEXT IsA DescRipTIonTeXteRinoO","texti", 2.0, null, null);
+                1.0, 2.0, "https://www.facebook.com/hurra.is/", "sSpooOOKY TEXT IsA DescRipTIonTeXteRinoO", 2.0, null, null);
 
         TextView name = (TextView) findViewById(R.id.barTitle);
         TextView desc = (TextView) findViewById(R.id.descriptionTexti);
@@ -62,7 +62,7 @@ public class ProfileActivity extends AppCompatActivity {
         cover.setImageResource(R.drawable.hurrapic);
         String barName = barData.getName();
         name.setText(barName);
-        desc.setText(barData.getDescription());
+        desc.setText(barData.getAbout());
         fbLink.setClickable(true);
         fbLink.setMovementMethod(LinkMovementMethod.getInstance());
         String fbHref = "<a href=" + barData.getLink() + ">" + barData.getName() + "Facebook Site </a>";

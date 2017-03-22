@@ -132,16 +132,18 @@ public class BarManager implements Callback {
                 link = link.replaceAll("\\\\","");
                 String description = obj.getString("description");
                 String about = obj.getString("about");
+                if (about.equals("null") || about.trim().length() == 0) about = description;
+                if (about.equals("null") || about.trim().length() == 0) about = "no description";
                 double rating = obj.getDouble("rating");
                 // á eftir að útfæra opens og closes rétt
                 JSONObject opens_obj = obj.getJSONObject("opens");
                 JSONObject closes_obj = obj.getJSONObject("closes");
                 ArrayList<Pair> parsed_opens = parseHours(opens_obj);
                 ArrayList<Pair> parsed_closes = parseHours(closes_obj);
-                Hours hours = new Hours(parsed_opens,parsed_closes);
-                String hour_format = hours.getHours();
-                Log.d("About to print hours","-----Message-----");
-                Log.d("**HOURS**: ",hour_format);
+                //Hours hours = new Hours(parsed_opens,parsed_closes);
+                //String hour_format = hours.getHours();
+                //Log.d("About to print hours","-----Message-----");
+                //Log.d("**HOURS**: ",hour_format);
                 JSONArray jsonEvent = obj.getJSONArray("events");
                 int eventLength = jsonEvent.length();
                 Event[] events = new Event[eventLength];
@@ -163,7 +165,7 @@ public class BarManager implements Callback {
                 if (events.length > 1){
                     Log.d("events", events[0].getStartTime().toString());
                 }
-                Bar bar = new Bar(id, name, menu, image, lat, lng, link, description, about, rating, null, events);
+                Bar bar = new Bar(id, name, menu, image, lat, lng, link, about, rating, null, events);
                 output.add(bar);
             } catch (JSONException e) {
                 e.printStackTrace();
