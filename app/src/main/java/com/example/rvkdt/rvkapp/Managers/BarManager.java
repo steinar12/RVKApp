@@ -16,7 +16,8 @@ import com.example.rvkdt.rvkapp.DataObjects.Bar;
 import com.example.rvkdt.rvkapp.DataObjects.Event;
 import com.example.rvkdt.rvkapp.DataObjects.Hours;
 import com.example.rvkdt.rvkapp.DataObjects.Pair;
-import com.example.rvkdt.rvkapp.Database.DBHandler;
+import com.example.rvkdt.rvkapp.DataManagers.DBHandler;
+import com.example.rvkdt.rvkapp.DataManagers.BarStorage;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,6 +41,7 @@ public class BarManager implements Callback {
     private ArrayList<Integer> barids;
     private ArrayList<Bar> bars;
     private DBHandler db;
+    private BarStorage barStorage;
 
     @Override
     public void onResponse(){
@@ -51,23 +53,25 @@ public class BarManager implements Callback {
     private String idurl = "https://rvkapp.herokuapp.com/api/ids";
     private String barurl = "https://rvkapp.herokuapp.com/api/bars";
 
+
     // constructor býr til nýtt requestqueue og nær í öll barids, sækir líka 5 bari
     public BarManager(Context ctx, final Callback mainCallback, DBHandler dataBase){
         queue = Volley.newRequestQueue(ctx);
-        barids = new ArrayList<Integer>();
-        bars = new ArrayList<Bar>();
+        barStorage = ((BarStorage)ctx);
+        barStorage.setBarIds(new ArrayList<Integer>());
+        barStorage.setListedBars(new ArrayList<Bar>());
         db = dataBase;
         fetchIds(new ResponseCallback() {
             @Override
             public void onResponse(JSONArray response) {
-                barids = responseToIntList(response);
+                barStorage.setBarIds(responseToIntList(response));
                 int[] idsToRemove = db.getLikedBarIds();
-                barids = removeIds(barids,idsToRemove );
-                int[] barsToFetch = randomIds(barids, 15);
+                barStorage.setBarIds(removeIds(barStorage.getBarIds(),idsToRemove));
+                int[] barsToFetch = randomIds(barStorage.getBarIds(), 15);
                 fetchBars(barsToFetch, new ResponseCallback() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        bars.addAll(responseToBarList(response));
+                        barStorage.addAll(responseToBarList(response));
                         mainCallback.onResponse();
                     }
                 });
@@ -175,7 +179,7 @@ public class BarManager implements Callback {
     }
 
     // skilar fylki af idum sem er jafn stórt size úr fylki input
-    private int[] randomIds (ArrayList<Integer>  input, int size){
+    private int[] randomIds (ArrayList<Integer> input, int size){
         if(input.size() == 0) return null;
         if (size > input.size()) size = input.size();
         int[] output = new int[size];
@@ -282,10 +286,8 @@ public class BarManager implements Callback {
 
    // fall sem að skilar bar úr bars fylki og bætir í bars fylki ef það er að verða tómt
     public Bar getBar() {
-        Log.d("ststst",bars.toString());
-        int size = bars.size();
-        Log.d("hi",String.valueOf(size));
 
+        int size = barStorage.size();
 
         if (bars.size() < 10){
             int[] barsToFetch = randomIds(barids, 10);
@@ -293,15 +295,15 @@ public class BarManager implements Callback {
             fetchBars(barsToFetch, new ResponseCallback() {
                 @Override
                 public void onResponse(JSONArray response) {
-                    bars.addAll(responseToBarList(response));
+                    barStorage.addAll(responseToBarList(response));
                 }
             });
         }
-        Bar output  = bars.get(0);
-        bars.remove(0);
+        Bar output  = barStorage.pop();
         return output;
     }
 
+    /*
     public ArrayList<Bar> getLikedBars (int [] likedIds) {
         final ArrayList<Bar> likedBars = new ArrayList<Bar>();
         fetchBars(likedIds, new ResponseCallback() {
@@ -312,4 +314,5 @@ public class BarManager implements Callback {
         });
         return likedBars;
     }
+    */
 }

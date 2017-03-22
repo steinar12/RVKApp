@@ -9,9 +9,10 @@ import android.util.Log;
 import com.daprlabs.cardstack.SwipeDeck;
 import com.example.rvkdt.rvkapp.Adapters.SwipeDeckAdapter;
 import com.example.rvkdt.rvkapp.Managers.BarManager;
+
 import com.example.rvkdt.rvkapp.Callback;
 import com.example.rvkdt.rvkapp.DataObjects.Bar;
-import com.example.rvkdt.rvkapp.Database.DBHandler;
+import com.example.rvkdt.rvkapp.DataManagers.DBHandler;
 import com.example.rvkdt.rvkapp.R;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         db.addLikedBarId(1);
         db.addLikedBarId(88);

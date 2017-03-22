@@ -81,7 +81,7 @@ public class Hours {
 
             if(day_name.equals(currentDay))
             {
-                Log.d("CHECK: ","FOUND A MATCH");
+
                 if(current_minute <= opening_minute)
                 {
                     Pair previous_closing_pair;

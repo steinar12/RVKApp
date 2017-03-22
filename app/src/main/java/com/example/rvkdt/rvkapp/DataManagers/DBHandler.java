@@ -1,4 +1,4 @@
-package com.example.rvkdt.rvkapp.Database;
+package com.example.rvkdt.rvkapp.DataManagers;
 
 import android.content.ContentValues;
 import android.content.Context;
