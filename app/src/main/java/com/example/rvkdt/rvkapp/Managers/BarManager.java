@@ -124,10 +124,12 @@ public class BarManager implements Callback {
                 String name = obj.getString("name");
                 String menu = obj.getString("menu");
                 String image = obj.getString("image");
+                image = image.replaceAll("\\\\","");
                 JSONObject coords = obj.getJSONObject("coords");
                 double lat = coords.getDouble("lat");
                 double lng = coords.getDouble("lng");
                 String link = obj.getString("link");
+                link = link.replaceAll("\\\\","");
                 String description = obj.getString("description");
                 double rating = obj.getDouble("rating");
                 // á eftir að útfæra opens og closes rétt
@@ -135,10 +137,10 @@ public class BarManager implements Callback {
                 JSONObject closes_obj = obj.getJSONObject("closes");
                 ArrayList<Pair> parsed_opens = parseHours(opens_obj);
                 ArrayList<Pair> parsed_closes = parseHours(closes_obj);
-                Hours hours = new Hours(parsed_opens,parsed_closes);
-                String hour_format = hours.getHours();
-                Log.d("About to print hours","-----Message-----");
-                Log.d("**HOURS**: ",hour_format);
+               // Hours hours = new Hours(parsed_opens,parsed_closes);
+                //String hour_format = hours.getHours();
+                //Log.d("About to print hours","-----Message-----");
+                //Log.d("**HOURS**: ",hour_format);
                 JSONArray jsonEvent = obj.getJSONArray("events");
                 int eventLength = jsonEvent.length();
                 Event[] events = new Event[eventLength];
@@ -153,13 +155,14 @@ public class BarManager implements Callback {
                     int guests = eventObject.getInt("guests");
                     String venue = eventObject.getString("venue");
                     String eventLink = eventObject.getString("link");
+                    eventLink = eventLink.replaceAll("\\\\","");
                     Event event = new Event(eventName, startTimeDate, endTimeDate, guests, venue, eventLink);
                     events[k] = event;
                 }
                 if (events.length > 1){
                     Log.d("events", events[0].getStartTime().toString());
                 }
-                Bar bar = new Bar(id, name, menu, image, lat, lng, link, description, rating, hours, events);
+                Bar bar = new Bar(id, name, menu, image, lat, lng, link, description, rating, null, events);
                 output.add(bar);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -167,7 +170,6 @@ public class BarManager implements Callback {
                 e.printStackTrace();
             }
         }
-        Log.d("output", bars.toString());
         return output;
     }
 
@@ -294,8 +296,8 @@ public class BarManager implements Callback {
 
         int size = barStorage.size();
 
-        if (bars.size() < 10){
-            int[] barsToFetch = randomIds(barids, 10);
+        if (size < 10){
+            int[] barsToFetch = randomIds(barStorage.getBarIds(), 10);
             if(barsToFetch == null) return null;
             fetchBars(barsToFetch, new ResponseCallback() {
                 @Override

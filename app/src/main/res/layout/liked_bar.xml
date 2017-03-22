@@ -16,7 +16,7 @@
         android:layout_toLeftOf="@+id/name"
         android:layout_toStartOf="@+id/name"
         android:layout_weight="2"
-        app:srcCompat="@drawable/cat_1" />
+        app:srcCompat="@drawable/hurrapic" />
 
     <LinearLayout
         android:layout_width="match_parent"

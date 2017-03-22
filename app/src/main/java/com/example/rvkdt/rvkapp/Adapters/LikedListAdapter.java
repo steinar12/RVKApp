@@ -40,7 +40,7 @@ public class LikedListAdapter extends ArrayAdapter<Bar> {
         TextView bar_name = (TextView) rowView.findViewById(R.id.name);
         TextView bar_description = (TextView) rowView.findViewById(R.id.description);
         ImageView bar_image = (ImageView) rowView.findViewById(R.id.image);
-        bar_image.setImageResource(R.drawable.cat_1);
+        bar_image.setImageResource(R.drawable.hurrapic);
         //bar_name.setText(bars[position].getName());
 
         return rowView;
