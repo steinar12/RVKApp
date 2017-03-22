@@ -51,7 +51,11 @@ public class MainActivity extends AppCompatActivity implements Callback {
         /*db.addLikedBarId(1);
         db.addLikedBarId(88);
         db.addLikedBarId(2);*/
-        db.removeBarId(1);
+        /*int[] j = db.getLikedBarIds();
+        for (int k = 0; k < j.length; k++){
+            db.removeBarId(j[k]);
+        }
+        db.addLikedBarId(1);*/
         /*db.getLikedBarIds();*/
 
         // width of the screen

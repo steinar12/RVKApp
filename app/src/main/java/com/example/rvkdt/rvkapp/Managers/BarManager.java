@@ -71,7 +71,9 @@ public class BarManager implements Callback {
             public void onResponse(JSONArray response) {
                 barStorage.setBarIds(responseToIntList(response));
                 int[] idsToRemove = db.getLikedBarIds();
-                barStorage.setBarIds(removeIds(barStorage.getBarIds(),idsToRemove));
+                if (!(idsToRemove == null)){
+                    barStorage.setBarIds(removeIds(barStorage.getBarIds(),idsToRemove));
+                }
                 int[] barsToFetch = randomIds(barStorage.getBarIds(), 15);
                 fetchBars(barsToFetch, new ResponseCallback() {
                     @Override
