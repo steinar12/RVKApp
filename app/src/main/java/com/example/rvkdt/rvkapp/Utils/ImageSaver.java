@@ -158,7 +158,6 @@ public class ImageSaver {
 
     public void handleLoadedBitmap(Bitmap image, int id) {
         // do something here
-        Log.d(TAG, "er saving???");
         Log.d(TAG, "Counter:" + id);
         new ImageSaver(context).
                 setFileName(counter + ".png").
