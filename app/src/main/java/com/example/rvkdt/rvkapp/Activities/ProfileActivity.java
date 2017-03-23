@@ -1,14 +1,18 @@
 package com.example.rvkdt.rvkapp.Activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
@@ -16,12 +20,14 @@ import android.widget.TextView;
 
 import com.example.rvkdt.rvkapp.DataObjects.Bar;
 import com.example.rvkdt.rvkapp.R;
+import com.example.rvkdt.rvkapp.Utils.ImageSaver;
 import com.example.rvkdt.rvkapp.Utils.MapSetup;
 import com.example.rvkdt.rvkapp.Managers.BarManager;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
@@ -31,9 +37,13 @@ public class ProfileActivity extends AppCompatActivity {
     MapFragment mapFragment;
     GoogleMap googleMap;
     Activity activity;
+    private ImageSaver imageSaver;
+
+    private static final String TAG = ProfileActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        imageSaver = new ImageSaver(this);
         super.onCreate(savedInstanceState);
 
         this.activity = this;
@@ -54,6 +64,18 @@ public class ProfileActivity extends AppCompatActivity {
         RatingBar rating = (RatingBar) findViewById(R.id.rating);
         ListView list = (ListView) findViewById(R.id.eventListi);
         ImageView cover = (ImageView) findViewById(R.id.profileImage);
+
+        Button loadButton = (Button) findViewById(R.id.buttonLoad);
+        loadButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //action
+                Log.d(TAG, "Can you hear me mister?");
+                Bitmap bm = imageSaver.loadTest();
+                Log.d(TAG, "After imageSaver.loadTest()?");
+                ImageView coverDD = (ImageView) findViewById(R.id.profileImage);
+                coverDD.setImageBitmap(bm);
+            }
+        });
 
         String[] test = new String[] {"danni", "Kaffibarinn", "Austur", "Lebowskibar", "hurra"};
         eventAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, test);

@@ -18,6 +18,7 @@ import com.example.rvkdt.rvkapp.DataObjects.Hours;
 import com.example.rvkdt.rvkapp.DataObjects.Pair;
 import com.example.rvkdt.rvkapp.DataManagers.DBHandler;
 import com.example.rvkdt.rvkapp.DataManagers.BarStorage;
+import com.example.rvkdt.rvkapp.Utils.ImageSaver;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,6 +43,9 @@ public class BarManager implements Callback {
     private ArrayList<Bar> bars;
     private DBHandler db;
     private BarStorage barStorage;
+    private ImageSaver imagesaver;
+
+    private static final String TAG = BarManager.class.getSimpleName();
 
     @Override
     public void onResponse(){
@@ -61,6 +65,7 @@ public class BarManager implements Callback {
 
     // constructor býr til nýtt requestqueue og nær í öll barids, sækir líka 5 bari
     public BarManager(Context ctx, final Callback mainCallback, DBHandler dataBase){
+        imagesaver = new ImageSaver(ctx);
         queue = Volley.newRequestQueue(ctx);
         barStorage = ((BarStorage) ctx);
         barStorage.setBarIds(new ArrayList<Integer>());
@@ -119,6 +124,7 @@ public class BarManager implements Callback {
         ArrayList<Bar> output = new ArrayList<Bar>();
 
         int length = data.length();
+
         for (int i = 0; i < length; i++){
             try {
                 JSONObject obj = data.getJSONObject(i);
@@ -168,6 +174,12 @@ public class BarManager implements Callback {
                     Log.d("events", events[0].getStartTime().toString());
                 }
                 Bar bar = new Bar(id, name, menu, image, lat, lng, link, about, rating, null, events);
+
+                //Send the image to ImageSaver to store the image.
+                String cleanImage = image.replaceAll("\\\\","");
+                Log.d(TAG, "imagesaver!?() kek!");
+                imagesaver.downloadImage(cleanImage, id);
+
                 output.add(bar);
             } catch (JSONException e) {
                 e.printStackTrace();

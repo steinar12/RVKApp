@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
     private Bar currentBar;
     private BarStorage barStorage;
 
+
     DBHandler db = new DBHandler(this,"Likedbars",null ,1);
 
     @Override
