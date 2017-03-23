@@ -5,8 +5,8 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.rvkdt.rvkapp.Activities.MainActivity"
-    android:background="#e7e7e7">
+    android:background="#757fb3"
+    tools:context="com.example.rvkdt.rvkapp.Activities.MainActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -20,27 +20,26 @@
         android:layout_alignParentStart="true">
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/navbutton_cards"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_margin="10dp"
             android:layout_weight="1"
+            android:onClick="onNavButtonClick"
+            android:paddingRight="20dp"
             android:scaleType="fitEnd"
             app:srcCompat="@drawable/swipe_logo_white" />
 
-        <Switch
-            android:id="@+id/switch_button"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" />
-
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/navbutton_heart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_margin="10dp"
             android:layout_weight="1"
+            android:onClick="onNavButtonClick"
+            android:paddingLeft="20dp"
             android:scaleType="fitStart"
             app:srcCompat="@drawable/profile_logo_white" />
 
@@ -58,6 +57,7 @@
             android:id="@+id/swipe_deck"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="-10dp"
             android:padding="20dp"
             swipedeck:card_spacing="10dp"
             swipedeck:max_visible="3"

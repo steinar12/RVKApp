@@ -10,20 +10,19 @@
     <!-- TODO: Update blank fragment layout -->
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:weightSum="2"
+        android:layout_margin="6dp"
         android:background="@drawable/linear_layout_background"
         android:elevation="5dp"
-        android:layout_margin="6dp">
-
+        android:orientation="vertical"
+        android:weightSum="2">
 
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             android:weightSum="2">
 
             <ImageView
@@ -32,47 +31,48 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerCrop" />
+
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:orientation="vertical">
+
                 <TextView
-                    android:text="Nafn"
+                    android:id="@+id/barTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/barTitle"
-                    android:textSize="28sp"
-                    android:textColor="@color/common_google_signin_btn_text_light_default"
                     android:fontFamily="sans-serif-light"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:paddingTop="5dp" />
+                    android:paddingTop="5dp"
+                    android:text="Nafn"
+                    android:textColor="@color/common_google_signin_btn_text_light_default"
+                    android:textSize="28sp" />
 
                 <RatingBar
                     android:id="@+id/rating"
+                    style="@android:style/Widget.DeviceDefault.Light.RatingBar"
                     android:layout_width="263dp"
                     android:layout_height="wrap_content"
                     android:isIndicator="true"
                     android:numStars="5"
-                    android:stepSize="0.5"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
                     android:scaleX=".6"
                     android:scaleY=".6"
+                    android:stepSize="0.5"
                     android:transformPivotX="0dp"
-                    android:transformPivotY="0dp"
-                    style="@android:style/Widget.DeviceDefault.Light.RatingBar"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp" />
+                    android:transformPivotY="0dp" />
 
                 <TextView
-                    android:text="This is the bar description. Bar descriptions are very cool. They tell you stuff about the bar and also give you goosebumps. Are you ready for midnight? Because midnight is crazy!!! dont stop believing."
+                    android:id="@+id/textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/textView"
+                    android:fontFamily="sans-serif-light"
                     android:padding="10dp"
-                    android:fontFamily="sans-serif-light" />
+                    android:text="This is the bar description. Bar descriptions are very cool. They tell you stuff about the bar and also give you goosebumps. Are you ready for midnight? Because midnight is crazy!!! dont stop believing." />
             </LinearLayout>
-
 
 
         </LinearLayout>

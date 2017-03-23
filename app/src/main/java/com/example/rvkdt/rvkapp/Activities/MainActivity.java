@@ -3,13 +3,16 @@ package com.example.rvkdt.rvkapp.Activities;
 import android.animation.TimeInterpolator;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 
 import com.daprlabs.cardstack.SwipeDeck;
@@ -31,6 +34,17 @@ public class MainActivity extends AppCompatActivity implements Callback {
     private Bar currentBar;
     private BarStorage barStorage;
 
+    private ImageView navbutton_cards;
+    private ImageView navbutton_heart;
+    private SwipeFrameLayout swipe_frame;
+
+    // view 1 = cards, view 2 = liked bars
+    private boolean cardview_enabled;
+
+    // Width of the screen
+    private float width;
+
+
 
     DBHandler db = new DBHandler(this,"Likedbars",null ,1);
 
@@ -42,6 +56,38 @@ public class MainActivity extends AppCompatActivity implements Callback {
     @Override
     public  void onClick(){
 
+    }
+
+    public void onNavButtonClick(View v){
+
+        switch(v.getId()){
+            case R.id.navbutton_cards:
+                if(!cardview_enabled) {
+                    cardview_enabled = true;
+                    set_view("cards");
+                }
+                break;
+            case R.id.navbutton_heart:
+                if(cardview_enabled) {
+                    cardview_enabled = false;
+                    set_view("heart");
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void set_view(String view_type){
+        if(view_type == "cards"){
+            navbutton_cards.animate().scaleX(1.1f).scaleY(1.1f).alpha(1);
+            navbutton_heart.animate().scaleX(1f).scaleY(1f).alpha(0.5f);
+            swipe_frame.animate().translationX(0);
+        } else if(view_type == "heart") {
+            navbutton_heart.animate().scaleX(1.1f).scaleY(1.1f).alpha(1);
+            navbutton_cards.animate().scaleX(1f).scaleY(1f).alpha(0.5f);
+            swipe_frame.animate().translationX(-width);
+        }
     }
 
     @Override
@@ -59,21 +105,19 @@ public class MainActivity extends AppCompatActivity implements Callback {
         db.addLikedBarId(1);*/
         /*db.getLikedBarIds();*/
 
-        // width of the screen
-        final int width = getWindowManager().getDefaultDisplay().getWidth();
+        width = getWindowManager().getDefaultDisplay().getWidth();
+        cardview_enabled = true;
 
-        final SwipeFrameLayout swipe_frame = (SwipeFrameLayout) findViewById(R.id.swipe_frame);
+        navbutton_cards = (ImageView) findViewById(R.id.navbutton_cards);
+        navbutton_heart = (ImageView) findViewById(R.id.navbutton_heart);
+        navbutton_cards.animate().setInterpolator(new DecelerateInterpolator()).setDuration(150);
+        navbutton_heart.animate().setInterpolator(new DecelerateInterpolator()).setDuration(150);
+
+
+        swipe_frame = (SwipeFrameLayout) findViewById(R.id.swipe_frame);
         swipe_frame.animate().setInterpolator(new DecelerateInterpolator()).setDuration(300);
 
-        // Switch onClick listener stuff
-        Switch switch_button = (Switch) findViewById(R.id.switch_button);
-        switch_button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) swipe_frame.animate().translationX(-width);
-                else swipe_frame.animate().translationX(0);
-            }
-        });
+        set_view("cards");
 
         cardStack = (SwipeDeck) findViewById(R.id.swipe_deck);
         final Context androidCTX = this;
