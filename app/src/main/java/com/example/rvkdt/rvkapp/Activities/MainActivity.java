@@ -13,6 +13,7 @@ import android.view.animation.BounceInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 
 import com.daprlabs.cardstack.SwipeDeck;
@@ -148,6 +149,10 @@ public class MainActivity extends AppCompatActivity implements Callback {
             @Override
             public void onResponse() {
                 final ArrayList<Bar> bars = new ArrayList<Bar>();
+                ProgressBar p = (ProgressBar)findViewById(R.id.progressBar2);
+                if(p.getVisibility() != View.INVISIBLE){ // check if it is visible
+                    p.setVisibility(View.INVISIBLE); // if not set it to visible
+                }
 
                 for(int i = 0; i < 10; i++){
                     Bar bar = barManager.getBar();

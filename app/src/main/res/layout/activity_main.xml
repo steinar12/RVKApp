@@ -53,6 +53,20 @@
         android:layout_below="@+id/linearLayout"
         android:orientation="vertical">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ProgressBar
+                android:id="@+id/progressBar2"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_weight="1" />
+
+        </RelativeLayout>
+
         <com.daprlabs.cardstack.SwipeDeck
             android:id="@+id/swipe_deck"
             android:layout_width="match_parent"
@@ -62,7 +76,9 @@
             swipedeck:card_spacing="10dp"
             swipedeck:max_visible="3"
             swipedeck:render_above="true"
-            swipedeck:rotation_degrees="15" />
+            swipedeck:rotation_degrees="15" >
+
+        </com.daprlabs.cardstack.SwipeDeck>
 
     </com.daprlabs.cardstack.SwipeFrameLayout>
 
