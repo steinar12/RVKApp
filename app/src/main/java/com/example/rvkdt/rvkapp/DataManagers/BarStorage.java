@@ -13,25 +13,26 @@ import java.util.ArrayList;
 public class BarStorage extends Application {
     private ArrayList<Bar> listed_bars;
     private ArrayList<Bar> liked_bars;
+    private ArrayList<Bar> bars_in_deck;
     private ArrayList<Integer> bar_ids;
-    private String test_data;
 
     public void setListedBars(ArrayList<Bar> bars){ listed_bars = bars; }
     public void setLikedBars(ArrayList<Bar> bars){ liked_bars = bars; }
     public void setBarIds(ArrayList<Integer> ids) {bar_ids = ids;}
-    public void setTestData(String data) {test_data = data;}
+    public void setBarsInDeck(ArrayList<Bar> bars) {bars_in_deck = bars;}
 
     public ArrayList<Bar> getListedBars() { return listed_bars; }
     public ArrayList<Bar> getLikedBars() { return liked_bars; }
     public ArrayList<Integer> getBarIds() { return bar_ids; }
-    public String getTestData() { return test_data; }
+
 
     public int size() {return listed_bars.size();}
     public int likedSize() {return liked_bars.size();}
+    public int deckSize() {return bars_in_deck.size();}
 
     public void addAll(ArrayList<Bar> bars) {listed_bars.addAll(bars);}
     public void addAllLiked(ArrayList<Bar> bars) {liked_bars.addAll(bars);}
-    public void pushLiked(Bar bar) {liked_bars.add(bar);}
+
     public void removeLiked(Bar bar)
     {
         for(int i = 0; i<likedSize(); i++)
@@ -53,6 +54,8 @@ public class BarStorage extends Application {
         return bar1.getId() == bar2.getId();
     }
     public void push(Bar bar) {listed_bars.add(bar);}
+    public void pushToDeck(Bar bar) {bars_in_deck.add(bar);}
+    public void pushLiked(Bar bar) {liked_bars.add(bar);}
     public Bar pop() {
         if(size() > 0)
         {
@@ -78,9 +81,9 @@ public class BarStorage extends Application {
             return null;
         }
 
-        for(int i = 0; i<size(); i++)
+        for(int i = 0; i<deckSize(); i++)
         {
-            Bar current_bar = listed_bars.get(i);
+            Bar current_bar = bars_in_deck.get(i);
             if(current_bar.getId() == id)
             {
                 return current_bar;
@@ -88,6 +91,19 @@ public class BarStorage extends Application {
         }
 
         return null;
+    }
+
+    public void removeFromDeck(Bar bar)
+    {
+        for(int i = 0; i<deckSize(); i++)
+        {
+            Bar current_bar = bars_in_deck.get(i);
+            if(equal(bar,current_bar))
+            {
+                bars_in_deck.remove(i);
+            }
+        }
+
     }
 
 }
