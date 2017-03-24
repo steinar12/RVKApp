@@ -103,7 +103,16 @@ public class BarStorage extends Application {
                 bars_in_deck.remove(i);
             }
         }
+    }
 
+    public Bar popDeck() {
+        if(deckSize() > 0)
+        {
+            Bar res = bars_in_deck.get(0);
+            bars_in_deck.remove(0);
+            return res;
+        }
+        return null;
     }
 
 }

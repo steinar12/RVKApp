@@ -353,4 +353,6 @@ public class BarManager implements Callback {
 
     public void pushToDeck (Bar bar) { barStorage.pushToDeck(bar); }
 
+    public Bar popDeck () {return barStorage.popDeck();}
+
 }

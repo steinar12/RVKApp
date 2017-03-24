@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
     private BarManager barManager;
     private Bar currentBar;
     private BarStorage barStorage;
+    private final int INITIAL_DECK = 10;
 
     private ImageView navbutton_cards;
     private ImageView navbutton_heart;
@@ -166,10 +167,13 @@ public class MainActivity extends AppCompatActivity implements Callback {
                     p.setVisibility(View.INVISIBLE); // if not set it to visible
                 }
 
-                for(int i = 0; i < 10; i++){
-                    Bar bar = barManager.getBar();
+                Bar bar = barManager.getBar();
+                barManager.pushToDeck(bar);
+                currentBar = bar;
+
+                for(int i = 0; i < INITIAL_DECK; i++){
+                    bar = barManager.getBar();
                     barManager.pushToDeck(bar);
-                    currentBar = bar;
                     bars.add(bar);
                 }
 
@@ -183,9 +187,8 @@ public class MainActivity extends AppCompatActivity implements Callback {
                         Bar bar = barManager.getBar();
                         barManager.pushToDeck(bar);
                         if (bar != null){
-                            currentBar = bar;
+                            currentBar = barManager.popDeck();
                             bars.add(bar);
-
                         }
                     }
 
@@ -197,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
                         Bar bar = barManager.getBar();
                         barManager.pushToDeck(bar);
                         if (bar != null){
-                            currentBar = bar;
+                            currentBar = barManager.popDeck();
                             bars.add(bar);
                         }
                     }
