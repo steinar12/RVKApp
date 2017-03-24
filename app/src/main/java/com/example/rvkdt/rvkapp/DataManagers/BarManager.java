@@ -69,6 +69,7 @@ public class BarManager implements Callback {
         barStorage.setBarIds(new ArrayList<Integer>());
         barStorage.setListedBars(new ArrayList<Bar>());
         barStorage.setLikedBars(new ArrayList<Bar>());
+        barStorage.setBarsInDeck(new ArrayList<Bar>());
         db = dataBase;
         fetchIds(new ResponseCallback() {
             @Override
@@ -349,5 +350,7 @@ public class BarManager implements Callback {
             }
         });
     }
+
+    public void pushToDeck (Bar bar) { barStorage.pushToDeck(bar); }
 
 }

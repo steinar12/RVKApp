@@ -152,6 +152,8 @@ public class MainActivity extends AppCompatActivity implements Callback {
         };
 
         barManager = new BarManager(getApplicationContext(), new Callback() {
+
+
             @Override
             public void onClick() {
 
@@ -166,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
 
                 for(int i = 0; i < 10; i++){
                     Bar bar = barManager.getBar();
-                    barStorage.pushToDeck(bar);
+                    barManager.pushToDeck(bar);
                     currentBar = bar;
                     bars.add(bar);
                 }
@@ -179,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
                     public void cardSwipedLeft(int position) {
                         Log.i("MainActivity", "card was swiped left, position in adapter: " + position);
                         Bar bar = barManager.getBar();
-                        barStorage.pushToDeck(bar);
+                        barManager.pushToDeck(bar);
                         if (bar != null){
                             currentBar = bar;
                             bars.add(bar);
@@ -193,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
                         //db.addLikedBarId(bars.get(position).getId()); setur liked bar í database
                         //barStorage.pushLiked(bars.get(position)); bætir liked bar í barstorage
                         Bar bar = barManager.getBar();
-                        barStorage.pushToDeck(bar);
+                        barManager.pushToDeck(bar);
                         if (bar != null){
                             currentBar = bar;
                             bars.add(bar);
