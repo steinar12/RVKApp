@@ -55,6 +55,11 @@ public class SwipeDeckAdapter extends BaseAdapter implements Callback {
 
     }
 
+    @Override
+    public void onFailure(){
+
+    }
+
     public SwipeDeckAdapter(ArrayList<Bar> data, Context context, Callback onClickCallback) {
         this.data = data;
         this.context = context;

@@ -8,4 +8,6 @@ public interface Callback {
     void onResponse();
 
     void onClick();
+
+    void onFailure();
 }

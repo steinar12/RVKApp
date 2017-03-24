@@ -51,6 +51,11 @@ public class BarManager implements Callback {
 
     }
 
+    @Override
+    public  void onFailure(){
+
+    }
+
     // Instantiate the RequestQueue.
     private RequestQueue queue;
     private String idurl = "https://rvkapp.herokuapp.com/api/ids";
@@ -82,8 +87,16 @@ public class BarManager implements Callback {
                         barStorage.addAll(responseToBarList(response));
                         mainCallback.onResponse();
                     }
+                    @Override
+                    public void onFailure(){
+                        mainCallback.onFailure();
+                    }
                 });
 
+            }
+            @Override
+            public void onFailure(){
+                mainCallback.onFailure();
             }
         });
     }
@@ -182,6 +195,7 @@ public class BarManager implements Callback {
     // interface sem að er notað í callbökkum
     private interface ResponseCallback{
         void onResponse(JSONArray response);
+        void onFailure();
     }
 
     //skilar random tölu frá 0 til max
@@ -220,6 +234,7 @@ public class BarManager implements Callback {
                     public void onErrorResponse(VolleyError error) {
                         // TODO Auto-generated method stub
                         Log.d("Response: ", "error", error);
+                        callback.onFailure();
 
                     }
                 });
@@ -265,6 +280,7 @@ public class BarManager implements Callback {
                     public void onErrorResponse(VolleyError error) {
                         // TODO Auto-generated method stub
                         Log.d("Response: ", "error", error);
+                        callback.onFailure();
 
                     }
                 });
@@ -310,6 +326,10 @@ public class BarManager implements Callback {
                 public void onResponse(JSONArray response) {
                     barStorage.addAll(responseToBarList(response));
                 }
+                @Override
+                public void onFailure(){
+
+                }
             });
         }
         Bar output  = barStorage.pop();
@@ -323,6 +343,9 @@ public class BarManager implements Callback {
             @Override
             public void onResponse(JSONArray response) {
                 barStorage.setLikedBars(responseToBarList(response));
+            }
+            @Override
+            public void onFailure() {
             }
         });
     }

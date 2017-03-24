@@ -15,6 +15,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.daprlabs.cardstack.SwipeDeck;
 import com.daprlabs.cardstack.SwipeFrameLayout;
@@ -56,6 +57,11 @@ public class MainActivity extends AppCompatActivity implements Callback {
 
     @Override
     public  void onClick(){
+
+    }
+
+    @Override
+    public  void onFailure(){
 
     }
 
@@ -130,6 +136,10 @@ public class MainActivity extends AppCompatActivity implements Callback {
             public void onResponse() {
 
             }
+            @Override
+            public  void onFailure(){
+
+            }
 
             @Override
             public void onClick() {
@@ -201,6 +211,15 @@ public class MainActivity extends AppCompatActivity implements Callback {
                         Log.i("MainActivity", "down");
                     }
                 });}
+            @Override
+            public  void onFailure(){
+                Toast.makeText(androidCTX, "Something went wrong, server did not respond",
+                        Toast.LENGTH_LONG).show();
+                ProgressBar p = (ProgressBar)findViewById(R.id.progressBar2);
+                if(p.getVisibility() != View.INVISIBLE){ // check if it is visible
+                    p.setVisibility(View.INVISIBLE); // if not set it to visible
+                }
+            }
         }, db);
     }
 }
