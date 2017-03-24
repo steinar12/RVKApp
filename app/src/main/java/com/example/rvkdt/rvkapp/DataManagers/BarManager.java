@@ -1,4 +1,4 @@
-package com.example.rvkdt.rvkapp.Managers;
+package com.example.rvkdt.rvkapp.DataManagers;
 
 
 import android.content.Context;
@@ -18,7 +18,6 @@ import com.example.rvkdt.rvkapp.DataObjects.Hours;
 import com.example.rvkdt.rvkapp.DataObjects.Pair;
 import com.example.rvkdt.rvkapp.DataManagers.DBHandler;
 import com.example.rvkdt.rvkapp.DataManagers.BarStorage;
-import com.example.rvkdt.rvkapp.Utils.ImageSaver;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,13 +38,8 @@ import java.util.Locale;
 
 
 public class BarManager implements Callback {
-    private ArrayList<Integer> barids;
-    private ArrayList<Bar> bars;
     private DBHandler db;
     private BarStorage barStorage;
-    private ImageSaver imagesaver;
-
-    private static final String TAG = BarManager.class.getSimpleName();
 
     @Override
     public void onResponse(){
@@ -65,17 +59,19 @@ public class BarManager implements Callback {
 
     // constructor býr til nýtt requestqueue og nær í öll barids, sækir líka 5 bari
     public BarManager(Context ctx, final Callback mainCallback, DBHandler dataBase){
-        imagesaver = new ImageSaver(ctx);
         queue = Volley.newRequestQueue(ctx);
         barStorage = ((BarStorage) ctx);
         barStorage.setBarIds(new ArrayList<Integer>());
         barStorage.setListedBars(new ArrayList<Bar>());
+        barStorage.setLikedBars(new ArrayList<Bar>());
         db = dataBase;
         fetchIds(new ResponseCallback() {
             @Override
             public void onResponse(JSONArray response) {
                 barStorage.setBarIds(responseToIntList(response));
                 int[] idsToRemove = db.getLikedBarIds();
+                loadLikedBars(idsToRemove);
+                barStorage.setBarIds(removeIds(barStorage.getBarIds(),idsToRemove));
                 if (!(idsToRemove == null)){
                     barStorage.setBarIds(removeIds(barStorage.getBarIds(),idsToRemove));
                 }
@@ -124,7 +120,6 @@ public class BarManager implements Callback {
         ArrayList<Bar> output = new ArrayList<Bar>();
 
         int length = data.length();
-
         for (int i = 0; i < length; i++){
             try {
                 JSONObject obj = data.getJSONObject(i);
@@ -174,12 +169,6 @@ public class BarManager implements Callback {
                     Log.d("events", events[0].getStartTime().toString());
                 }
                 Bar bar = new Bar(id, name, menu, image, lat, lng, link, about, rating, null, events);
-
-                //Send the image to ImageSaver to store the image.
-                String cleanImage = image.replaceAll("\\\\","");
-                Log.d(TAG, "imagesaver!?() kek!");
-                imagesaver.downloadImage(cleanImage, id);
-
                 output.add(bar);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -267,7 +256,7 @@ public class BarManager implements Callback {
                 (Request.Method.POST, barurl, jsonarray, new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        Log.d("Response: ", response.toString());
+                       // Log.d("Response: ", response.toString());
                         callback.onResponse(response);
                     }
                 }, new Response.ErrorListener() {
@@ -327,16 +316,15 @@ public class BarManager implements Callback {
         return output;
     }
 
-    /*
-    public ArrayList<Bar> getLikedBars (int [] likedIds) {
+
+    public void loadLikedBars (int [] likedIds) {
         final ArrayList<Bar> likedBars = new ArrayList<Bar>();
         fetchBars(likedIds, new ResponseCallback() {
             @Override
             public void onResponse(JSONArray response) {
-                likedBars.addAll(responseToBarList(response));
+                barStorage.setLikedBars(responseToBarList(response));
             }
         });
-        return likedBars;
     }
-    */
+
 }

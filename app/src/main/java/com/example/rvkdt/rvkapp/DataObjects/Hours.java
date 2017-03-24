@@ -75,17 +75,15 @@ public class Hours {
             int opening_minute = toMins(current_opening_pair.getHour());//number of minutes the opening hour is from midnight
             int closing_minute = toMins(current_closing_pair.getHour());//number of minutes the closing hour is from
 
-            //Log.d("**DAY**: ",day_name);
-            //Log.d("**CURRENT_DAY**: ",currentDay);
-
 
             if(day_name.equals(currentDay))
             {
 
                 if(current_minute <= opening_minute)
                 {
+                    boolean isMonday = i <= 0;
                     Pair previous_closing_pair;
-                    if(i > 0) {
+                    if(!isMonday) {
                         previous_closing_pair = closing_hours.get(i-1);
                     } else{
                         previous_closing_pair = closing_hours.get(closing_hours.size()-1);
@@ -93,9 +91,10 @@ public class Hours {
                     int previous_closing_minute = toMins(previous_closing_pair.getHour());
                     if(current_minute <= previous_closing_minute)
                     {
-                        Pair previous_opening_pair = opening_hours.get(i-1);
+                        Pair previous_opening_pair;
+                        if(isMonday) previous_opening_pair = opening_hours.get(opening_hours.size()-1);
+                        else previous_opening_pair = opening_hours.get(i-1);
                         open_hours = parseOpeningHours(previous_opening_pair.getHour(),previous_closing_pair.getHour());
-
                     }
                     else
                     {

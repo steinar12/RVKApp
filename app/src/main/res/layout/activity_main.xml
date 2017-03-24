@@ -45,13 +45,18 @@
 
     </LinearLayout>
 
-    <com.daprlabs.cardstack.SwipeFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:swipedeck="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/swipe_frame"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/linearLayout"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:layout_below="@+id/linearLayout">
+
+        <com.daprlabs.cardstack.SwipeFrameLayout
+            android:id="@+id/swipe_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/linearLayout"
+            android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -68,6 +73,8 @@
         </RelativeLayout>
 
         <com.daprlabs.cardstack.SwipeDeck
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:swipedeck="http://schemas.android.com/apk/res-auto"
             android:id="@+id/swipe_deck"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -81,5 +88,21 @@
         </com.daprlabs.cardstack.SwipeDeck>
 
     </com.daprlabs.cardstack.SwipeFrameLayout>
+
+        <LinearLayout
+            android:id="@+id/liked_bars_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <fragment
+                android:id="@+id/liked_bars_fragment"
+                android:name="com.example.rvkdt.rvkapp.Fragments.LikedBarsFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

@@ -82,7 +82,7 @@ public class SwipeDeckAdapter extends BaseAdapter implements Callback {
         View v = convertView;
         if(v == null){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-            Log.d("hi there", "getView: ");
+            //Log.d("hi there", "getView: ");
             // normally use a viewholder
             v = inflater.inflate(R.layout.card_view, parent, false);
         }

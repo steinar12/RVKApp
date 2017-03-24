@@ -20,7 +20,7 @@ import com.daprlabs.cardstack.SwipeDeck;
 import com.daprlabs.cardstack.SwipeFrameLayout;
 import com.example.rvkdt.rvkapp.Adapters.SwipeDeckAdapter;
 import com.example.rvkdt.rvkapp.DataManagers.BarStorage;
-import com.example.rvkdt.rvkapp.Managers.BarManager;
+import com.example.rvkdt.rvkapp.DataManagers.BarManager;
 import com.example.rvkdt.rvkapp.Callback;
 import com.example.rvkdt.rvkapp.DataObjects.Bar;
 import com.example.rvkdt.rvkapp.DataManagers.DBHandler;
