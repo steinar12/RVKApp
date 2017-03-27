@@ -16,12 +16,14 @@ public class BarStorage extends Application {
     private ArrayList<Bar> bars_in_deck;
     private ArrayList<Bar> saved_bars;
     private ArrayList<Integer> bar_ids;
+    private Bar currentbar;
 
 
     public void setListedBars(ArrayList<Bar> bars){ listed_bars = bars; saved_bars = bars;}
     public void setLikedBars(ArrayList<Bar> bars){ liked_bars = bars; }
     public void setBarIds(ArrayList<Integer> ids) {bar_ids = ids;}
     public void setBarsInDeck(ArrayList<Bar> bars) {bars_in_deck = bars;}
+    public void setCurrentBar(Bar bar) {currentbar = bar;}
 
     public ArrayList<Bar> getListedBars() { return listed_bars; }
     public ArrayList<Bar> getLikedBars() { return liked_bars; }
@@ -49,7 +51,7 @@ public class BarStorage extends Application {
     }
 
     public Bar getLikedBar(int id) { return getBar(id,true); }
-
+    public Bar getCurrentBar() {return currentbar;}
     public Bar getListedBar(int id){ return getBar(id,false); }
 
     public boolean equal(Bar bar1, Bar bar2) {
@@ -114,6 +116,7 @@ public class BarStorage extends Application {
         {
             Bar res = bars_in_deck.get(0);
             bars_in_deck.remove(0);
+            currentbar = res;
             return res;
         }
         return null;

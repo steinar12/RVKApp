@@ -226,6 +226,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
 
                         if (bar != null){
                             currentBar = barManager.popDeck();
+                            Log.d("**MAINACTIVITY**", "CURRENT BAR: " + currentBar.getName());
                             barManager.pushToDeck(bar);
                             bars.add(bar);
                         }

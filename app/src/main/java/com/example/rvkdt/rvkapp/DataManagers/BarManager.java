@@ -73,6 +73,7 @@ public class BarManager implements Callback {
         barStorage.setListedBars(new ArrayList<Bar>());
         barStorage.setLikedBars(new ArrayList<Bar>());
         barStorage.setBarsInDeck(new ArrayList<Bar>());
+        barStorage.setCurrentBar(null);
         db = dataBase;
         fetchIds(new ResponseCallback() {
             @Override
@@ -264,8 +265,11 @@ public class BarManager implements Callback {
     // fall sem að sækir frá api þá bari sem samsvara idum sem eru send
     private void fetchBars(int[] ids, final ResponseCallback callback) {
 
-        if(ids == null) return;
-
+        if(ids == null)
+        {
+            Log.d("*BARMANAGER*","ids array is empty");
+            return;
+        }
         JSONArray jsonarray = new JSONArray();
         for (int i = 0; i < ids.length; i++) {
             jsonarray.put(ids[i]);
@@ -376,5 +380,7 @@ public class BarManager implements Callback {
     public void pushToDeck (Bar bar) { barStorage.pushToDeck(bar); }
 
     public Bar popDeck () {return barStorage.popDeck();}
+
+    public Bar getCurrentBar () {return barStorage.getCurrentBar();}
 
 }
