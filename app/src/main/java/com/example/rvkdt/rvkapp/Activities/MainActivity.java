@@ -113,7 +113,22 @@ public class MainActivity extends AppCompatActivity implements Callback {
 
         /*db.addLikedBarId(1);
         db.addLikedBarId(88);
-        db.addLikedBarId(2);*/
+        db.addLikedBarId(2);
+        db.addLikedBarId(3);
+        db.addLikedBarId(4);
+        db.addLikedBarId(5);
+        db.addLikedBarId(6);
+        db.addLikedBarId(7);
+        db.addLikedBarId(8);
+        db.addLikedBarId(9);
+        db.addLikedBarId(10);
+        db.addLikedBarId(11);
+        db.addLikedBarId(12);
+        db.addLikedBarId(13);
+        db.addLikedBarId(14);
+        db.addLikedBarId(15);
+        db.addLikedBarId(16);
+        db.addLikedBarId(17);*/
         /*int[] j = db.getLikedBarIds();
         for (int k = 0; k < j.length; k++){
             db.removeBarId(j[k]);
