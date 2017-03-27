@@ -27,16 +27,12 @@ import com.example.rvkdt.rvkapp.DataObjects.Bar;
 import com.example.rvkdt.rvkapp.R;
 import com.example.rvkdt.rvkapp.Utils.ImageSaver;
 import com.example.rvkdt.rvkapp.Utils.MapSetup;
-import com.example.rvkdt.rvkapp.DataManagers.BarManager;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
 
-import java.util.ArrayList;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -76,16 +72,8 @@ public class ProfileActivity extends AppCompatActivity {
 
        //Bar barData = new Bar(1, "KoKo Bar", null, "https://scontent-arn2-1.xx.fbcdn.net/v/t1.0-9/10407812_637843283004053_8987368172014209754_n.jpg?oh=c1f1a5170f469e5b6d0f9bd3dbce8326&oe=5973A783",
         //1.0, 2.0, "https://www.facebook.com/hurra.is/", "sSpooOOKY TEXT IsA DescRipTIonTeXteRinoO", 2.0, null, null);
-        ArrayList<Integer> all_IDS = barStorage.getBarIds();
-        Log.d(TAG, "KóKó " + all_IDS);
-
         Bar barData = barStorage.getBar(id, false);
         Log.d(TAG, "le barData??!!" + barData);
-
-        //Bar barData = barStorage.getBar(all_IDS.get(0), false);
-        //Log.d(TAG, "le barData??!!" + barData);
-
-
 
         TextView name = (TextView) findViewById(R.id.barTitle);
         TextView desc = (TextView) findViewById(R.id.descriptionTexti);
@@ -95,7 +83,7 @@ public class ProfileActivity extends AppCompatActivity {
         ListView list = (ListView) findViewById(R.id.eventListi);
         ImageView cover = (ImageView) findViewById(R.id.profileImage);
 
-        /*Button loadButton = (Button) findViewById(R.id.buttonLoad);
+        Button loadButton = (Button) findViewById(R.id.buttonLoad);
         loadButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //action
@@ -106,7 +94,7 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(test);
 
             }
-        });*/
+        });
 
         String[] test = new String[] {"danni", "Kaffibarinn", "Austur", "Lebowskibar", "hurra"};
         eventAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, test);
@@ -188,18 +176,15 @@ public class ProfileActivity extends AppCompatActivity {
      * @return An intent that will open the Facebook page/profile.
      */
     public static Intent newFacebookIntent(PackageManager pm, String url) {
-        Log.d("packagemanager?", "" + pm);
         Uri uri = Uri.parse(url);
         try {
-            Log.d("try..", "" + uri);
             ApplicationInfo applicationInfo = pm.getApplicationInfo("com.facebook.katana", 0);
             if (applicationInfo.enabled) {
-                Log.d("IF!", "hmmmmm" );
                 // http://stackoverflow.com/a/24547437/1048340
                 uri = Uri.parse("fb://facewebmodal/f?href=" + url);
             }
         } catch (PackageManager.NameNotFoundException ignored) {
-            Log.d("catch", "" + ignored);
+            Log.d(TAG, "" + ignored);
         }
 
         return new Intent(Intent.ACTION_VIEW, uri);
