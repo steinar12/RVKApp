@@ -14,9 +14,11 @@ public class BarStorage extends Application {
     private ArrayList<Bar> listed_bars;
     private ArrayList<Bar> liked_bars;
     private ArrayList<Bar> bars_in_deck;
+    private ArrayList<Bar> saved_bars;
     private ArrayList<Integer> bar_ids;
 
-    public void setListedBars(ArrayList<Bar> bars){ listed_bars = bars; }
+
+    public void setListedBars(ArrayList<Bar> bars){ listed_bars = bars; saved_bars = bars;}
     public void setLikedBars(ArrayList<Bar> bars){ liked_bars = bars; }
     public void setBarIds(ArrayList<Integer> ids) {bar_ids = ids;}
     public void setBarsInDeck(ArrayList<Bar> bars) {bars_in_deck = bars;}
@@ -29,6 +31,7 @@ public class BarStorage extends Application {
     public int size() {return listed_bars.size();}
     public int likedSize() {return liked_bars.size();}
     public int deckSize() {return bars_in_deck.size();}
+
 
     public void addAll(ArrayList<Bar> bars) {listed_bars.addAll(bars);}
     public void addAllLiked(ArrayList<Bar> bars) {liked_bars.addAll(bars);}
@@ -61,6 +64,7 @@ public class BarStorage extends Application {
         {
             Bar res = listed_bars.get(0);
             listed_bars.remove(0);
+            saved_bars.add(res);
             return res;
         }
         return null;
@@ -81,9 +85,9 @@ public class BarStorage extends Application {
             return null;
         }
 
-        for(int i = 0; i<deckSize(); i++)
+        for(int i = 0; i<saved_bars.size(); i++)
         {
-            Bar current_bar = bars_in_deck.get(i);
+            Bar current_bar = saved_bars.get(i);
             if(current_bar.getId() == id)
             {
                 return current_bar;
