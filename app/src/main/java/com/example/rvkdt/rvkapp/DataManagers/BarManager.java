@@ -152,13 +152,12 @@ public class BarManager implements Callback {
                 if (about.equals("null") || about.trim().length() == 0) about = description;
                 if (about.equals("null") || about.trim().length() == 0) about = "no description";
                 double rating = obj.getDouble("rating");
-                // á eftir að útfæra opens og closes rétt
                 JSONObject opens_obj = obj.getJSONObject("opens");
                 JSONObject closes_obj = obj.getJSONObject("closes");
                 ArrayList<Pair> parsed_opens = parseHours(opens_obj);
                 ArrayList<Pair> parsed_closes = parseHours(closes_obj);
-                //Hours hours = new Hours(parsed_opens,parsed_closes);
-                //String hour_format = hours.getHours();
+                Hours hours = new Hours(parsed_opens,parsed_closes);
+                String hour_format = hours.getHours();
                 //Log.d("About to print hours","-----Message-----");
                 //Log.d("**HOURS**: ",hour_format);
                 JSONArray jsonEvent = obj.getJSONArray("events");
@@ -182,7 +181,7 @@ public class BarManager implements Callback {
                 if (events.length > 1){
                     Log.d("events", events[0].getStartTime().toString());
                 }
-                Bar bar = new Bar(id, name, menu, image, lat, lng, link, about, rating, null, events);
+                Bar bar = new Bar(id, name, menu, image, lat, lng, link, about, rating, hours, events);
                 output.add(bar);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -285,6 +284,22 @@ public class BarManager implements Callback {
 
                     }
                 });
+        jsArrRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 10000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 10;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
         // Add the request to the RequestQueue.
         queue.add(jsArrRequest);
     }
