@@ -188,13 +188,14 @@ public class MainActivity extends AppCompatActivity implements Callback {
 
                 Bar bar = barManager.getBar();
                 barManager.pushToDeck(bar);
-                currentBar = bar;
+                bars.add(bar);
 
                 for(int i = 0; i < INITIAL_DECK; i++){
                     bar = barManager.getBar();
                     barManager.pushToDeck(bar);
                     bars.add(bar);
                 }
+                currentBar = barManager.popDeck();
 
                 final SwipeDeckAdapter adapter = new SwipeDeckAdapter(bars, androidCTX, onClickCallback);
                 cardStack.setAdapter(adapter);
@@ -204,9 +205,10 @@ public class MainActivity extends AppCompatActivity implements Callback {
                     public void cardSwipedLeft(int position) {
                         Log.i("MainActivity", "card was swiped left, position in adapter: " + position);
                         Bar bar = barManager.getBar();
-                        barManager.pushToDeck(bar);
+
                         if (bar != null){
                             currentBar = barManager.popDeck();
+                            barManager.pushToDeck(bar);
                             bars.add(bar);
                         }
                     }
@@ -218,9 +220,10 @@ public class MainActivity extends AppCompatActivity implements Callback {
                         //barStorage.pushLiked(bars.get(position)); //bætir liked bar í barstorage
                         liked_bars_fragment.update();
                         Bar bar = barManager.getBar();
-                        barManager.pushToDeck(bar);
+
                         if (bar != null){
                             currentBar = barManager.popDeck();
+                            barManager.pushToDeck(bar);
                             bars.add(bar);
                         }
                     }
