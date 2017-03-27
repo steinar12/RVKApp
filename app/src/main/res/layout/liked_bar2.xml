@@ -4,6 +4,7 @@
     android:id="@+id/list_item_container"
     android:layout_width="match_parent"
     android:layout_height="150dp"
+    android:background="#000000"
     android:orientation="horizontal">
 
     <ImageView

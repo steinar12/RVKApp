@@ -5,7 +5,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#DDDDDD"
+    android:background="#000000"
     tools:context="com.example.rvkdt.rvkapp.Activities.MainActivity">
 
     <LinearLayout
@@ -15,7 +15,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="?attr/colorPrimary"
+        android:background="#303030"
         android:elevation="4dp"
         android:orientation="horizontal">
 
@@ -78,11 +78,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="-10dp"
-                android:padding="20dp"
-                swipedeck:card_spacing="10dp"
-                swipedeck:max_visible="3"
-                swipedeck:render_above="true"
-                swipedeck:rotation_degrees="15">
+                android:paddingBottom="10dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingTop="10dp"
+                swipedeck:card_spacing="0dp"
+                swipedeck:max_visible="2"
+                swipedeck:render_above="false"
+                swipedeck:rotation_degrees="20">
 
             </com.daprlabs.cardstack.SwipeDeck>
 

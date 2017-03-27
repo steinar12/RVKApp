@@ -18,8 +18,6 @@
         android:elevation="5dp"
         android:layout_margin="6dp">
 
-
-
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -37,17 +35,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
+
                 <TextView
-                    android:text="Nafn"
+                    android:id="@+id/barTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/barTitle"
-                    android:textSize="28sp"
-                    android:textColor="@color/common_google_signin_btn_text_light_default"
                     android:fontFamily="sans-serif-light"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:paddingTop="5dp" />
+                    android:paddingTop="5dp"
+                    android:text="Nafn"
+                    android:textColor="@android:color/background_light"
+                    android:textSize="28sp" />
 
                 <RatingBar
                     android:id="@+id/rating"
@@ -65,12 +64,13 @@
                     android:paddingRight="10dp" />
 
                 <TextView
-                    android:text="This is the bar description. Bar descriptions are very cool. They tell you stuff about the bar and also give you goosebumps. Are you ready for midnight? Because midnight is crazy!!! dont stop believing."
+                    android:id="@+id/textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/textView"
+                    android:fontFamily="sans-serif-light"
                     android:padding="10dp"
-                    android:fontFamily="sans-serif-light" />
+                    android:text="This is the bar description. Bar descriptions are very cool. They tell you stuff about the bar and also give you goosebumps. Are you ready for midnight? Because midnight is crazy!!! dont stop believing."
+                    android:textColor="@color/common_google_signin_btn_text_dark_default" />
             </LinearLayout>
 
 

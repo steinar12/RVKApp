@@ -264,6 +264,8 @@ public class BarManager implements Callback {
     // fall sem að sækir frá api þá bari sem samsvara idum sem eru send
     private void fetchBars(int[] ids, final ResponseCallback callback) {
 
+        if(ids == null) return;
+
         JSONArray jsonarray = new JSONArray();
         for (int i = 0; i < ids.length; i++) {
             jsonarray.put(ids[i]);

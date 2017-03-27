@@ -116,7 +116,7 @@ public class LikedListAdapter extends ArrayAdapter<Bar> {
 
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                view.animate().alpha(1).setDuration(400);
+                view.animate().alpha(1).setDuration(200);
             }
 
             @Override
