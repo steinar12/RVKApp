@@ -79,6 +79,7 @@ public class ImageSaver {
         }
         else {
             directory = context.getDir(directoryName, Context.MODE_PRIVATE);
+            Log.d(TAG, "directory?: " + directory);
         }
 
         return new File(directory, fileName);
@@ -123,6 +124,12 @@ public class ImageSaver {
         return null;
     }
 
+    // Not ready
+    public boolean deleteFile(){
+        File file = createFile();
+        return file.delete();
+    }
+
 
 
     ///PICASSO FIFF
@@ -160,7 +167,7 @@ public class ImageSaver {
         // do something here
         Log.d(TAG, "Counter:" + id);
         new ImageSaver(context).
-                setFileName(counter + ".png").
+                setFileName(id + ".png").
                 setDirectoryName("images").
                 save(image);
         counter++;
@@ -170,12 +177,10 @@ public class ImageSaver {
         loadBitmap(image, id);
     }
 
-    public Bitmap loadTest() {
-        Log.d(TAG, "LoadTest > counter:" + counter);
+    public Bitmap loadCoverPhoto(int id) {
 
-        counter++;
         Bitmap bitmap = new ImageSaver(context).
-                setFileName(counter + ".png").
+                setFileName(id + ".png").
                 setDirectoryName("images").
                 load();
         return bitmap;

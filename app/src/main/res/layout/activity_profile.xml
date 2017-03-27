@@ -32,6 +32,12 @@
                 android:textColor="@color/common_google_signin_btn_text_light_default"
                 android:textSize="28sp" />
 
+            <Button
+                android:id="@+id/buttonLoad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TEST LOAD" />
+
             <RatingBar
                 android:id="@+id/rating"
                 style="@android:style/Widget.DeviceDefault.Light.RatingBar"
@@ -96,5 +102,6 @@
 
         </LinearLayout>
     </ScrollView>
+
 
 </LinearLayout>
