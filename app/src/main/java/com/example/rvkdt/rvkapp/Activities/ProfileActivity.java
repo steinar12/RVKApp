@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
@@ -54,7 +55,6 @@ public class ProfileActivity extends AppCompatActivity {
         intent = getIntent();
         super.onCreate(savedInstanceState);
 
-
         this.activity = this;
 
         ActivityCompat.requestPermissions( this, new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  }, 1 );
@@ -71,9 +71,11 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
        //Bar barData = new Bar(1, "KoKo Bar", null, "https://scontent-arn2-1.xx.fbcdn.net/v/t1.0-9/10407812_637843283004053_8987368172014209754_n.jpg?oh=c1f1a5170f469e5b6d0f9bd3dbce8326&oe=5973A783",
-        //1.0, 2.0, "https://www.facebook.com/hurra.is/", "sSpooOOKY TEXT IsA DescRipTIonTeXteRinoO", 2.0, null, null);
+        // 1.0, 2.0, "https://www.facebook.com/hurra.is/", "sSpooOOKY TEXT IsA DescRipTIonTeXteRinoO", 2.0, null, null);
         Bar barData = barStorage.getBar(id, false);
         Log.d(TAG, "le barData??!!" + barData);
+        Log.d(TAG, "le barData??!!" + barData.getLink());
+
 
         TextView name = (TextView) findViewById(R.id.barTitle);
         TextView desc = (TextView) findViewById(R.id.descriptionTexti);
@@ -82,6 +84,7 @@ public class ProfileActivity extends AppCompatActivity {
         RatingBar rating = (RatingBar) findViewById(R.id.rating);
         ListView list = (ListView) findViewById(R.id.eventListi);
         ImageView cover = (ImageView) findViewById(R.id.profileImage);
+        ImageButton fbButton = (ImageButton) findViewById(R.id.fbButton);
 
         Button loadButton = (Button) findViewById(R.id.buttonLoad);
         loadButton.setOnClickListener(new View.OnClickListener() {
@@ -90,11 +93,13 @@ public class ProfileActivity extends AppCompatActivity {
                 //Bitmap bm = imageSaver.loadCoverPhoto();
                 //ImageView coverDD = (ImageView) findViewById(R.id.profileImage);
                 //coverDD.setImageBitmap(bm);
-                Intent test = newFacebookIntent(activity.getPackageManager(), "https://www.facebook.com/hurra.is/");
-                startActivity(test);
+                //Intent test = newFacebookIntent(activity.getPackageManager(), "https://www.facebook.com/hurra.is/");
+                //startActivity(test);
 
             }
         });
+
+
 
         String[] test = new String[] {"danni", "Kaffibarinn", "Austur", "Lebowskibar", "hurra"};
         eventAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, test);
@@ -112,6 +117,14 @@ public class ProfileActivity extends AppCompatActivity {
         rating.setRating((float) 2.0);
 
         list.setAdapter(eventAdapter);
+
+        fbButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                Intent fbSite = newFacebookIntent(activity.getPackageManager(), "https://www.facebook.com/hurra.is/");
+                startActivity(fbSite);
+            }
+        });
 
 
 
