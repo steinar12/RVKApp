@@ -95,7 +95,7 @@ public class ProfileActivity extends AppCompatActivity {
         ListView list = (ListView) findViewById(R.id.eventListi);
         ImageView cover = (ImageView) findViewById(R.id.profileImage);
 
-        Button loadButton = (Button) findViewById(R.id.buttonLoad);
+        /*Button loadButton = (Button) findViewById(R.id.buttonLoad);
         loadButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //action
@@ -106,7 +106,7 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(test);
 
             }
-        });
+        });*/
 
         String[] test = new String[] {"danni", "Kaffibarinn", "Austur", "Lebowskibar", "hurra"};
         eventAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, test);

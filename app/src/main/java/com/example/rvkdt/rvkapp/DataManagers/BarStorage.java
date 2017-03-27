@@ -1,6 +1,7 @@
 package com.example.rvkdt.rvkapp.DataManagers;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.example.rvkdt.rvkapp.DataObjects.Bar;
 
@@ -14,12 +15,11 @@ public class BarStorage extends Application {
     private ArrayList<Bar> listed_bars;
     private ArrayList<Bar> liked_bars;
     private ArrayList<Bar> bars_in_deck;
-    private ArrayList<Bar> saved_bars;
     private ArrayList<Integer> bar_ids;
     private Bar currentbar;
 
 
-    public void setListedBars(ArrayList<Bar> bars){ listed_bars = bars; saved_bars = bars;}
+    public void setListedBars(ArrayList<Bar> bars){ listed_bars = bars; }
     public void setLikedBars(ArrayList<Bar> bars){ liked_bars = bars; }
     public void setBarIds(ArrayList<Integer> ids) {bar_ids = ids;}
     public void setBarsInDeck(ArrayList<Bar> bars) {bars_in_deck = bars;}
@@ -45,7 +45,7 @@ public class BarStorage extends Application {
             Bar current_bar = liked_bars.get(i);
             if(equal(bar,current_bar))
             {
-                listed_bars.remove(i);
+                liked_bars.remove(i);
             }
         }
     }
@@ -66,7 +66,8 @@ public class BarStorage extends Application {
         {
             Bar res = listed_bars.get(0);
             listed_bars.remove(0);
-            saved_bars.add(res);
+            //saved_bars.add(res);
+            Log.d("**BARSTORAGE**", "LISTED BARS LENGTH: " + listed_bars.size());
             return res;
         }
         return null;
@@ -87,16 +88,8 @@ public class BarStorage extends Application {
             return null;
         }
 
-        for(int i = 0; i<saved_bars.size(); i++)
-        {
-            Bar current_bar = saved_bars.get(i);
-            if(current_bar.getId() == id)
-            {
-                return current_bar;
-            }
-        }
+        return currentbar;
 
-        return null;
     }
 
     public void removeFromDeck(Bar bar)

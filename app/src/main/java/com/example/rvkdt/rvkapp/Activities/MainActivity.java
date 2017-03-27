@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
         /*for(int i = 1; i < 89; i++){
             db.addLikedBarId(i);
         }*/
-        db.addLikedBarId(1);
+        /*db.addLikedBarId(1);
         db.addLikedBarId(88);
         db.addLikedBarId(2);
         db.addLikedBarId(3);
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
         db.addLikedBarId(14);
         db.addLikedBarId(15);
         db.addLikedBarId(16);
-        db.addLikedBarId(17);
+        db.addLikedBarId(17);*/
         /*int[] j = db.getLikedBarIds();
         for (int k = 0; k < j.length; k++){
             db.removeBarId(j[k]);
@@ -223,7 +223,6 @@ public class MainActivity extends AppCompatActivity implements Callback {
                     public void cardSwipedLeft(int position) {
                         Log.i("MainActivity", "card was swiped left, position in adapter: " + position);
                         Bar bar = barManager.getBar();
-
                         if (bar != null){
                             currentBar = barManager.popDeck();
                             Log.d("**MAINACTIVITY**", "CURRENT BAR: " + currentBar.getName());

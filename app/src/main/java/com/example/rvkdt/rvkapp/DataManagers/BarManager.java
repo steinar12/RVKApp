@@ -239,7 +239,6 @@ public class BarManager implements Callback {
                         // TODO Auto-generated method stub
                         Log.d("Response: ", "error", error);
                         callback.onFailure();
-
                     }
                 });
         jsArrRequest.setRetryPolicy(new RetryPolicy() {
@@ -338,7 +337,7 @@ public class BarManager implements Callback {
         return res;
     }
 
-   // fall sem að skilar bar úr bars fylki og bætir í bars fylki ef það er að verða tómt
+   // fall sem að skilar bar úr bars arraylist og bætir í bars arraylistann ef það er að verða tómt
     public Bar getBar() {
 
         int size = barStorage.size();
