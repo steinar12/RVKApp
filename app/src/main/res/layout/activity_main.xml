@@ -48,8 +48,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_below="@+id/linearLayout">
+        android:layout_below="@+id/linearLayout"
+        android:orientation="horizontal">
 
         <com.daprlabs.cardstack.SwipeFrameLayout
             android:id="@+id/swipe_frame"
@@ -58,36 +58,35 @@
             android:layout_below="@+id/linearLayout"
             android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <ProgressBar
-                android:id="@+id/progressBar2"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_weight="1" />
+                <ProgressBar
+                    android:id="@+id/progressBar2"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_weight="1" />
 
-        </RelativeLayout>
+            </RelativeLayout>
 
-        <com.daprlabs.cardstack.SwipeDeck
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:swipedeck="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/swipe_deck"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="-10dp"
-            android:padding="20dp"
-            swipedeck:card_spacing="10dp"
-            swipedeck:max_visible="3"
-            swipedeck:render_above="true"
-            swipedeck:rotation_degrees="15" >
+            <com.daprlabs.cardstack.SwipeDeck xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:swipedeck="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/swipe_deck"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="-10dp"
+                android:padding="20dp"
+                swipedeck:card_spacing="10dp"
+                swipedeck:max_visible="3"
+                swipedeck:render_above="true"
+                swipedeck:rotation_degrees="15">
 
-        </com.daprlabs.cardstack.SwipeDeck>
+            </com.daprlabs.cardstack.SwipeDeck>
 
-    </com.daprlabs.cardstack.SwipeFrameLayout>
+        </com.daprlabs.cardstack.SwipeFrameLayout>
 
         <LinearLayout
             android:id="@+id/liked_bars_container"
@@ -99,8 +98,7 @@
                 android:id="@+id/liked_bars_fragment"
                 android:name="com.example.rvkdt.rvkapp.Fragments.LikedBarsFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
+                android:layout_height="match_parent" />
         </LinearLayout>
 
     </LinearLayout>

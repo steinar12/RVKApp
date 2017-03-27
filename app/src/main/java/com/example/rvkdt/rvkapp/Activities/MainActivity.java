@@ -1,6 +1,7 @@
 package com.example.rvkdt.rvkapp.Activities;
 
 import android.animation.TimeInterpolator;
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
@@ -13,6 +14,7 @@ import android.view.animation.BounceInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -25,7 +27,9 @@ import com.example.rvkdt.rvkapp.DataManagers.BarManager;
 import com.example.rvkdt.rvkapp.Callback;
 import com.example.rvkdt.rvkapp.DataObjects.Bar;
 import com.example.rvkdt.rvkapp.DataManagers.DBHandler;
+import com.example.rvkdt.rvkapp.Fragments.LikedBarsFragment;
 import com.example.rvkdt.rvkapp.R;
+import com.example.rvkdt.rvkapp.updateListCallback;
 
 import java.util.ArrayList;
 
@@ -40,14 +44,14 @@ public class MainActivity extends AppCompatActivity implements Callback {
     private ImageView navbutton_cards;
     private ImageView navbutton_heart;
     private SwipeFrameLayout swipe_frame;
+    private LinearLayout liked_bars_container;
+    private LikedBarsFragment liked_bars_fragment;
 
     // view 1 = cards, view 2 = liked bars
     private boolean cardview_enabled;
 
     // Width of the screen
     private float width;
-
-
 
     DBHandler db = new DBHandler(this,"Likedbars",null ,1);
 
@@ -91,10 +95,12 @@ public class MainActivity extends AppCompatActivity implements Callback {
             navbutton_cards.animate().scaleX(1.1f).scaleY(1.1f).alpha(1);
             navbutton_heart.animate().scaleX(1f).scaleY(1f).alpha(0.5f);
             swipe_frame.animate().translationX(0);
+            liked_bars_container.animate().translationX(0);
         } else if(view_type == "heart") {
             navbutton_heart.animate().scaleX(1.1f).scaleY(1.1f).alpha(1);
             navbutton_cards.animate().scaleX(1f).scaleY(1f).alpha(0.5f);
             swipe_frame.animate().translationX(-width);
+            liked_bars_container.animate().translationX(-width);
         }
     }
 
@@ -102,6 +108,8 @@ public class MainActivity extends AppCompatActivity implements Callback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Log.d("snug", "onCreate");
 
         /*db.addLikedBarId(1);
         db.addLikedBarId(88);
@@ -121,9 +129,16 @@ public class MainActivity extends AppCompatActivity implements Callback {
         navbutton_cards.animate().setInterpolator(new DecelerateInterpolator()).setDuration(150);
         navbutton_heart.animate().setInterpolator(new DecelerateInterpolator()).setDuration(150);
 
-
         swipe_frame = (SwipeFrameLayout) findViewById(R.id.swipe_frame);
+        swipe_frame.setLayoutParams(new LinearLayout.LayoutParams(Math.round(width)-1, LinearLayout.LayoutParams.MATCH_PARENT));
         swipe_frame.animate().setInterpolator(new DecelerateInterpolator()).setDuration(300);
+
+        liked_bars_container = (LinearLayout) findViewById(R.id.liked_bars_container);
+        liked_bars_container.setLayoutParams(new LinearLayout.LayoutParams(Math.round(width), LinearLayout.LayoutParams.MATCH_PARENT));
+        liked_bars_container.animate().setInterpolator(new DecelerateInterpolator()).setDuration(300);
+
+        // Liked bars fragmentið
+        liked_bars_fragment = (LikedBarsFragment) getSupportFragmentManager().findFragmentById(R.id.liked_bars_fragment);
 
         set_view("cards");
 
@@ -152,8 +167,12 @@ public class MainActivity extends AppCompatActivity implements Callback {
             }
         };
 
-        barManager = new BarManager(getApplicationContext(), new Callback() {
+        barManager = new BarManager(getApplicationContext(), new updateListCallback() {
 
+            @Override
+            public void update() {
+                liked_bars_fragment.update();
+            }
 
             @Override
             public void onClick() {
@@ -195,8 +214,9 @@ public class MainActivity extends AppCompatActivity implements Callback {
                     @Override
                     public void cardSwipedRight(int position) {
                         Log.i("MainActivity", "card was swiped right, position in adapter: " + position);
-                        //db.addLikedBarId(bars.get(position).getId()); setur liked bar í database
-                        //barStorage.pushLiked(bars.get(position)); bætir liked bar í barstorage
+                        //db.addLikedBarId(bars.get(position).getId()); //setur liked bar í database
+                        //barStorage.pushLiked(bars.get(position)); //bætir liked bar í barstorage
+                        liked_bars_fragment.update();
                         Bar bar = barManager.getBar();
                         barManager.pushToDeck(bar);
                         if (bar != null){

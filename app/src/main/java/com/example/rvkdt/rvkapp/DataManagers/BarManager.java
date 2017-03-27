@@ -18,6 +18,7 @@ import com.example.rvkdt.rvkapp.DataObjects.Hours;
 import com.example.rvkdt.rvkapp.DataObjects.Pair;
 import com.example.rvkdt.rvkapp.DataManagers.DBHandler;
 import com.example.rvkdt.rvkapp.DataManagers.BarStorage;
+import com.example.rvkdt.rvkapp.updateListCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,6 +41,7 @@ import java.util.Locale;
 public class BarManager implements Callback {
     private DBHandler db;
     private BarStorage barStorage;
+    private updateListCallback localCallback;
 
     @Override
     public void onResponse(){
@@ -63,7 +65,8 @@ public class BarManager implements Callback {
 
 
     // constructor býr til nýtt requestqueue og nær í öll barids, sækir líka 5 bari
-    public BarManager(Context ctx, final Callback mainCallback, DBHandler dataBase){
+    public BarManager(Context ctx, final updateListCallback mainCallback, DBHandler dataBase){
+        localCallback = mainCallback;
         queue = Volley.newRequestQueue(ctx);
         barStorage = ((BarStorage) ctx);
         barStorage.setBarIds(new ArrayList<Integer>());
@@ -86,18 +89,18 @@ public class BarManager implements Callback {
                     @Override
                     public void onResponse(JSONArray response) {
                         barStorage.addAll(responseToBarList(response));
-                        mainCallback.onResponse();
+                        localCallback.onResponse();
                     }
                     @Override
                     public void onFailure(){
-                        mainCallback.onFailure();
+                        localCallback.onFailure();
                     }
                 });
 
             }
             @Override
             public void onFailure(){
-                mainCallback.onFailure();
+                localCallback.onFailure();
             }
         });
     }
@@ -355,10 +358,12 @@ public class BarManager implements Callback {
 
     public void loadLikedBars (int [] likedIds) {
         final ArrayList<Bar> likedBars = new ArrayList<Bar>();
+        //Log.d("bla", likedIds.length + "");
         fetchBars(likedIds, new ResponseCallback() {
             @Override
             public void onResponse(JSONArray response) {
                 barStorage.setLikedBars(responseToBarList(response));
+                localCallback.update();
             }
             @Override
             public void onFailure() {

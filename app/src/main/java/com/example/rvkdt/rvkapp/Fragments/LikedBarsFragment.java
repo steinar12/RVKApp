@@ -45,15 +45,26 @@ public class LikedBarsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.d("**LikedBarsFragment**", "About to created LikedListAdapter");
+        Log.d("snug", "onActivityCreated");
         ListView listView = (ListView) getView().findViewById(R.id.liked_bars);
         barStorage = ((BarStorage)getActivity().getApplicationContext());
         ArrayList<Bar> likedBars = barStorage.getLikedBars();
-        //Log.d("**LIKED BARS: ", " length: " + likedBars.size());
+        Log.d("**LIKED BARS: ", " length: " + likedBars.size());
         Bar[] bars = new Bar[likedBars.size()];
         likedBars.toArray(bars);
-
+        Log.d("snug", likedBars.size() + "");
         likedListAdapter = new LikedListAdapter(getActivity(),bars);
         listView.setAdapter(likedListAdapter);
+        this.update();
 
+    }
+
+    public void update(){
+        Log.d("snug", "fjöldi liked bars   " + barStorage.getLikedBars().size() + "");
+        ArrayList<Bar> likedBars = barStorage.getLikedBars();
+        Bar[] bars = new Bar[likedBars.size()];
+        bars = likedBars.toArray(bars);
+        likedListAdapter.setBars(bars);
+        likedListAdapter.notifyDataSetChanged();
     }
 }
