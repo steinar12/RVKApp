@@ -19,6 +19,7 @@ import com.example.rvkdt.rvkapp.DataObjects.Pair;
 import com.example.rvkdt.rvkapp.DataManagers.DBHandler;
 import com.example.rvkdt.rvkapp.DataManagers.BarStorage;
 import com.example.rvkdt.rvkapp.updateListCallback;
+import com.example.rvkdt.rvkapp.Utils.ImageSaver;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,6 +42,7 @@ import java.util.Locale;
 public class BarManager implements Callback {
     private BarStorage barStorage;
     private updateListCallback localCallback;
+    private ImageSaver imagesaver;
 
     @Override
     public void onResponse(){
@@ -70,6 +72,7 @@ public class BarManager implements Callback {
         barStorage = ((BarStorage) ctx);
         barStorage.init();
         barStorage.setDbHandler(dataBase);
+        imagesaver = new ImageSaver(ctx);
         fetchIds(new ResponseCallback() {
             @Override
             public void onResponse(JSONArray response) {
@@ -180,6 +183,14 @@ public class BarManager implements Callback {
                     Log.d("events", events[0].getStartTime().toString());
                 }
                 Bar bar = new Bar(id, name, menu, image, lat, lng, link, about, rating, hours, events);
+
+                //Send the image to ImageSaver to store the image.
+                String cleanImage = image.replaceAll("\\\\","");
+                Log.d("BarManager", "imagesaver dirtyImage:: " + image);
+                Log.d("BarManager", "imagesaver cleanImage:: " + cleanImage);
+                Log.d("BarManager", "id: " + id);
+                imagesaver.downloadImage(cleanImage, id);
+
                 output.add(bar);
             } catch (JSONException e) {
                 e.printStackTrace();

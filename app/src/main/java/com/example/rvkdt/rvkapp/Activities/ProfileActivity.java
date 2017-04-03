@@ -71,18 +71,23 @@ public class ProfileActivity extends AppCompatActivity {
 
        //Bar barData = new Bar(1, "KoKo Bar", null, "https://scontent-arn2-1.xx.fbcdn.net/v/t1.0-9/10407812_637843283004053_8987368172014209754_n.jpg?oh=c1f1a5170f469e5b6d0f9bd3dbce8326&oe=5973A783",
         // 1.0, 2.0, "https://www.facebook.com/hurra.is/", "sSpooOOKY TEXT IsA DescRipTIonTeXteRinoO", 2.0, null, null);
-        Bar barData = barStorage.getBar(id, false);
+        final Bar barData = barStorage.getBar(id, false);
         Log.d(TAG, "le barData??!!" + barData);
-        Log.d(TAG, "le barData??!!" + barData.getLink());
+        Log.d(TAG, "barData.getLink" + barData.getLink());
+        Log.d(TAG, "barData.getImage" + barData.getImage());
 
 
         TextView name = (TextView) findViewById(R.id.barTitle);
         TextView desc = (TextView) findViewById(R.id.descriptionTexti);
         TextView abt = (TextView) findViewById(R.id.aboutTexti);
         TextView fbLink = (TextView) findViewById(R.id.facebookLink);
+
         RatingBar rating = (RatingBar) findViewById(R.id.rating);
+
         ListView list = (ListView) findViewById(R.id.eventListi);
+
         ImageView cover = (ImageView) findViewById(R.id.profileImage);
+
         ImageButton fbButton = (ImageButton) findViewById(R.id.fbButton);
 
         Button loadButton = (Button) findViewById(R.id.buttonLoad);
@@ -119,9 +124,10 @@ public class ProfileActivity extends AppCompatActivity {
 
         fbButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
-                Intent fbSite = newFacebookIntent(activity.getPackageManager(), "https://www.facebook.com/hurra.is/");
-                startActivity(fbSite);
+          String theLink = barData.getLink();
+           Log.d(TAG, theLink);
+           Intent fbSite = newFacebookIntent(activity.getPackageManager(), "https://www.facebook.com/hurra.is");
+           startActivity(fbSite);
             }
         });
 
@@ -141,6 +147,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setCoverImage(int id) {
+        Log.d(TAG, "ID a cover image sem á að loada " + id);
         Bitmap bm = imageSaver.loadCoverPhoto(id);
         ImageView cover = (ImageView) findViewById(R.id.profileImage);
         cover.setImageBitmap(bm);

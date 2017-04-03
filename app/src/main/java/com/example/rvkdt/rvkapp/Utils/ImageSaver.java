@@ -16,6 +16,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import static android.content.ContentValues.TAG;
 
@@ -74,10 +77,9 @@ public class ImageSaver {
     @NonNull
     private File createFile() {
         File directory;
-        if(external){
+        if (external) {
             directory = getAlbumStorageDir(directoryName);
-        }
-        else {
+        } else {
             directory = context.getDir(directoryName, Context.MODE_PRIVATE);
             Log.d(TAG, "directory?: " + directory);
         }
@@ -125,18 +127,17 @@ public class ImageSaver {
     }
 
     // Not ready
-    public boolean deleteFile(){
+    public boolean deleteFile() {
         File file = createFile();
         return file.delete();
     }
-
 
 
     ///PICASSO FIFF
     // make sure to set Target as strong reference
     public void loadBitmap(String url, final int id) {
 
-        if(url.equals("null")) {
+        if (url.equals("null")) {
             url = "https://scontent-arn2-1.xx.fbcdn.net/v/t1.0-9/10264956_10152789682559358_372568786516885638_n.jpg?oh=9aad9dd840c3a9b1162da986ab3eecdf&oe=595DF1BD";
             Log.d("ImageSaver_>loadBitMap", "fake PIC");
         }
@@ -165,24 +166,47 @@ public class ImageSaver {
 
     public void handleLoadedBitmap(Bitmap image, int id) {
         // do something here
-        Log.d(TAG, "Counter:" + id);
+        Log.d(TAG, "Saving image as: " + id + ".png");
         new ImageSaver(context).
                 setFileName(id + ".png").
                 setDirectoryName("images").
                 save(image);
         counter++;
     }
+
     //Fetch image from internet with URL
     public void downloadImage(String image, int id) {
-        loadBitmap(image, id);
+        Log.d(TAG, "Saving image with id: " + id);
+        //loadBitmap(image, id);
+        Bitmap myBitmap = getBitmapFromURL(image);
+        handleLoadedBitmap(myBitmap, id);
     }
 
     public Bitmap loadCoverPhoto(int id) {
 
+        Log.d(TAG, "LoadCoverPhoto: " + id + ".png");
         Bitmap bitmap = new ImageSaver(context).
                 setFileName(id + ".png").
                 setDirectoryName("images").
                 load();
         return bitmap;
+    }
+
+
+//new stuff
+
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
