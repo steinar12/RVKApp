@@ -192,7 +192,6 @@ public class ProfileActivity extends AppCompatActivity {
         try {
             ApplicationInfo applicationInfo = pm.getApplicationInfo("com.facebook.katana", 0);
             if (applicationInfo.enabled) {
-                // http://stackoverflow.com/a/24547437/1048340
                 uri = Uri.parse("fb://facewebmodal/f?href=" + url);
             }
         } catch (PackageManager.NameNotFoundException ignored) {

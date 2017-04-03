@@ -377,6 +377,8 @@ public class BarManager implements Callback {
 
     public void pushToDeck (Bar bar) { barStorage.pushToDeck(bar); }
 
+    public void pushLiked (Bar bar) { barStorage.pushLiked(bar);}
+
     public Bar popDeck () {return barStorage.popDeck();}
 
     public Bar getCurrentBar () {return barStorage.getCurrentBar();}
