@@ -1,9 +1,12 @@
 package com.example.rvkdt.rvkapp.Adapters;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
@@ -32,6 +35,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,17 +50,17 @@ public class SwipeDeckAdapter extends BaseAdapter implements Callback {
     private Callback onClickCallback;
 
     @Override
-    public void onResponse(){
+    public void onResponse() {
 
     }
 
     @Override
-    public void onClick(){
+    public void onClick() {
 
     }
 
     @Override
-    public void onFailure(){
+    public void onFailure() {
 
     }
 
@@ -85,16 +89,28 @@ public class SwipeDeckAdapter extends BaseAdapter implements Callback {
     public View getView(final int position, View convertView, ViewGroup parent) {
 
         View v = convertView;
-        if(v == null){
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+        if (v == null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             //Log.d("hi there", "getView: ");
             // normally use a viewholder
             v = inflater.inflate(R.layout.card_view, parent, false);
         }
         ((TextView) v.findViewById(R.id.barTitle)).setText(data.get(position).getName());
         ((TextView) v.findViewById(R.id.textView)).setText(data.get(position).getAbout());
-        ((RatingBar) v.findViewById(R.id.rating)).setRating((float)data.get(position).getRating());
         Picasso.with(context).load(data.get(position).getImage()).into(((ImageView) v.findViewById(R.id.imageView)));
+
+
+
+
+        String hours = data.get(position).getHours().getHours();
+        if (hours != "") {
+            ((TextView) v.findViewById(R.id.OpeningHours)).setText(hours);
+        }
+        else ((TextView) v.findViewById(R.id.OpeningHours)).setText("unkown");
+
+
+
+        Log.d("***look***", data.get(position).getHours().getHours());
 
         v.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +140,36 @@ public class SwipeDeckAdapter extends BaseAdapter implements Callback {
 
             }
         });
+
+
+        LocationManager locationManager = (LocationManager) this.context.getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ((TextView) v.findViewById(R.id.Distance)).setText("Need gps permission to show distance to bar");
+            return v;
+        }
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if (location == null) {
+            ((TextView) v.findViewById(R.id.Distance)).setText("unkown");
+            return v;
+        }
+
+
+
+        double lat = data.get(position).getLat();
+        double lng = data.get(position).getLng();
+        Location location2 = new Location("");
+        location2.setLatitude(lat);
+        location2.setLongitude(lng);
+
+        float distance = location2.distanceTo(location);
+        distance = distance / 1000;
+        DecimalFormat kiloMeters = new DecimalFormat("#.#");
+        DecimalFormat meters = new DecimalFormat("#");
+
+        if (distance < 1) {
+            ((TextView) v.findViewById(R.id.Distance)).setText(meters.format(distance*1000) + " m");
+        }
+        else ((TextView) v.findViewById(R.id.Distance)).setText(kiloMeters.format(distance) + " km");
 
         return v;
     }

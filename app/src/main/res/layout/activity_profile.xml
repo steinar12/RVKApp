@@ -79,7 +79,7 @@
                 android:background="?android:selectableItemBackground"
                 android:clickable="true"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/facebookicon" />
+                app:srcCompat="@drawable/bar1" />
 
 
             <TextView

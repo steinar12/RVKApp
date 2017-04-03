@@ -148,13 +148,13 @@ public class LikedListAdapter extends ArrayAdapter<Bar> {
             case 0:
                 return R.drawable.hurrapic;
             case 1:
-                return R.drawable.bar1;
+                return R.drawable.hurrapic;
             case 2:
-                return R.drawable.bar2;
+                return R.drawable.hurrapic;
             case 3:
-                return R.drawable.bar3;
+                return R.drawable.hurrapic;
             case 4:
-                return R.drawable.bar4;
+                return R.drawable.hurrapic;
             default:
                 return R.drawable.hurrapic;
         }

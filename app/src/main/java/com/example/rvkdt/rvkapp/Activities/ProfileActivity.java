@@ -57,7 +57,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         this.activity = this;
 
-        ActivityCompat.requestPermissions( this, new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  }, 1 );
         setContentView(R.layout.activity_profile);
         //(int idvalue, String nme,String men,
         // String img, double lt, double lg,

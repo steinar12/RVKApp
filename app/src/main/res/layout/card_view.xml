@@ -48,20 +48,22 @@
                     android:textColor="@android:color/background_light"
                     android:textSize="28sp" />
 
-                <RatingBar
-                    android:id="@+id/rating"
-                    android:layout_width="263dp"
+                <TextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:isIndicator="true"
-                    android:numStars="5"
-                    android:stepSize="0.5"
-                    android:scaleX=".6"
-                    android:scaleY=".6"
-                    android:transformPivotX="0dp"
-                    android:transformPivotY="0dp"
-                    style="@android:style/Widget.DeviceDefault.Light.RatingBar"
                     android:paddingLeft="10dp"
-                    android:paddingRight="10dp" />
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:text="Distance : ....."
+                    android:id="@+id/Distance"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:text="Opening Hours: ....."
+                    android:id="@+id/OpeningHours" />
 
                 <TextView
                     android:id="@+id/textView"

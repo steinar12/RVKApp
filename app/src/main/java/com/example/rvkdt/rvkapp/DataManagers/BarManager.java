@@ -80,9 +80,8 @@ public class BarManager implements Callback {
             public void onResponse(JSONArray response) {
                 barStorage.setBarIds(responseToIntList(response));
                 int[] idsToRemove = db.getLikedBarIds();
-                loadLikedBars(idsToRemove);
-                barStorage.setBarIds(removeIds(barStorage.getBarIds(),idsToRemove));
                 if (!(idsToRemove == null)){
+                    loadLikedBars(idsToRemove);
                     barStorage.setBarIds(removeIds(barStorage.getBarIds(),idsToRemove));
                 }
                 int[] barsToFetch = randomIds(barStorage.getBarIds(), 15);
