@@ -3,14 +3,9 @@ package com.example.rvkdt.rvkapp.Utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.ImageView;
-
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,8 +27,7 @@ public class ImageSaver {
     private String fileName = "image.png";
     private Context context;
     private boolean external;
-    private Target loadtarget;
-    private int counter = 0;
+
     private static final String TAG = ImageSaver.class.getSimpleName();
 
 
@@ -132,56 +126,17 @@ public class ImageSaver {
         return file.delete();
     }
 
-
-    ///PICASSO FIFF
-    // make sure to set Target as strong reference
-    public void loadBitmap(String url, final int id) {
-
-        if (url.equals("null")) {
-            url = "https://scontent-arn2-1.xx.fbcdn.net/v/t1.0-9/10264956_10152789682559358_372568786516885638_n.jpg?oh=9aad9dd840c3a9b1162da986ab3eecdf&oe=595DF1BD";
-            Log.d("ImageSaver_>loadBitMap", "fake PIC");
-        }
-        Log.d("ImageSaver_>loadBitMap", "urlið:" + url);
-        if (loadtarget == null) loadtarget = new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                // do something with the Bitmap
-                Log.d("OnBitmapLoaded, ID: ", "id" + id);
-                handleLoadedBitmap(bitmap, id);
-            }
-
-            @Override
-            public void onBitmapFailed(Drawable errorDrawable) {
-
-            }
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-            }
-        };
-
-        Picasso.with(context).load(url).into(loadtarget);
-    }
-
+    //Saves image to images directory.
     public void handleLoadedBitmap(Bitmap image, int id) {
-        // do something here
+
         Log.d(TAG, "Saving image as: " + id + ".png");
         new ImageSaver(context).
                 setFileName(id + ".png").
                 setDirectoryName("images").
                 save(image);
-        counter++;
     }
 
-    //Fetch image from internet with URL
-    public void downloadImage(String image, int id) {
-        Log.d(TAG, "Saving image with id: " + id);
-        //loadBitmap(image, id);
-        Bitmap myBitmap = getBitmapFromURL(image);
-        handleLoadedBitmap(myBitmap, id);
-    }
-
+    //Loads images to images directory
     public Bitmap loadCoverPhoto(int id) {
 
         Log.d(TAG, "LoadCoverPhoto: " + id + ".png");
@@ -192,9 +147,15 @@ public class ImageSaver {
         return bitmap;
     }
 
+    //Fetch image from internet with URL
+    public void downloadImage(String image, int id) {
+        //loadBitmap(image, id);
+        Bitmap myBitmap = getBitmapFromURL(image);
+        handleLoadedBitmap(myBitmap, id);
+    }
 
-//new stuff
-
+    //Convert image from url to bitmap.
+    //Returns bitmap image
     public static Bitmap getBitmapFromURL(String src) {
         try {
             URL url = new URL(src);
