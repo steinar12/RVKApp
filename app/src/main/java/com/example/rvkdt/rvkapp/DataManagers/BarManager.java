@@ -39,7 +39,6 @@ import java.util.Locale;
 
 
 public class BarManager implements Callback {
-    private DBHandler db;
     private BarStorage barStorage;
     private updateListCallback localCallback;
 
@@ -69,17 +68,13 @@ public class BarManager implements Callback {
         localCallback = mainCallback;
         queue = Volley.newRequestQueue(ctx);
         barStorage = ((BarStorage) ctx);
-        barStorage.setBarIds(new ArrayList<Integer>());
-        barStorage.setListedBars(new ArrayList<Bar>());
-        barStorage.setLikedBars(new ArrayList<Bar>());
-        barStorage.setBarsInDeck(new ArrayList<Bar>());
-        barStorage.setCurrentBar(null);
-        db = dataBase;
+        barStorage.init();
+        barStorage.setDbHandler(dataBase);
         fetchIds(new ResponseCallback() {
             @Override
             public void onResponse(JSONArray response) {
                 barStorage.setBarIds(responseToIntList(response));
-                int[] idsToRemove = db.getLikedBarIds();
+                int[] idsToRemove = barStorage.getSavedLikedBars();
                 if (!(idsToRemove == null)){
                     loadLikedBars(idsToRemove);
                     barStorage.setBarIds(removeIds(barStorage.getBarIds(),idsToRemove));
@@ -341,7 +336,10 @@ public class BarManager implements Callback {
 
         int size = barStorage.size();
 
+        Log.d("**BARMANAGER**", "CALLED GETBAR AND SIZE IS: " + size);
+
         if (size < 10){
+            Log.d("**BARMANAGER FETCHING**", "ABOUT TO FETCH MORE BARS");
             int[] barsToFetch = randomIds(barStorage.getBarIds(), 10);
             if(barsToFetch == null) return null;
             fetchBars(barsToFetch, new ResponseCallback() {
@@ -377,10 +375,12 @@ public class BarManager implements Callback {
 
     public void pushToDeck (Bar bar) { barStorage.pushToDeck(bar); }
 
-    public void pushLiked (Bar bar) { barStorage.pushLiked(bar);}
-
     public Bar popDeck () {return barStorage.popDeck();}
 
     public Bar getCurrentBar () {return barStorage.getCurrentBar();}
+
+    public void pushLiked(Bar bar) {barStorage.pushLiked(bar);}
+
+    public void removeLiked(int bar_id) {barStorage.removeLiked(bar_id);}
 
 }

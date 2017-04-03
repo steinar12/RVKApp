@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
     private SwipeDeck cardStack;
     private BarManager barManager;
     private Bar currentBar;
-    private final int INITIAL_DECK = 10;
+    private final int INITIAL_DECK = 5;
 
     private ImageView navbutton_cards;
     private ImageView navbutton_heart;
@@ -236,13 +236,13 @@ public class MainActivity extends AppCompatActivity implements Callback {
                     @Override
                     public void cardSwipedRight(int position) {
                         Log.i("MainActivity", "card was swiped right, position in adapter: " + position);
-                        Bar likedBar = bars.get(position);
-                        barManager.pushLiked(likedBar); //bætir liked bar í barstorage
-                        liked_bars_fragment.update();
+                        //liked_bars_fragment.update();
                         Bar bar = barManager.getBar();
 
                         if (bar != null){
+                            barManager.pushLiked(currentBar);
                             currentBar = barManager.popDeck();
+                            update();
                             barManager.pushToDeck(bar);
                             bars.add(bar);
                         }

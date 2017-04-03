@@ -16,6 +16,7 @@ public class BarStorage extends Application {
     private ArrayList<Bar> liked_bars;
     private ArrayList<Bar> bars_in_deck;
     private ArrayList<Integer> bar_ids;
+    private DBHandler db;
     private Bar currentbar;
 
 
@@ -24,10 +25,21 @@ public class BarStorage extends Application {
     public void setBarIds(ArrayList<Integer> ids) {bar_ids = ids;}
     public void setBarsInDeck(ArrayList<Bar> bars) {bars_in_deck = bars;}
     public void setCurrentBar(Bar bar) {currentbar = bar;}
+    public void setDbHandler(DBHandler dbhandler) {db = dbhandler;}
+
+    public void init() {
+        listed_bars = new ArrayList<Bar>();
+        liked_bars = new ArrayList<Bar>();
+        bar_ids = new ArrayList<Integer>();
+        bars_in_deck = new ArrayList<Bar>();
+        currentbar = null;
+    }
 
     public ArrayList<Bar> getListedBars() { return listed_bars; }
     public ArrayList<Bar> getLikedBars() { return liked_bars; }
     public ArrayList<Integer> getBarIds() { return bar_ids; }
+    public int[] getSavedLikedBars() {return db.getLikedBarIds();}
+
 
 
     public int size() {return listed_bars.size();}
@@ -38,16 +50,18 @@ public class BarStorage extends Application {
     public void addAll(ArrayList<Bar> bars) {listed_bars.addAll(bars);}
     public void addAllLiked(ArrayList<Bar> bars) {liked_bars.addAll(bars);}
 
-    public void removeLiked(Bar bar)
+    public void removeLiked(int id)
     {
         for(int i = 0; i<likedSize(); i++)
         {
             Bar current_bar = liked_bars.get(i);
-            if(equal(bar,current_bar))
+            if(current_bar.getId() == id)
             {
                 liked_bars.remove(i);
             }
         }
+
+        db.removeBarId(id);
     }
 
     public Bar getLikedBar(int id) { return getBar(id,true); }
@@ -60,7 +74,7 @@ public class BarStorage extends Application {
     }
     public void push(Bar bar) {listed_bars.add(bar);}
     public void pushToDeck(Bar bar) {bars_in_deck.add(bar);}
-    public void pushLiked(Bar bar) {liked_bars.add(bar);}
+    public void pushLiked(Bar bar) {liked_bars.add(bar); db.addLikedBarId(bar.getId());}
     public Bar pop() {
         if(size() > 0)
         {
