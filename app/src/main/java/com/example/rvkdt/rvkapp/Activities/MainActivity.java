@@ -18,7 +18,9 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daprlabs.cardstack.SwipeDeck;
@@ -118,9 +120,12 @@ public class MainActivity extends AppCompatActivity implements Callback {
 
         Log.d("snug", "onCreate");
 
-        /*for(int i = 1; i < 89; i++){
+        for(int i = 1; i < 55; i++){
             db.addLikedBarId(i);
-        }*/
+        }
+        /*db.addLikedBarId(1);
+        }
+
         /*db.addLikedBarId(1);
         db.addLikedBarId(88);
         db.addLikedBarId(2);
@@ -155,11 +160,11 @@ public class MainActivity extends AppCompatActivity implements Callback {
         navbutton_heart.animate().setInterpolator(new DecelerateInterpolator()).setDuration(150);
 
         swipe_frame = (SwipeFrameLayout) findViewById(R.id.swipe_frame);
-        swipe_frame.setLayoutParams(new LinearLayout.LayoutParams(Math.round(width)-1, LinearLayout.LayoutParams.MATCH_PARENT));
+        swipe_frame.setLayoutParams(new RelativeLayout.LayoutParams(Math.round(width)-1, RelativeLayout.LayoutParams.MATCH_PARENT));
         swipe_frame.animate().setInterpolator(new DecelerateInterpolator()).setDuration(300);
 
         liked_bars_container = (LinearLayout) findViewById(R.id.liked_bars_container);
-        liked_bars_container.setLayoutParams(new LinearLayout.LayoutParams(Math.round(width), LinearLayout.LayoutParams.MATCH_PARENT));
+        liked_bars_container.setLayoutParams(new RelativeLayout.LayoutParams(Math.round(width), RelativeLayout.LayoutParams.MATCH_PARENT));
         liked_bars_container.animate().setInterpolator(new DecelerateInterpolator()).setDuration(300);
 
         // Liked bars fragmentið
@@ -256,6 +261,8 @@ public class MainActivity extends AppCompatActivity implements Callback {
                     @Override
                     public void cardsDepleted() {
                         Log.i("MainActivity", "no more cards");
+                        TextView cards_status_text = (TextView) findViewById(R.id.cards_status_text);
+                        cards_status_text.animate().alpha(0.8f).setDuration(500);
                     }
 
                     @Override
@@ -275,6 +282,9 @@ public class MainActivity extends AppCompatActivity implements Callback {
                 ProgressBar p = (ProgressBar)findViewById(R.id.progressBar2);
                 if(p.getVisibility() != View.INVISIBLE){ // check if it is visible
                     p.setVisibility(View.INVISIBLE); // if not set it to visible
+                    TextView cards_status_text = (TextView) findViewById(R.id.cards_status_text);
+                    cards_status_text.setText("Couldn't find any bars!");
+                    cards_status_text.animate().alpha(0.8f).setDuration(500);
                 }
             }
         }, db);

@@ -5,7 +5,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="#181818"
     tools:context="com.example.rvkdt.rvkapp.Activities.MainActivity">
 
     <LinearLayout
@@ -15,7 +15,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="#303030"
+        android:background="#252525"
         android:elevation="4dp"
         android:orientation="horizontal">
 
@@ -45,7 +45,8 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/swipe_frame_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/linearLayout"
@@ -55,8 +56,18 @@
             android:id="@+id/swipe_frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/linearLayout"
             android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/cards_status_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0"
+                android:fontFamily="sans-serif-light"
+                android:gravity="center"
+                android:text="Couldn't find more bars!"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -101,9 +112,10 @@
                 android:id="@+id/liked_bars_fragment"
                 android:name="com.example.rvkdt.rvkapp.Fragments.LikedBarsFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                tools:layout="@layout/fragment_liked_bars" />
         </LinearLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

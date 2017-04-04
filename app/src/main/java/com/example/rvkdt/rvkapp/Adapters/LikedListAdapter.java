@@ -96,6 +96,7 @@ public class LikedListAdapter extends ArrayAdapter<Bar> {
         });
 
         final ImageView image_view = (ImageView) rowView.findViewById(R.id.image);
+        final RelativeLayout list_item_container = (RelativeLayout) rowView.findViewById(R.id.list_item_container);
         TextView bar_name_view = (TextView) rowView.findViewById(R.id.name);
 
         String name = bars[position].getName();
@@ -106,7 +107,7 @@ public class LikedListAdapter extends ArrayAdapter<Bar> {
         imageLoader.displayImage("drawable://" + getImageID(), image_view, options, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
-                view.setAlpha(0);
+                list_item_container.setAlpha(0);
             }
 
             @Override
@@ -116,7 +117,7 @@ public class LikedListAdapter extends ArrayAdapter<Bar> {
 
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                view.animate().alpha(1).setDuration(200);
+                list_item_container.animate().alpha(1).setDuration(300);
             }
 
             @Override
