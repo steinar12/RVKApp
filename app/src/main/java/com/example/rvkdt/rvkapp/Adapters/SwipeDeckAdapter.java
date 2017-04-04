@@ -99,14 +99,11 @@ public class SwipeDeckAdapter extends BaseAdapter implements Callback {
         ((TextView) v.findViewById(R.id.textView)).setText(data.get(position).getAbout());
         Picasso.with(context).load(data.get(position).getImage()).into(((ImageView) v.findViewById(R.id.imageView)));
 
-
-
-
         String hours = data.get(position).getHours().getHours();
         if (hours != "") {
             ((TextView) v.findViewById(R.id.OpeningHours)).setText(hours);
         }
-        else ((TextView) v.findViewById(R.id.OpeningHours)).setText("unkown");
+        else ((TextView) v.findViewById(R.id.OpeningHours)).setText("unknown");
 
 
 

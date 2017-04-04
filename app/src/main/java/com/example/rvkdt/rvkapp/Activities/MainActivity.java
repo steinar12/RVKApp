@@ -33,6 +33,7 @@ import com.example.rvkdt.rvkapp.DataObjects.Bar;
 import com.example.rvkdt.rvkapp.DataManagers.DBHandler;
 import com.example.rvkdt.rvkapp.Fragments.LikedBarsFragment;
 import com.example.rvkdt.rvkapp.R;
+import com.example.rvkdt.rvkapp.deleteLikedCallback;
 import com.example.rvkdt.rvkapp.updateListCallback;
 
 import java.util.ArrayList;
@@ -98,12 +99,12 @@ public class MainActivity extends AppCompatActivity implements Callback {
             navbutton_cards.animate().scaleX(1.1f).scaleY(1.1f).alpha(1);
             navbutton_heart.animate().scaleX(1f).scaleY(1f).alpha(0.5f);
             swipe_frame.animate().translationX(0);
-            liked_bars_container.animate().translationX(0);
+            liked_bars_container.animate().translationX(width);
         } else if(view_type == "heart") {
             navbutton_heart.animate().scaleX(1.1f).scaleY(1.1f).alpha(1);
             navbutton_cards.animate().scaleX(1f).scaleY(1f).alpha(0.5f);
             swipe_frame.animate().translationX(-width);
-            liked_bars_container.animate().translationX(-width);
+            liked_bars_container.animate().translationX(0);
         }
     }
 
@@ -160,11 +161,12 @@ public class MainActivity extends AppCompatActivity implements Callback {
         navbutton_heart.animate().setInterpolator(new DecelerateInterpolator()).setDuration(150);
 
         swipe_frame = (SwipeFrameLayout) findViewById(R.id.swipe_frame);
-        swipe_frame.setLayoutParams(new RelativeLayout.LayoutParams(Math.round(width)-1, RelativeLayout.LayoutParams.MATCH_PARENT));
+        swipe_frame.setLayoutParams(new RelativeLayout.LayoutParams(Math.round(width), RelativeLayout.LayoutParams.MATCH_PARENT));
         swipe_frame.animate().setInterpolator(new DecelerateInterpolator()).setDuration(300);
 
         liked_bars_container = (LinearLayout) findViewById(R.id.liked_bars_container);
         liked_bars_container.setLayoutParams(new RelativeLayout.LayoutParams(Math.round(width), RelativeLayout.LayoutParams.MATCH_PARENT));
+        liked_bars_container.animate().translationX(width);
         liked_bars_container.animate().setInterpolator(new DecelerateInterpolator()).setDuration(300);
 
         // Liked bars fragmentið
@@ -194,6 +196,15 @@ public class MainActivity extends AppCompatActivity implements Callback {
                 i.putExtra("bar_id",id);
                 startActivityForResult(i, 0);
                 overridePendingTransition(0, 0);
+            }
+        };
+
+        // Interface that is passed into the LikedListAdapter so
+        // the adapter can use the onDelete function in the MainActivity context.
+        final deleteLikedCallback onDeleteLikedCallback = new deleteLikedCallback() {
+            @Override
+            public void onDelete(int id){
+                barManager.removeLiked(id);
             }
         };
 

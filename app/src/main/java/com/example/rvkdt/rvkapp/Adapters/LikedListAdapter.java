@@ -23,6 +23,7 @@ import com.example.rvkdt.rvkapp.DataObjects.Event;
 import com.example.rvkdt.rvkapp.DataObjects.Hours;
 import com.example.rvkdt.rvkapp.DataObjects.Pair;
 import com.example.rvkdt.rvkapp.R;
+import com.example.rvkdt.rvkapp.deleteLikedCallback;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
@@ -49,7 +50,7 @@ import java.io.File;
  * Created by Danni on 09/03/2017.
  */
 
-public class LikedListAdapter extends ArrayAdapter<Bar> {
+public class LikedListAdapter extends ArrayAdapter<Bar> implements deleteLikedCallback {
 
     private final Activity ctx;
     private Bar[] bars;
@@ -61,6 +62,11 @@ public class LikedListAdapter extends ArrayAdapter<Bar> {
 
     // Temporary shit
     private int img_num = 0;
+
+    @Override
+    public void onDelete(int id) {
+
+    }
 
     public LikedListAdapter(Activity context, Bar[] bars){
         super(context, R.layout.liked_bar, bars);
@@ -94,6 +100,9 @@ public class LikedListAdapter extends ArrayAdapter<Bar> {
                 //ctx.overridePendingTransition(0, 0);
             }
         });
+
+        ImageView delete_button = (ImageView) rowView.findViewById(R.id.delete_button);
+        delete_button.setTag(position);
 
         final ImageView image_view = (ImageView) rowView.findViewById(R.id.image);
         final RelativeLayout list_item_container = (RelativeLayout) rowView.findViewById(R.id.list_item_container);
@@ -190,5 +199,18 @@ public class LikedListAdapter extends ArrayAdapter<Bar> {
                 .build();
 
         return config;
+    }
+
+    public void onClick(View v){
+        final int id = v.getId();
+        final int barId = (int) v.getTag();
+
+        switch(id){
+            case R.id.delete_button:
+                onDelete(barId);
+                break;
+            default:
+                break;
+        }
     }
 }
