@@ -148,9 +148,7 @@ public class BarManager implements Callback {
                 double lng = coords.getDouble("lng");
                 String link = obj.getString("link");
                 link = link.replaceAll("\\\\","");
-                String description = obj.getString("description");
-                String about = obj.getString("about");
-                if (about.equals("null") || about.trim().length() == 0) about = description;
+                String about = obj.getString("description");
                 if (about.equals("null") || about.trim().length() == 0) about = "no description";
                 double rating = obj.getDouble("rating");
                 JSONObject opens_obj = obj.getJSONObject("opens");
