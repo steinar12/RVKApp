@@ -41,7 +41,6 @@ public class BarStorage extends Application {
     public int[] getSavedLikedBars() {return db.getLikedBarIds();}
 
 
-
     public int size() {return listed_bars.size();}
     public int likedSize() {return liked_bars.size();}
     public int deckSize() {return bars_in_deck.size();}
