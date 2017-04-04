@@ -186,7 +186,6 @@ public class BarManager implements Callback {
 
                 //Send the image to ImageSaver to store the image.
                 String cleanImage = image.replaceAll("\\\\","");
-                Log.d("BarManager", "imagesaver dirtyImage:: " + image);
                 Log.d("BarManager", "imagesaver cleanImage:: " + cleanImage);
                 Log.d("BarManager", "id: " + id);
                 imagesaver.downloadImage(cleanImage, id);

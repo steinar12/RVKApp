@@ -122,7 +122,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
           String theLink = barData.getLink();
            Log.d(TAG, theLink);
-           Intent fbSite = newFacebookIntent(activity.getPackageManager(), "https://www.facebook.com/hurra.is");
+           Intent fbSite = newFacebookIntent(activity.getPackageManager(), "227234563992988");
            startActivity(fbSite);
             }
         });
@@ -195,7 +195,7 @@ public class ProfileActivity extends AppCompatActivity {
         try {
             ApplicationInfo applicationInfo = pm.getApplicationInfo("com.facebook.katana", 0);
             if (applicationInfo.enabled) {
-                uri = Uri.parse("fb://facewebmodal/f?href=" + url);
+                uri = Uri.parse("fb://page/" + url);
             }
         } catch (PackageManager.NameNotFoundException ignored) {
             Log.d(TAG, "" + ignored);
