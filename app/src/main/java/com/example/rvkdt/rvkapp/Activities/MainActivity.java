@@ -1,5 +1,6 @@
 package com.example.rvkdt.rvkapp.Activities;
 
+import android.animation.Animator;
 import android.animation.TimeInterpolator;
 import android.app.ActionBar;
 import android.content.Context;
@@ -35,6 +36,7 @@ import com.example.rvkdt.rvkapp.DataManagers.DBHandler;
 import com.example.rvkdt.rvkapp.Fragments.LikedBarsFragment;
 import com.example.rvkdt.rvkapp.R;
 import com.example.rvkdt.rvkapp.deleteLikedCallback;
+import com.example.rvkdt.rvkapp.onClickCallback;
 import com.example.rvkdt.rvkapp.updateListCallback;
 
 import java.util.ArrayList;
@@ -186,24 +188,40 @@ public class MainActivity extends AppCompatActivity implements Callback {
 
         // Interface that is passed into the SwipeDeckAdapter so
         // the adapter can use the onClick function in the MainActivity context.
-        final Callback onClickCallback = new Callback() {
-            @Override
-            public void onResponse() {
-
-            }
-            @Override
-            public  void onFailure(){
-
-            }
+        final onClickCallback cb = new onClickCallback() {
 
             @Override
-            public void onClick() {
-                Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
-                int id = currentBar.getId();
-                i.putExtra("bar_id",id);
-                i.putExtra("liked",false);
-                startActivityForResult(i, 0);
-                overridePendingTransition(0, 0);
+            public void onClick(View v) {
+
+                /*LinearLayout navBar = (LinearLayout) findViewById(R.id.navBar);
+                int navBarHeight = navBar.getHeight();
+                navBar.animate().translationY(-navBarHeight).setDuration(300);*/
+                v.animate().scaleX(1.1f).scaleY(1.3f).scaleX(1.1f).setDuration(300).setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
+                        int id = currentBar.getId();
+                        i.putExtra("bar_id",id);
+                        i.putExtra("liked",false);
+                        startActivityForResult(i, 0);
+                        overridePendingTransition(0, 0);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                });
             }
         };
 
@@ -237,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
                 }
                 currentBar = barManager.popDeck();
 
-                final SwipeDeckAdapter adapter = new SwipeDeckAdapter(bars, androidCTX, onClickCallback);
+                final SwipeDeckAdapter adapter = new SwipeDeckAdapter(bars, androidCTX, cb);
                 cardStack.setAdapter(adapter);
 
                 cardStack.setEventCallback(new SwipeDeck.SwipeEventCallback() {

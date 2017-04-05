@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.rvkdt.rvkapp.Activities.ProfileActivity;
 import com.example.rvkdt.rvkapp.DataManagers.BarStorage;
+import com.example.rvkdt.rvkapp.DataManagers.ImageManager;
 import com.example.rvkdt.rvkapp.DataObjects.Bar;
 import com.example.rvkdt.rvkapp.DataObjects.Event;
 import com.example.rvkdt.rvkapp.DataObjects.Hours;
@@ -56,6 +57,7 @@ public class LikedListAdapter extends ArrayAdapter<Bar> implements deleteLikedCa
     private Bar[] bars;
     private final Bar testBar;
     private final BarStorage barStorage;
+    private final ImageManager imageManager;
     private deleteLikedCallback callback = null;
 
     // The async image loader
@@ -69,8 +71,6 @@ public class LikedListAdapter extends ArrayAdapter<Bar> implements deleteLikedCa
 
     }
 
-
-
     public LikedListAdapter(Activity context, Bar[] bars, final deleteLikedCallback cb){
         super(context, R.layout.liked_bar, bars);
         callback=cb;
@@ -79,6 +79,7 @@ public class LikedListAdapter extends ArrayAdapter<Bar> implements deleteLikedCa
         this.bars = bars;
         this.barStorage = ((BarStorage) context.getApplicationContext());
         this.testBar = barStorage.pop();
+        this.imageManager = new ImageManager(context);
         /*this.imageLoader = ImageLoader.getInstance();
 
         ImageLoaderConfiguration config = getImageLoaderConfiguration();
@@ -132,8 +133,12 @@ public class LikedListAdapter extends ArrayAdapter<Bar> implements deleteLikedCa
 
         String name = bars[position].getName();
         bar_name_view.setText(name);
+        int image_id = bars[position].getId();
+        String image_url = bars[position].getImage();
 
+        imageManager.loadImage(image_id, image_url, image_view);
 
+        rowView.animate().alpha(1f).setDuration(300);
 
         return rowView;
     }

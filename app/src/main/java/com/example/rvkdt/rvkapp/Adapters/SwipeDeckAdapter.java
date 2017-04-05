@@ -19,8 +19,8 @@ import com.example.rvkdt.rvkapp.Callback;
 import com.example.rvkdt.rvkapp.DataManagers.ImageManager;
 import com.example.rvkdt.rvkapp.DataObjects.Bar;
 import com.example.rvkdt.rvkapp.R;
-import com.example.rvkdt.rvkapp.Utils.ImageSaver;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.example.rvkdt.rvkapp.onClickCallback;
+
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -30,37 +30,27 @@ import java.util.ArrayList;
  * Created by Steinar on 3/1/2017.
  */
 
-public class SwipeDeckAdapter extends BaseAdapter implements Callback {
+public class SwipeDeckAdapter extends BaseAdapter implements onClickCallback {
 
     private ArrayList<Bar> data;
     private Context context;
-    private Callback onClickCallback;
+    private onClickCallback cb;
     private ImageManager imageManager;
 
     @Override
-    public void onResponse() {
+    public void onClick(View view) {
 
     }
 
-    @Override
-    public void onClick() {
-
-    }
-
-    @Override
-    public void onFailure() {
-
-    }
-
-    public SwipeDeckAdapter(ArrayList<Bar> data, Context context, Callback onClickCallback) {
+    public SwipeDeckAdapter(ArrayList<Bar> data, Context context, onClickCallback cb) {
         this.data = data;
         this.context = context;
-        this.onClickCallback = onClickCallback;
+        this.cb = cb;
         this.imageManager = new ImageManager(context);
 
-        for(int i = 1; i < 67; i++){
+        /*for(int i = 1; i < 67; i++){
             imageManager.deleteImage("bar_image_" + i);
-        }
+        }*/
     }
 
     @Override
@@ -101,11 +91,9 @@ public class SwipeDeckAdapter extends BaseAdapter implements Callback {
         ImageView imageView = (ImageView) v.findViewById(R.id.imageView);
 
         String img_url = bar.getImage();
-        String img_name = "bar_image_" + bar.getId(); // +.jpeg?
+        int img_id = bar.getId(); // +.jpeg?
 
-        imageManager.loadImage(img_name, img_url, imageView);
-
-
+        imageManager.loadImage(img_id, img_url, imageView);
 
 
         /////////////////////////////////
@@ -120,32 +108,9 @@ public class SwipeDeckAdapter extends BaseAdapter implements Callback {
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                Log.d("tag", "tag");
-                v.animate().scaleX(1.2f).scaleY(1.2f).setDuration(500).setListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        onClickCallback.onClick();
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {
-
-                    }
-                });
-
+                cb.onClick(v);
             }
         });
-
 
         LocationManager locationManager = (LocationManager) this.context.getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {

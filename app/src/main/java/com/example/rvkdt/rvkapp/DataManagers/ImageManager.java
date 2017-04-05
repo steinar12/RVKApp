@@ -36,19 +36,13 @@ public class ImageManager {
     // Checks if the image is in local storage. If not, tries
     // to download the image from URL and puts it in local storage.
     // Then puts the image into the ImageView.
-    public void loadImage(String name, String url, ImageView iw){
+    public void loadImage(int id, String url, ImageView iw){
+        String name = "bar_image_" + id;
         ContextWrapper cw = new ContextWrapper(ctx.getApplicationContext());
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
         Log.d("stored", directory.getAbsolutePath());
         File myImageFile = new File(directory, name);
         Log.d("stored", myImageFile.getAbsolutePath());
-
-        File[] files = directory.listFiles();
-        Log.d("Files", "Size: "+ files.length);
-        for (int i = 0; i < files.length; i++)
-        {
-            Log.d("Files", "FileName:" + files[i].getName());
-        }
 
         if(myImageFile.exists()){
             Log.d("stored", "Exists");
