@@ -44,6 +44,7 @@ public class ProfileActivity extends AppCompatActivity {
     private ImageSaver imageSaver;
     private BarStorage barStorage;
     private int id;
+    private boolean liked;
 
     private static final String TAG = ProfileActivity.class.getSimpleName();
 
@@ -62,6 +63,7 @@ public class ProfileActivity extends AppCompatActivity {
         // String lnk, String desc, double rat,
         // Hours hrs, Event[] evt){
         id  = intent.getIntExtra("bar_id", -1);
+        liked = intent.getBooleanExtra("liked",false);
         Log.d(TAG, "get intent ID-ið" + id);
         if(id < 0) {
             Toast.makeText(this, "Error, invalid id", Toast.LENGTH_LONG).show();
@@ -70,7 +72,7 @@ public class ProfileActivity extends AppCompatActivity {
 
        //Bar barData = new Bar(1, "KoKo Bar", null, "https://scontent-arn2-1.xx.fbcdn.net/v/t1.0-9/10407812_637843283004053_8987368172014209754_n.jpg?oh=c1f1a5170f469e5b6d0f9bd3dbce8326&oe=5973A783",
         // 1.0, 2.0, "https://www.facebook.com/hurra.is/", "sSpooOOKY TEXT IsA DescRipTIonTeXteRinoO", 2.0, null, null);
-        final Bar barData = barStorage.getBar(id, false);
+        final Bar barData = barStorage.getBar(id, liked);
         Log.d(TAG, "le barData??!!" + barData);
         Log.d(TAG, "barData.getLink" + barData.getLink());
         Log.d(TAG, "barData.getImage" + barData.getImage());

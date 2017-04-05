@@ -6,5 +6,5 @@ package com.example.rvkdt.rvkapp;
 
 public interface deleteLikedCallback {
 
-    void onDelete(int id);
+    void onDelete();
 }

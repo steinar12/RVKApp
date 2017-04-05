@@ -13,7 +13,6 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:onClick="onClick"
         android:padding="5dp"
         app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 

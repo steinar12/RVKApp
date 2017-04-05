@@ -15,13 +15,14 @@ import com.example.rvkdt.rvkapp.Adapters.LikedListAdapter;
 import com.example.rvkdt.rvkapp.DataManagers.BarStorage;
 import com.example.rvkdt.rvkapp.DataObjects.Bar;
 import com.example.rvkdt.rvkapp.R;
+import com.example.rvkdt.rvkapp.deleteLikedCallback;
 
 import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LikedBarsFragment extends Fragment {
+public class LikedBarsFragment extends Fragment implements deleteLikedCallback {
 
     LikedListAdapter likedListAdapter;
     private BarStorage barStorage;
@@ -31,6 +32,10 @@ public class LikedBarsFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public  void onDelete(){
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,7 +58,12 @@ public class LikedBarsFragment extends Fragment {
         Bar[] bars = new Bar[likedBars.size()];
         likedBars.toArray(bars);
         Log.d("snug", likedBars.size() + "");
-        likedListAdapter = new LikedListAdapter(getActivity(),bars);
+        likedListAdapter = new LikedListAdapter(getActivity(), bars, new deleteLikedCallback() {
+            @Override
+            public void onDelete() {
+                update();
+            }
+        });
         listView.setAdapter(likedListAdapter);
         this.update();
 

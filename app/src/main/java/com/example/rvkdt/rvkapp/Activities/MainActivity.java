@@ -121,9 +121,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
 
         Log.d("snug", "onCreate");
 
-        for(int i = 1; i < 55; i++){
-            db.addLikedBarId(i);
-        }
+
         /*db.addLikedBarId(1);
         }
 
@@ -194,17 +192,9 @@ public class MainActivity extends AppCompatActivity implements Callback {
                 Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
                 int id = currentBar.getId();
                 i.putExtra("bar_id",id);
+                i.putExtra("liked",false);
                 startActivityForResult(i, 0);
                 overridePendingTransition(0, 0);
-            }
-        };
-
-        // Interface that is passed into the LikedListAdapter so
-        // the adapter can use the onDelete function in the MainActivity context.
-        final deleteLikedCallback onDeleteLikedCallback = new deleteLikedCallback() {
-            @Override
-            public void onDelete(int id){
-                barManager.removeLiked(id);
             }
         };
 

@@ -50,12 +50,13 @@ import java.io.File;
  * Created by Danni on 09/03/2017.
  */
 
-public class LikedListAdapter extends ArrayAdapter<Bar> implements deleteLikedCallback {
+public class LikedListAdapter extends ArrayAdapter<Bar> implements deleteLikedCallback{
 
     private final Activity ctx;
     private Bar[] bars;
     private final Bar testBar;
     private final BarStorage barStorage;
+    private deleteLikedCallback callback = null;
 
     // The async image loader
     ImageLoader imageLoader;
@@ -64,12 +65,15 @@ public class LikedListAdapter extends ArrayAdapter<Bar> implements deleteLikedCa
     private int img_num = 0;
 
     @Override
-    public void onDelete(int id) {
+    public  void onDelete(){
 
     }
 
-    public LikedListAdapter(Activity context, Bar[] bars){
+
+
+    public LikedListAdapter(Activity context, Bar[] bars, final deleteLikedCallback cb){
         super(context, R.layout.liked_bar, bars);
+        callback=cb;
         Log.d("snug","CALLED CONSTRUCTOR WITH THIS BARS LENGTH: " + bars.length);
         this.ctx = context;
         this.bars = bars;
@@ -86,7 +90,7 @@ public class LikedListAdapter extends ArrayAdapter<Bar> implements deleteLikedCa
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup parent)
+    public View getView(final int position, View view, ViewGroup parent)
     {
         Log.d("snug", "NUMBER: " + position);
         LayoutInflater inflater = ctx.getLayoutInflater();
@@ -96,13 +100,31 @@ public class LikedListAdapter extends ArrayAdapter<Bar> implements deleteLikedCa
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(ctx, ProfileActivity.class);
+                int id = bars[position].getId();
+                i.putExtra("bar_id",id);
+                i.putExtra("liked",true);
+                Log.d("id",String.valueOf(id));
                 ctx.startActivityForResult(i, 0);
-                //ctx.overridePendingTransition(0, 0);
+                ctx.overridePendingTransition(0, 0);
             }
         });
 
         ImageView delete_button = (ImageView) rowView.findViewById(R.id.delete_button);
         delete_button.setTag(position);
+
+        delete_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("string","ping");
+                int barId = (int) v.getTag();
+                int id = bars[position].getId();
+                Log.d("string", String.valueOf(barId));
+                Log.d("string", String.valueOf(id));
+                barStorage.removeLiked(id);
+                callback.onDelete();
+
+            }
+        });
 
         final ImageView image_view = (ImageView) rowView.findViewById(R.id.image);
         final RelativeLayout list_item_container = (RelativeLayout) rowView.findViewById(R.id.list_item_container);
@@ -199,18 +221,5 @@ public class LikedListAdapter extends ArrayAdapter<Bar> implements deleteLikedCa
                 .build();
 
         return config;
-    }
-
-    public void onClick(View v){
-        final int id = v.getId();
-        final int barId = (int) v.getTag();
-
-        switch(id){
-            case R.id.delete_button:
-                onDelete(barId);
-                break;
-            default:
-                break;
-        }
     }
 }
