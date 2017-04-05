@@ -23,6 +23,7 @@ import com.example.rvkdt.rvkapp.DataObjects.Event;
 import com.example.rvkdt.rvkapp.DataObjects.Hours;
 import com.example.rvkdt.rvkapp.DataObjects.Pair;
 import com.example.rvkdt.rvkapp.R;
+import com.example.rvkdt.rvkapp.Utils.FacebookHandler;
 import com.example.rvkdt.rvkapp.deleteLikedCallback;
 
 
@@ -40,6 +41,7 @@ public class EventListAdapter extends ArrayAdapter<Event> {
 
     private final Activity ctx;
     private Event[] events;
+    private FacebookHandler facebookHandler;
 
 
     public EventListAdapter(Activity context, Event[] events){
@@ -47,11 +49,13 @@ public class EventListAdapter extends ArrayAdapter<Event> {
         Log.d(TAG,"Loading events " + events.length);
         this.ctx = context;
         this.events = events;
+        this.facebookHandler = new FacebookHandler(this.ctx);
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup parent)
+    public View getView(final int position, View view, ViewGroup parent)
     {
+        FacebookHandler fbh = this.facebookHandler;
         LayoutInflater inflater = ctx.getLayoutInflater();
         View rowView = inflater.inflate(R.layout.event_list_item, null, true);
 
@@ -64,8 +68,21 @@ public class EventListAdapter extends ArrayAdapter<Event> {
         //TextView startTime = (TextView) rowView.findViewById(R.id.eventDate);
         //startTime.setText(String.valueOf(events[position].getStartTime()));
 
+        rowView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "CLICK?");
+                String theLink = events[position].getLink();
+                Log.d(TAG, theLink);
+                Intent fbSite = facebookHandler.newFacebookIntent(theLink, "event");
+                ctx.startActivity(fbSite);
+            }
+        });
+
         return rowView;
     }
+
+
 
 
     public void onClick(View v){

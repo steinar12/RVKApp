@@ -14,6 +14,7 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -27,6 +28,7 @@ import com.example.rvkdt.rvkapp.DataManagers.BarStorage;
 import com.example.rvkdt.rvkapp.DataObjects.Bar;
 import com.example.rvkdt.rvkapp.DataObjects.Event;
 import com.example.rvkdt.rvkapp.R;
+import com.example.rvkdt.rvkapp.Utils.FacebookHandler;
 import com.example.rvkdt.rvkapp.Utils.ImageSaver;
 import com.example.rvkdt.rvkapp.Utils.MapSetup;
 import com.google.android.gms.maps.GoogleMap;
@@ -49,17 +51,20 @@ public class ProfileActivity extends AppCompatActivity {
     private BarStorage barStorage;
     private int id;
     private boolean liked;
+    private FacebookHandler facebookHandler;
 
     private static final String TAG = ProfileActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         imageSaver = new ImageSaver(this);
         barStorage = ((BarStorage) this.getApplicationContext());
         intent = getIntent();
         super.onCreate(savedInstanceState);
 
         this.activity = this;
+        facebookHandler = new FacebookHandler(activity);
 
         setContentView(R.layout.activity_profile);
         //(int idvalue, String nme,String men,
@@ -88,7 +93,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         ExpandableTextView desc = (ExpandableTextView) findViewById(R.id.expand_text_view);
 
-        ListView list = (ListView) findViewById(R.id.eventListi);
+        final ListView list = (ListView) findViewById(R.id.eventListi);
 
         ImageView cover = (ImageView) findViewById(R.id.profileImage);
 
@@ -139,11 +144,12 @@ public class ProfileActivity extends AppCompatActivity {
 
         list.setAdapter(eventAdapter);
 
+
         fbButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
           String theLink = barData.getLink();
            Log.d(TAG, theLink);
-           Intent fbSite = newFacebookIntent(activity.getPackageManager(), theLink);
+           Intent fbSite = facebookHandler.newFacebookIntent(theLink, "page");
            startActivity(fbSite);
             }
         });
