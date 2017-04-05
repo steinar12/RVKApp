@@ -22,8 +22,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.rvkdt.rvkapp.Adapters.EventListAdapter;
 import com.example.rvkdt.rvkapp.DataManagers.BarStorage;
 import com.example.rvkdt.rvkapp.DataObjects.Bar;
+import com.example.rvkdt.rvkapp.DataObjects.Event;
 import com.example.rvkdt.rvkapp.R;
 import com.example.rvkdt.rvkapp.Utils.ImageSaver;
 import com.example.rvkdt.rvkapp.Utils.MapSetup;
@@ -33,10 +35,12 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 
+import java.util.ArrayList;
+
 
 public class ProfileActivity extends AppCompatActivity {
 
-    ArrayAdapter <String> eventAdapter;
+    EventListAdapter eventAdapter;
     MapFragment mapFragment;
     GoogleMap googleMap;
     Activity activity;
@@ -104,9 +108,24 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
 
-
         String[] test = new String[] {"danni", "Kaffibarinn", "Austur", "Lebowskibar", "hurra"};
-        eventAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, test);
+
+        Event[] events = barData.getEvents();
+        eventAdapter = new EventListAdapter(this, events);
+
+        String[] putaMadre = new String[events.length];
+        if(events.length != 0) {
+            putaMadre = organizeEvent(events);
+            Log.d("event?", events[0].getName());
+            Log.d("event?", events[0].getLink());
+            Log.d("event?", events[0].getVenue());
+            Log.d("event?", ""+events[0].getStartTime());
+            Log.d("event?", ""+events[0].getEndTime());
+            Log.d("event?", ""+events[0].getGuests());
+        }else {
+            Log.d("event?", "events er null");
+        }
+
 
         //cover.setImageResource(R.drawable.hurrapic);
         setCoverImage(barData.getId());
@@ -124,7 +143,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
           String theLink = barData.getLink();
            Log.d(TAG, theLink);
-           Intent fbSite = newFacebookIntent(activity.getPackageManager(), "227234563992988");
+           Intent fbSite = newFacebookIntent(activity.getPackageManager(), theLink);
            startActivity(fbSite);
             }
         });
@@ -175,6 +194,14 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         this.googleMap = mapSetup.setupMap(origin, dest);
+    }
+
+    private String[] organizeEvent(Event[] events) {
+        String[] organized = new String[events.length];
+        for(int i = 0; i < events.length; i++) {
+            organized[i] = events[i].getName();
+        }
+        return organized;
     }
 
     /**

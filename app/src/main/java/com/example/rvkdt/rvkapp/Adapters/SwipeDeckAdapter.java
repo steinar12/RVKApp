@@ -95,6 +95,8 @@ public class SwipeDeckAdapter extends BaseAdapter implements Callback {
             // normally use a viewholder
             v = inflater.inflate(R.layout.card_view, parent, false);
         }
+        Log.d("swipedeckadapter", "next log..");
+        Log.d("SwipeDeckAdapater", data.get(position).getName());
         ((TextView) v.findViewById(R.id.barTitle)).setText(data.get(position).getName());
         ((TextView) v.findViewById(R.id.textView)).setText(data.get(position).getAbout());
         Picasso.with(context).load(data.get(position).getImage()).into(((ImageView) v.findViewById(R.id.imageView)));
