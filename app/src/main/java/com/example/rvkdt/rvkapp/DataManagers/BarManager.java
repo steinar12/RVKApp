@@ -72,7 +72,7 @@ public class BarManager implements Callback {
         barStorage = ((BarStorage) ctx);
         barStorage.init();
         barStorage.setDbHandler(dataBase);
-        imagesaver = new ImageSaver(ctx);
+        //imagesaver = new ImageSaver(ctx);
         fetchIds(new ResponseCallback() {
             @Override
             public void onResponse(JSONArray response) {
@@ -183,10 +183,10 @@ public class BarManager implements Callback {
                 Bar bar = new Bar(id, name, menu, image, lat, lng, link, about, rating, hours, events);
 
                 //Send the image to ImageSaver to store the image.
-                String cleanImage = image.replaceAll("\\\\","");
+                /*String cleanImage = image.replaceAll("\\\\","");
                 Log.d("BarManager", "imagesaver cleanImage:: " + cleanImage);
-                Log.d("BarManager", "id: " + id);
-                imagesaver.downloadImage(cleanImage, id);
+                Log.d("BarManager", "id: " + id);*/
+                //imagesaver.downloadImage(cleanImage, id);
 
                 output.add(bar);
             } catch (JSONException e) {
@@ -390,5 +390,7 @@ public class BarManager implements Callback {
     public void pushLiked(Bar bar) {barStorage.pushLiked(bar);}
 
     public void removeLiked(int bar_id) {barStorage.removeLiked(bar_id);}
+
+    public int getBarCount() {return barStorage.getBarIds().size();}
 
 }

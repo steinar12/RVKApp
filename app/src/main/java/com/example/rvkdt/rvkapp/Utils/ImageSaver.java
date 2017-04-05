@@ -129,9 +129,9 @@ public class ImageSaver {
     //Saves image to images directory.
     public void handleLoadedBitmap(Bitmap image, int id) {
 
-        Log.d(TAG, "Saving image as: " + id + ".png");
+        Log.d(TAG, "Saving image as: bar_image_" + id + ".png");
         new ImageSaver(context).
-                setFileName(id + ".png").
+                setFileName("bar_image_" + id + ".png").
                 setDirectoryName("images").
                 save(image);
     }
@@ -139,9 +139,9 @@ public class ImageSaver {
     //Loads images to images directory
     public Bitmap loadCoverPhoto(int id) {
 
-        Log.d(TAG, "LoadCoverPhoto: " + id + ".png");
+        Log.d(TAG, "LoadCoverPhoto: bar_image_" + id + ".png");
         Bitmap bitmap = new ImageSaver(context).
-                setFileName(id + ".png").
+                setFileName("bar_image_" + id + ".png").
                 setDirectoryName("images").
                 load();
         return bitmap;

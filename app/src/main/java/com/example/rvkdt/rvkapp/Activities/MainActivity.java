@@ -5,6 +5,7 @@ import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
+import android.os.PersistableBundle;
 import android.os.StrictMode;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -112,15 +113,23 @@ public class MainActivity extends AppCompatActivity implements Callback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ActivityCompat.requestPermissions( this, new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  }, 1 );
+
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-        ActivityCompat.requestPermissions( this, new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  }, 1 );
-
 
         Log.d("snug", "onCreate");
 
+        /*int[] ids = db.getLikedBarIds();
+        for(int i = 0; i < ids.length; i++){
+            db.removeBarId(ids[i]);
+        }*/
+
+        /*for(int i = 1; i < 55; i++){
+            db.addLikedBarId(i);
+        }*/
 
         /*db.addLikedBarId(1);
         }
@@ -290,4 +299,6 @@ public class MainActivity extends AppCompatActivity implements Callback {
             }
         }, db);
     }
+
+
 }

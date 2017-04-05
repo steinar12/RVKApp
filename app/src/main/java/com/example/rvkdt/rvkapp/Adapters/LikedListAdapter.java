@@ -79,10 +79,10 @@ public class LikedListAdapter extends ArrayAdapter<Bar> implements deleteLikedCa
         this.bars = bars;
         this.barStorage = ((BarStorage) context.getApplicationContext());
         this.testBar = barStorage.pop();
-        this.imageLoader = ImageLoader.getInstance();
+        /*this.imageLoader = ImageLoader.getInstance();
 
         ImageLoaderConfiguration config = getImageLoaderConfiguration();
-        this.imageLoader.init(config);
+        this.imageLoader.init(config);*/
     }
 
     public void setBars(Bar[] bars){
@@ -92,7 +92,7 @@ public class LikedListAdapter extends ArrayAdapter<Bar> implements deleteLikedCa
     @Override
     public View getView(final int position, View view, ViewGroup parent)
     {
-        Log.d("snug", "NUMBER: " + position);
+        //Log.d("snug", "NUMBER: " + position);
         LayoutInflater inflater = ctx.getLayoutInflater();
         View rowView = inflater.inflate(R.layout.liked_bar2, null, true);
 
@@ -133,34 +133,7 @@ public class LikedListAdapter extends ArrayAdapter<Bar> implements deleteLikedCa
         String name = bars[position].getName();
         bar_name_view.setText(name);
 
-        DisplayImageOptions options = getImageLoaderOptions();
 
-        imageLoader.displayImage("drawable://" + getImageID(), image_view, options, new ImageLoadingListener() {
-            @Override
-            public void onLoadingStarted(String imageUri, View view) {
-                list_item_container.setAlpha(0);
-            }
-
-            @Override
-            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-
-            }
-
-            @Override
-            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                list_item_container.animate().alpha(1).setDuration(300);
-            }
-
-            @Override
-            public void onLoadingCancelled(String imageUri, View view) {
-
-            }
-        }, new ImageLoadingProgressListener() {
-            @Override
-            public void onProgressUpdate(String imageUri, View view, int current, int total) {
-
-            }
-        });
 
         return rowView;
     }

@@ -3,11 +3,9 @@ package com.example.rvkdt.rvkapp.Adapters;
 import android.Manifest;
 import android.animation.Animator;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,29 +13,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.example.rvkdt.rvkapp.Activities.ProfileActivity;
 import com.example.rvkdt.rvkapp.Callback;
+import com.example.rvkdt.rvkapp.DataManagers.ImageManager;
 import com.example.rvkdt.rvkapp.DataObjects.Bar;
 import com.example.rvkdt.rvkapp.R;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.squareup.picasso.Picasso;
+import com.example.rvkdt.rvkapp.Utils.ImageSaver;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
+
 
 /**
  * Created by Steinar on 3/1/2017.
@@ -48,6 +35,7 @@ public class SwipeDeckAdapter extends BaseAdapter implements Callback {
     private ArrayList<Bar> data;
     private Context context;
     private Callback onClickCallback;
+    private ImageManager imageManager;
 
     @Override
     public void onResponse() {
@@ -68,6 +56,11 @@ public class SwipeDeckAdapter extends BaseAdapter implements Callback {
         this.data = data;
         this.context = context;
         this.onClickCallback = onClickCallback;
+        this.imageManager = new ImageManager(context);
+
+        for(int i = 1; i < 67; i++){
+            imageManager.deleteImage("bar_image_" + i);
+        }
     }
 
     @Override
@@ -98,18 +91,31 @@ public class SwipeDeckAdapter extends BaseAdapter implements Callback {
         Log.d("swipedeckadapter", "next log..");
         Log.d("SwipeDeckAdapater", data.get(position).getName());
         ((TextView) v.findViewById(R.id.barTitle)).setText(data.get(position).getName());
-        ((TextView) v.findViewById(R.id.textView)).setText(data.get(position).getAbout());
-        Picasso.with(context).load(data.get(position).getImage()).into(((ImageView) v.findViewById(R.id.imageView)));
+        //((TextView) v.findViewById(R.id.textView)).setText(data.get(position).getAbout());
 
-        String hours = data.get(position).getHours().getHours();
+        Bar bar = data.get(position);
+
+
+        /////////////////////////////////
+
+        ImageView imageView = (ImageView) v.findViewById(R.id.imageView);
+
+        String img_url = bar.getImage();
+        String img_name = "bar_image_" + bar.getId(); // +.jpeg?
+
+        imageManager.loadImage(img_name, img_url, imageView);
+
+
+
+
+        /////////////////////////////////
+
+
+        String hours = bar.getHours().getHours();
         if (hours != "") {
             ((TextView) v.findViewById(R.id.OpeningHours)).setText(hours);
         }
-        else ((TextView) v.findViewById(R.id.OpeningHours)).setText("unknown");
-
-
-
-        Log.d("***look***", data.get(position).getHours().getHours());
+        else ((TextView) v.findViewById(R.id.OpeningHours)).setText("Unknown");
 
         v.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,14 +154,12 @@ public class SwipeDeckAdapter extends BaseAdapter implements Callback {
         }
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         if (location == null) {
-            ((TextView) v.findViewById(R.id.Distance)).setText("unkown");
+            ((TextView) v.findViewById(R.id.Distance)).setText("Unknown");
             return v;
         }
 
-
-
-        double lat = data.get(position).getLat();
-        double lng = data.get(position).getLng();
+        double lat = bar.getLat();
+        double lng = bar.getLng();
         Location location2 = new Location("");
         location2.setLatitude(lat);
         location2.setLongitude(lng);
