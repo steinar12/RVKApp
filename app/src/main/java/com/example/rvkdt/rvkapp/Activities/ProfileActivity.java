@@ -79,9 +79,9 @@ public class ProfileActivity extends AppCompatActivity {
         ImageView imageView = (ImageView) findViewById(R.id.profileImage);
 
         String img_url = barData.getImage();
-        String img_name = "bar_image_" + barData.getId(); // +.jpeg?
+        int  img_id = barData.getId(); // +.jpeg?
 
-        imageManager.loadImage(img_name, img_url, imageView);
+        imageManager.loadImage(img_id, img_url, imageView);
 
         ImageButton fbButton = (ImageButton) findViewById(R.id.fbButton);
 
