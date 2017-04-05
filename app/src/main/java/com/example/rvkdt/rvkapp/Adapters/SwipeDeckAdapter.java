@@ -112,24 +112,12 @@ public class SwipeDeckAdapter extends BaseAdapter implements onClickCallback {
             }
         });
 
-        LocationManager locationManager = (LocationManager) this.context.getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ((TextView) v.findViewById(R.id.Distance)).setText("Need gps permission to show distance to bar");
+        float distance = bar.getDistance(this.context);
+
+        if (distance < 0.0) {
+            ((TextView) v.findViewById(R.id.Distance)).setText("unable to calculate distance");
             return v;
         }
-        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if (location == null) {
-            ((TextView) v.findViewById(R.id.Distance)).setText("Unknown");
-            return v;
-        }
-
-        double lat = bar.getLat();
-        double lng = bar.getLng();
-        Location location2 = new Location("");
-        location2.setLatitude(lat);
-        location2.setLongitude(lng);
-
-        float distance = location2.distanceTo(location);
         distance = distance / 1000;
         DecimalFormat kiloMeters = new DecimalFormat("#.#");
         DecimalFormat meters = new DecimalFormat("#");
