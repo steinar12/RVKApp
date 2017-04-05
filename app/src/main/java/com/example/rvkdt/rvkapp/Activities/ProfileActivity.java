@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.rvkdt.rvkapp.Adapters.EventListAdapter;
 import com.example.rvkdt.rvkapp.DataManagers.BarStorage;
+import com.example.rvkdt.rvkapp.DataManagers.ImageManager;
 import com.example.rvkdt.rvkapp.DataObjects.Bar;
 import com.example.rvkdt.rvkapp.DataObjects.Event;
 import com.example.rvkdt.rvkapp.R;
@@ -52,6 +53,7 @@ public class ProfileActivity extends AppCompatActivity {
     private int id;
     private boolean liked;
     private FacebookHandler facebookHandler;
+    private ImageManager imageManager;
 
     private static final String TAG = ProfileActivity.class.getSimpleName();
 
@@ -65,12 +67,10 @@ public class ProfileActivity extends AppCompatActivity {
 
         this.activity = this;
         facebookHandler = new FacebookHandler(activity);
+        imageManager = new ImageManager(activity);
 
         setContentView(R.layout.activity_profile);
-        //(int idvalue, String nme,String men,
-        // String img, double lt, double lg,
-        // String lnk, String desc, double rat,
-        // Hours hrs, Event[] evt){
+
         id  = intent.getIntExtra("bar_id", -1);
         liked = intent.getBooleanExtra("liked",false);
         Log.d(TAG, "get intent ID-ið" + id);
@@ -95,22 +95,16 @@ public class ProfileActivity extends AppCompatActivity {
 
         final ListView list = (ListView) findViewById(R.id.eventListi);
 
-        ImageView cover = (ImageView) findViewById(R.id.profileImage);
+        ImageView imageView = (ImageView) findViewById(R.id.profileImage);
+
+        String img_url = barData.getImage();
+        String img_name = "bar_image_" + barData.getId(); // +.jpeg?
+
+        imageManager.loadImage(img_name, img_url, imageView);
 
         ImageButton fbButton = (ImageButton) findViewById(R.id.fbButton);
 
         Button loadButton = (Button) findViewById(R.id.buttonLoad);
-        loadButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                //action
-                //Bitmap bm = imageSaver.loadCoverPhoto();
-                //ImageView coverDD = (ImageView) findViewById(R.id.profileImage);
-                //coverDD.setImageBitmap(bm);
-                //Intent test = newFacebookIntent(activity.getPackageManager(), "https://www.facebook.com/hurra.is/");
-                //startActivity(test);
-
-            }
-        });
 
 
         String[] test = new String[] {"danni", "Kaffibarinn", "Austur", "Lebowskibar", "hurra"};
@@ -133,7 +127,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 
         //cover.setImageResource(R.drawable.hurrapic);
-        setCoverImage(barData.getId());
+        //setCoverImage(barData.getId());
         String barName = barData.getName();
         name.setText(barName);
         desc.setText(barData.getAbout());
