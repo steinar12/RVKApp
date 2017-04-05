@@ -33,29 +33,6 @@
                 android:textColor="@color/common_google_signin_btn_text_light_default"
                 android:textSize="28sp" />
 
-            <Button
-                android:id="@+id/buttonLoad"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TEST LOAD" />
-
-            <TextView
-                android:id="@+id/aboutTexti"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:text="About texti" />
-
-            <TextView
-                android:id="@+id/facebookLink"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:linksClickable="true"
-                android:text="facebooklink" />
-
             <ImageButton
                 android:id="@+id/fbButton"
                 android:layout_width="65dp"
