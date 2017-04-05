@@ -191,12 +191,11 @@ public class MainActivity extends AppCompatActivity implements Callback {
         final onClickCallback cb = new onClickCallback() {
 
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
 
-                /*LinearLayout navBar = (LinearLayout) findViewById(R.id.navBar);
-                int navBarHeight = navBar.getHeight();
-                navBar.animate().translationY(-navBarHeight).setDuration(300);*/
-                v.animate().scaleX(1.1f).scaleY(1.3f).scaleX(1.1f).setDuration(300).setListener(new Animator.AnimatorListener() {
+
+                v.animate().translationY(14).setDuration(300);
+                v.animate().scaleX(1.1f).scaleY(1.1f).scaleX(1.1f).setDuration(300).setListener(new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animation) {
 
@@ -204,11 +203,14 @@ public class MainActivity extends AppCompatActivity implements Callback {
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
+                        v.animate().scaleX(1).scaleY(1).setDuration(300).setStartDelay(150).setListener(null);
+                        v.animate().translationY(0).setDuration(300);
                         Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
                         int id = currentBar.getId();
                         i.putExtra("bar_id",id);
                         i.putExtra("liked",false);
-                        startActivityForResult(i, 0);
+                        startActivity(i);
+                        //overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         overridePendingTransition(0, 0);
                     }
 
