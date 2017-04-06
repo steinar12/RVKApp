@@ -12,8 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -84,6 +86,8 @@ public class ProfileActivity extends AppCompatActivity {
         ExpandableTextView desc = (ExpandableTextView) findViewById(R.id.expand_text_view);
 
         final ListView list = (ListView) findViewById(R.id.eventListi);
+        LinearLayout eventItem = (LinearLayout) this.findViewById(R.id.XXX);
+
 
         ImageView imageView = (ImageView) findViewById(R.id.profileImage);
 
@@ -129,6 +133,20 @@ public class ProfileActivity extends AppCompatActivity {
 
 
         list.setAdapter(eventAdapter);
+
+        int eventCount = events.length;
+        int itemHeight = 200;
+
+        if(eventCount > 0) {
+            Log.d("event height", "" + eventItem);
+            //itemHeight = eventItem.getHeight();
+        }
+
+
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) list.getLayoutParams();
+        lp.height = itemHeight * eventCount;
+        list.setLayoutParams(lp);
+        Log.d("event height", "" + lp.height);
 
 
         fbButton.setOnClickListener(new View.OnClickListener() {
