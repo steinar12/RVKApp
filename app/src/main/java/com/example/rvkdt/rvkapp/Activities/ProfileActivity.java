@@ -90,6 +90,13 @@ public class ProfileActivity extends AppCompatActivity {
 
 
         ImageView imageView = (ImageView) findViewById(R.id.profileImage);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            }
+        });
 
         String hours = barData.getHours().getHours();
         if (hours != "") {
