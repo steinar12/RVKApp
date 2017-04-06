@@ -80,6 +80,9 @@ public class SwipeDeckAdapter extends BaseAdapter implements onClickCallback {
         }
         Log.d("swipedeckadapter", "next log..");
         Log.d("SwipeDeckAdapater", data.get(position).getName());
+
+        String name = data.get(position).getName();
+        //if(name.length() > 20)
         ((TextView) v.findViewById(R.id.barTitle)).setText(data.get(position).getName());
         //((TextView) v.findViewById(R.id.textView)).setText(data.get(position).getAbout());
 
@@ -126,6 +129,12 @@ public class SwipeDeckAdapter extends BaseAdapter implements onClickCallback {
             ((TextView) v.findViewById(R.id.Distance)).setText(meters.format(distance*1000) + " m");
         }
         else ((TextView) v.findViewById(R.id.Distance)).setText(kiloMeters.format(distance) + " km");
+
+        String tag = bar.getTag();
+
+        if(tag == null || tag == "") tag = "Bar";
+
+        ((TextView) v.findViewById(R.id.Tag)).setText(tag);
 
         return v;
     }
