@@ -34,6 +34,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 
+import java.text.DecimalFormat;
 
 
 public class ProfileActivity extends AppCompatActivity {
@@ -85,6 +86,28 @@ public class ProfileActivity extends AppCompatActivity {
         final ListView list = (ListView) findViewById(R.id.eventListi);
 
         ImageView imageView = (ImageView) findViewById(R.id.profileImage);
+
+        String hours = barData.getHours().getHours();
+        if (hours != "") {
+            ((TextView) findViewById(R.id.OpeningHours)).setText(hours);
+        }
+        else ((TextView) findViewById(R.id.OpeningHours)).setText("Unknown");
+
+        float distance = barData.getDistance(this);
+
+        if (distance < 0.0) {
+            ((TextView) findViewById(R.id.Distance)).setText("unable to calculate distance");
+        }
+        else {
+            distance = distance / 1000;
+            DecimalFormat kiloMeters = new DecimalFormat("#.#");
+            DecimalFormat meters = new DecimalFormat("#");
+
+            if (distance < 1) {
+                ((TextView) findViewById(R.id.Distance)).setText(meters.format(distance * 1000) + " m");
+            } else
+                ((TextView) findViewById(R.id.Distance)).setText(kiloMeters.format(distance) + " km");
+        }
 
         String img_url = barData.getImage();
         int  img_id = barData.getId(); // +.jpeg?
