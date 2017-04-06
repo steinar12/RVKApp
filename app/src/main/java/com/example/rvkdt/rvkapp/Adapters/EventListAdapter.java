@@ -28,6 +28,8 @@ import com.example.rvkdt.rvkapp.deleteLikedCallback;
 
 
 import java.io.File;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static com.android.volley.VolleyLog.TAG;
@@ -65,13 +67,17 @@ public class EventListAdapter extends ArrayAdapter<Event> {
         TextView venueText = (TextView) rowView.findViewById(R.id.attendingCount);
         venueText.setText(String.valueOf(events[position].getGuests()));
 
-        //TextView startTime = (TextView) rowView.findViewById(R.id.eventDate);
-        //startTime.setText(String.valueOf(events[position].getStartTime()));
+        TextView startTime = (TextView) rowView.findViewById(R.id.eventStartTime);
+        //TextView endTime = (TextView) rowView.findViewById(R.id.eventEndTime);
+        Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String start = formatter.format(events[position].getStartTime());
+        //String end = formatter.format(events[position].getEndTime());
+        startTime.setText(start);
+        //endTime.setText(end);
 
         rowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "CLICK?");
                 String theLink = events[position].getLink();
                 Log.d(TAG, theLink);
                 Intent fbSite = facebookHandler.newFacebookIntent(theLink, "event");
