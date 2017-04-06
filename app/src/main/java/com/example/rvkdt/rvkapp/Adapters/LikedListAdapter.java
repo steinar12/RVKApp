@@ -106,7 +106,7 @@ public class LikedListAdapter extends ArrayAdapter<Bar> implements deleteLikedCa
                 i.putExtra("liked",true);
                 Log.d("id",String.valueOf(id));
                 ctx.startActivityForResult(i, 0);
-                ctx.overridePendingTransition(0, 0);
+                ctx.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
 
@@ -123,7 +123,6 @@ public class LikedListAdapter extends ArrayAdapter<Bar> implements deleteLikedCa
                 Log.d("string", String.valueOf(id));
                 barStorage.removeLiked(id);
                 callback.onDelete();
-
             }
         });
 

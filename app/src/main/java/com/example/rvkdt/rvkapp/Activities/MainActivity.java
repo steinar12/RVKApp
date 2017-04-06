@@ -1,41 +1,32 @@
 package com.example.rvkdt.rvkapp.Activities;
 
 import android.animation.Animator;
-import android.animation.TimeInterpolator;
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
-import android.os.PersistableBundle;
 import android.os.StrictMode;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.BounceInterpolator;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daprlabs.cardstack.SwipeDeck;
 import com.daprlabs.cardstack.SwipeFrameLayout;
 import com.example.rvkdt.rvkapp.Adapters.SwipeDeckAdapter;
-import com.example.rvkdt.rvkapp.DataManagers.BarStorage;
 import com.example.rvkdt.rvkapp.DataManagers.BarManager;
 import com.example.rvkdt.rvkapp.Callback;
 import com.example.rvkdt.rvkapp.DataObjects.Bar;
 import com.example.rvkdt.rvkapp.DataManagers.DBHandler;
 import com.example.rvkdt.rvkapp.Fragments.LikedBarsFragment;
 import com.example.rvkdt.rvkapp.R;
-import com.example.rvkdt.rvkapp.deleteLikedCallback;
 import com.example.rvkdt.rvkapp.onClickCallback;
 import com.example.rvkdt.rvkapp.updateListCallback;
 
@@ -44,6 +35,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements Callback {
 
     private SwipeDeck cardStack;
+
     private BarManager barManager;
     private Bar currentBar;
     private final int INITIAL_DECK = 5;
@@ -53,6 +45,14 @@ public class MainActivity extends AppCompatActivity implements Callback {
     private SwipeFrameLayout swipe_frame;
     private LinearLayout liked_bars_container;
     private LikedBarsFragment liked_bars_fragment;
+
+    // cardStack onTouch breytur
+    private float initialX;
+    private float initialY;
+    private float lastX;
+    private float lastY;
+
+
 
     // view 1 = cards, view 2 = liked bars
     private boolean cardview_enabled;
@@ -188,6 +188,8 @@ public class MainActivity extends AppCompatActivity implements Callback {
         set_view("cards");
 
         cardStack = (SwipeDeck) findViewById(R.id.swipe_deck);
+
+
         final Context androidCTX = this;
 
         // Interface that is passed into the SwipeDeckAdapter so
@@ -197,8 +199,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
             @Override
             public void onClick(final View v) {
 
-
-                v.animate().translationY(14).setDuration(300);
+                /*v.animate().translationY(14).setDuration(300);
                 v.animate().scaleX(1.1f).scaleY(1.1f).scaleX(1.1f).setDuration(300).setListener(new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animation) {
@@ -227,7 +228,15 @@ public class MainActivity extends AppCompatActivity implements Callback {
                     public void onAnimationRepeat(Animator animation) {
 
                     }
-                });
+                });*/
+
+                Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
+                int id = currentBar.getId();
+                i.putExtra("bar_id",id);
+                i.putExtra("liked",false);
+                startActivity(i);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                //overridePendingTransition(0, 0);
             }
         };
 

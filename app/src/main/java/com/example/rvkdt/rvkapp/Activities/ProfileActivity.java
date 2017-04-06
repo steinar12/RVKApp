@@ -118,7 +118,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         imageManager.loadImage(img_id, img_url, imageView);
 
-        ImageButton fbButton = (ImageButton) findViewById(R.id.fbButton);
+        //ImageButton fbButton = (ImageButton) findViewById(R.id.fbButton);
 
 
         Event[] events = barData.getEvents();
@@ -130,7 +130,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         String tag = barData.getTag();
         Log.d("snug", "**TAG FOR BAR**: " + tag);
-
 
         list.setAdapter(eventAdapter);
 
@@ -149,14 +148,14 @@ public class ProfileActivity extends AppCompatActivity {
         Log.d("event height", "" + lp.height);
 
 
-        fbButton.setOnClickListener(new View.OnClickListener() {
+        /*fbButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String theLink = barData.getLink();
                 Log.d(TAG, theLink);
                 Intent fbSite = facebookHandler.newFacebookIntent(theLink, "page");
                 startActivity(fbSite);
             }
-        });
+        });*/
 
 
         ////////////////////////
@@ -171,7 +170,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         ///////////////////////
     }
-
 
     private void setupMap(GoogleMap map) {
         map.getUiSettings().setZoomControlsEnabled(false);
