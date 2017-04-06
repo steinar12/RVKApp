@@ -21,11 +21,12 @@ public class Bar {
     private double lat;
     private double lng;
     private String link;
-    private String about;
+    private String _tag;
     private double rating;
     private Hours hours;
     private Event[] events;
-    public Bar(int idvalue, String nme,String men, String img, double lt, double lg, String lnk, String abt, double rat, Hours hrs, Event[] evt){
+    private String _description;
+    public Bar(int idvalue, String nme,String men, String img, double lt, double lg, String lnk, String tag, double rat, Hours hrs, Event[] evt, String description){
         id = idvalue;
         name = nme;
         menu = men;
@@ -33,10 +34,11 @@ public class Bar {
         lat = lt;
         lng = lg;
         link = lnk;
-        about = abt;
+        _tag = tag;
         rating = rat;
         hours = hrs;
         events = evt;
+        _description = description;
     }
 
     public int getId() {
@@ -59,15 +61,15 @@ public class Bar {
         return lat;
     }
 
-    public double getLng() {
-        return lng;
-    }
+    public double getLng() { return lng; }
 
     public String getLink() {
         return link;
     }
 
-    public String getAbout() {return about; }
+    public String getTag() {return _tag; }
+
+    public String getDescription() {return _description;}
 
     public double getRating() {
         return rating;

@@ -46,8 +46,10 @@ public class Parser {
                 double lng = coords.getDouble("lng");
                 String link = obj.getString("link");
                 link = link.replaceAll("\\\\","");
-                String about = obj.getString("description");
-                if (about.equals("null") || about.trim().length() == 0) about = "no description";
+                String description = obj.getString("description");
+                if (description.equals("null") || description.trim().length() == 0) description = "no description";
+                String tag = obj.getString("about");
+                if (tag.equals("null") || tag.trim().length() == 0) tag = "";
                 double rating = obj.getDouble("rating");
                 JSONObject opens_obj = obj.getJSONObject("opens");
                 JSONObject closes_obj = obj.getJSONObject("closes");
@@ -78,7 +80,7 @@ public class Parser {
                 if (events.length > 1){
                     Log.d("events", events[0].getStartTime().toString());
                 }
-                Bar bar = new Bar(id, name, menu, image, lat, lng, link, about, rating, hours, events);
+                Bar bar = new Bar(id, name, menu, image, lat, lng, link, tag, rating, hours, events, description);
 
                 //Send the image to ImageSaver to store the image.
                 String cleanImage = image.replaceAll("\\\\","");

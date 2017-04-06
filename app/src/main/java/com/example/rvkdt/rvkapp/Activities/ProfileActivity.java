@@ -100,7 +100,10 @@ public class ProfileActivity extends AppCompatActivity {
 
         String barName = barData.getName();
         name.setText(barName);
-        desc.setText(barData.getAbout());
+        desc.setText(barData.getDescription());
+
+        String tag = barData.getTag();
+        Log.d("snug", "**TAG FOR BAR**: " + tag);
 
 
         list.setAdapter(eventAdapter);
