@@ -65,7 +65,7 @@ public class EventListAdapter extends ArrayAdapter<Event> {
         nameText.setText(events[position].getName());
 
         TextView venueText = (TextView) rowView.findViewById(R.id.attendingCount);
-        venueText.setText(String.valueOf(events[position].getGuests()));
+        venueText.setText("Attending:  " + String.valueOf(events[position].getGuests()));
 
         TextView startTime = (TextView) rowView.findViewById(R.id.eventStartTime);
         //TextView endTime = (TextView) rowView.findViewById(R.id.eventEndTime);
