@@ -18,8 +18,8 @@ import com.example.rvkdt.rvkapp.DataObjects.Hours;
 import com.example.rvkdt.rvkapp.DataObjects.Pair;
 import com.example.rvkdt.rvkapp.DataManagers.DBHandler;
 import com.example.rvkdt.rvkapp.DataManagers.BarStorage;
+import com.example.rvkdt.rvkapp.Utils.Parser;
 import com.example.rvkdt.rvkapp.updateListCallback;
-import com.example.rvkdt.rvkapp.Utils.ImageSaver;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,7 +42,7 @@ import java.util.Locale;
 public class BarManager implements Callback {
     private BarStorage barStorage;
     private updateListCallback localCallback;
-    private ImageSaver imagesaver;
+    private Parser parser;
 
     @Override
     public void onResponse(){
@@ -72,7 +72,7 @@ public class BarManager implements Callback {
         barStorage = ((BarStorage) ctx);
         barStorage.init();
         barStorage.setDbHandler(dataBase);
-        //imagesaver = new ImageSaver(ctx);
+        parser = new Parser();
         fetchIds(new ResponseCallback() {
             @Override
             public void onResponse(JSONArray response) {
@@ -86,7 +86,8 @@ public class BarManager implements Callback {
                 fetchBars(barsToFetch, new ResponseCallback() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        barStorage.addAll(responseToBarList(response));
+
+                        barStorage.addAll(parser.parseBars(response));
                         localCallback.onResponse();
                     }
                     @Override
@@ -124,74 +125,6 @@ public class BarManager implements Callback {
                 int result = data.getInt(i);
                 output.add(result);
             } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        return output;
-    }
-
-    // Tekur gögn um bari í data og breytir í bar objcet og addar þeim í bars ArrayListann
-    private ArrayList<Bar> responseToBarList (JSONArray data) {
-        ArrayList<Bar> output = new ArrayList<Bar>();
-
-        int length = data.length();
-        for (int i = 0; i < length; i++){
-            try {
-                JSONObject obj = data.getJSONObject(i);
-                int id = obj.getInt("id");
-                String name = obj.getString("name");
-                String menu = obj.getString("menu");
-                String image = obj.getString("image");
-                image = image.replaceAll("\\\\","");
-                JSONObject coords = obj.getJSONObject("coords");
-                double lat = coords.getDouble("lat");
-                double lng = coords.getDouble("lng");
-                String link = obj.getString("link");
-                link = link.replaceAll("\\\\","");
-                String about = obj.getString("description");
-                if (about.equals("null") || about.trim().length() == 0) about = "no description";
-                double rating = obj.getDouble("rating");
-                JSONObject opens_obj = obj.getJSONObject("opens");
-                JSONObject closes_obj = obj.getJSONObject("closes");
-                ArrayList<Pair> parsed_opens = parseHours(opens_obj);
-                ArrayList<Pair> parsed_closes = parseHours(closes_obj);
-                Hours hours = new Hours(parsed_opens,parsed_closes);
-                String hour_format = hours.getHours();
-                //Log.d("About to print hours","-----Message-----");
-                //Log.d("**HOURS**: ",hour_format);
-                JSONArray jsonEvent = obj.getJSONArray("events");
-                int eventLength = jsonEvent.length();
-                Event[] events = new Event[eventLength];
-                for (int k = 0; k < eventLength; k++){
-                    JSONObject eventObject = jsonEvent.getJSONObject(k);
-                    String eventName = eventObject.getString("name");
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.ENGLISH);
-                    String startTime = eventObject.getString("startTime");
-                    Date startTimeDate = dateFormat.parse(startTime);
-                    String endTime = eventObject.getString("endTime");
-                    Date endTimeDate = dateFormat.parse(endTime);
-                    int guests = eventObject.getInt("guests");
-                    String venue = eventObject.getString("venue");
-                    String eventLink = eventObject.getString("link");
-                    eventLink = eventLink.replaceAll("\\\\","");
-                    Event event = new Event(eventName, startTimeDate, endTimeDate, guests, venue, eventLink);
-                    events[k] = event;
-                }
-                if (events.length > 1){
-                    Log.d("events", events[0].getStartTime().toString());
-                }
-                Bar bar = new Bar(id, name, menu, image, lat, lng, link, about, rating, hours, events);
-
-                //Send the image to ImageSaver to store the image.
-                /*String cleanImage = image.replaceAll("\\\\","");
-                Log.d("BarManager", "imagesaver cleanImage:: " + cleanImage);
-                Log.d("BarManager", "id: " + id);*/
-                //imagesaver.downloadImage(cleanImage, id);
-
-                output.add(bar);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
@@ -281,7 +214,7 @@ public class BarManager implements Callback {
                 (Request.Method.POST, barurl, jsonarray, new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                       // Log.d("Response: ", response.toString());
+                        // Log.d("Response: ", response.toString());
                         callback.onResponse(response);
                     }
                 }, new Response.ErrorListener() {
@@ -314,32 +247,7 @@ public class BarManager implements Callback {
         queue.add(jsArrRequest);
     }
 
-    /**
-     * Parses hours into a integer array containing hours in correct weekday order
-     *
-     * @param {JSONObject} hours - hours that are to be parsed
-     * @returns {String[]} - hours in correct order
-     */
-    private ArrayList<Pair> parseHours(JSONObject hours){
-        Iterator<String> iter = hours.keys();
-        ArrayList<Pair> res = new ArrayList<Pair>();
-        while (iter.hasNext()) {
-            String key = iter.next();
-            try {
-
-                String hour = hours.getString(key);
-                Pair pair = new Pair(key,hour);
-                res.add(pair);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-                // Something went wrong!
-            }
-        }
-        return res;
-    }
-
-   // fall sem að skilar bar úr bars arraylist og bætir í bars arraylistann ef það er að verða tómt
+    // fall sem að skilar bar úr bars arraylist og bætir í bars arraylistann ef það er að verða tómt
     public Bar getBar() {
 
         int size = barStorage.size();
@@ -353,7 +261,7 @@ public class BarManager implements Callback {
             fetchBars(barsToFetch, new ResponseCallback() {
                 @Override
                 public void onResponse(JSONArray response) {
-                    barStorage.addAll(responseToBarList(response));
+                    barStorage.addAll(parser.parseBars(response));
                 }
                 @Override
                 public void onFailure(){
@@ -367,12 +275,13 @@ public class BarManager implements Callback {
 
 
     public void loadLikedBars (int [] likedIds) {
-        final ArrayList<Bar> likedBars = new ArrayList<Bar>();
-        //Log.d("bla", likedIds.length + "");
+
+        Log.d("liked bars length: ", likedIds.length + "");
+        if(likedIds.length < 1) return;
         fetchBars(likedIds, new ResponseCallback() {
             @Override
             public void onResponse(JSONArray response) {
-                barStorage.setLikedBars(responseToBarList(response));
+                barStorage.setLikedBars(parser.parseBars(response));
                 localCallback.update();
             }
             @Override

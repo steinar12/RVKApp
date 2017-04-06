@@ -50,11 +50,11 @@ public class LikedBarsFragment extends Fragment implements deleteLikedCallback {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.d("**LikedBarsFragment**", "About to created LikedListAdapter");
-        Log.d("snug", "onActivityCreated");
+        //Log.d("snug", "onActivityCreated");
         ListView listView = (ListView) getView().findViewById(R.id.liked_bars);
         barStorage = ((BarStorage)getActivity().getApplicationContext());
         ArrayList<Bar> likedBars = barStorage.getLikedBars();
-        Log.d("**LIKED BARS: ", " length: " + likedBars.size());
+        //Log.d("**LIKED BARS: ", " length: " + likedBars.size());
         Bar[] bars = new Bar[likedBars.size()];
         likedBars.toArray(bars);
         Log.d("snug", likedBars.size() + "");
@@ -70,7 +70,7 @@ public class LikedBarsFragment extends Fragment implements deleteLikedCallback {
     }
 
     public void update(){
-        Log.d("snug", "fjöldi liked bars   " + barStorage.getLikedBars().size() + "");
+        //Log.d("snug", "fjöldi liked bars   " + barStorage.getLikedBars().size() + "");
         ArrayList<Bar> likedBars = barStorage.getLikedBars();
         Bar[] bars = new Bar[likedBars.size()];
         bars = likedBars.toArray(bars);

@@ -133,8 +133,12 @@ public class MainActivity extends AppCompatActivity implements Callback {
             db.addLikedBarId(i);
         }*/
 
+
         /*db.addLikedBarId(1);
-        }
+        db.addLikedBarId(4);
+        db.addLikedBarId(5);*/
+
+        db.addLikedBarId(3);
 
         /*db.addLikedBarId(1);
         db.addLikedBarId(88);
