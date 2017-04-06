@@ -12,7 +12,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:weightSum="1">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -92,6 +93,17 @@
                                 android:textColor="#DDDDDD"
                                 android:textSize="17sp" />
 
+                            <ImageButton
+                                android:id="@+id/fbButton"
+                                android:layout_width="65dp"
+                                android:layout_height="75dp"
+                                android:layout_marginLeft="15dp"
+                                android:layout_weight="1"
+                                android:background="?android:selectableItemBackground"
+                                android:clickable="true"
+                                android:scaleType="fitCenter"
+                                app:srcCompat="@drawable/facebookicon" />
+
                         </LinearLayout>
 
                         <LinearLayout
@@ -122,16 +134,6 @@
 
                 </LinearLayout>
             </LinearLayout>
-
-            <ImageButton
-                android:id="@+id/fbButton"
-                android:layout_width="65dp"
-                android:layout_height="75dp"
-                android:layout_marginLeft="15dp"
-                android:background="?android:selectableItemBackground"
-                android:clickable="true"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/facebookicon" />
 
 
             <com.ms.square.android.expandabletextview.ExpandableTextView
@@ -165,7 +167,8 @@
             <ListView
                 android:id="@+id/eventListi"
                 android:layout_width="match_parent"
-                android:layout_height="270dp" />
+                android:layout_height="wrap_content"
+                android:layout_weight="0.70" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -177,8 +180,7 @@
                     android:id="@+id/map"
                     android:name="com.google.android.gms.maps.MapFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_weight="1" />
+                    android:layout_height="147dp" />
             </LinearLayout>
 
         </LinearLayout>

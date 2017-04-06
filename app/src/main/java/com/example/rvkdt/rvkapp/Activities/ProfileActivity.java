@@ -78,7 +78,6 @@ public class ProfileActivity extends AppCompatActivity {
         barData = barStorage.getBar(id, liked);
 
 
-
         TextView name = (TextView) findViewById(R.id.barTitle);
 
         ExpandableTextView desc = (ExpandableTextView) findViewById(R.id.expand_text_view);
