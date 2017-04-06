@@ -106,7 +106,7 @@ public class SwipeDeckAdapter extends BaseAdapter implements onClickCallback {
         if (hours != "") {
             ((TextView) v.findViewById(R.id.OpeningHours)).setText(hours);
         }
-        else ((TextView) v.findViewById(R.id.OpeningHours)).setText("Unknown");
+        else ((TextView) v.findViewById(R.id.OpeningHours)).setText("");
 
         v.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,17 +118,18 @@ public class SwipeDeckAdapter extends BaseAdapter implements onClickCallback {
         float distance = bar.getDistance(this.context);
 
         if (distance < 0.0) {
-            ((TextView) v.findViewById(R.id.Distance)).setText("unable to calculate distance");
-            return v;
+            ((TextView) v.findViewById(R.id.Distance)).setText("");
         }
-        distance = distance / 1000;
-        DecimalFormat kiloMeters = new DecimalFormat("#.#");
-        DecimalFormat meters = new DecimalFormat("#");
+        else {
+            distance = distance / 1000;
+            DecimalFormat kiloMeters = new DecimalFormat("#.#");
+            DecimalFormat meters = new DecimalFormat("#");
 
-        if (distance < 1) {
-            ((TextView) v.findViewById(R.id.Distance)).setText(meters.format(distance*1000) + " m");
+            if (distance < 1) {
+                ((TextView) v.findViewById(R.id.Distance)).setText(meters.format(distance * 1000) + " m");
+            } else
+                ((TextView) v.findViewById(R.id.Distance)).setText(kiloMeters.format(distance) + " km");
         }
-        else ((TextView) v.findViewById(R.id.Distance)).setText(kiloMeters.format(distance) + " km");
 
         String tag = bar.getTag();
 

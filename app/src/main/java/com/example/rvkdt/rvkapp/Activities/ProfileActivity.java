@@ -95,12 +95,12 @@ public class ProfileActivity extends AppCompatActivity {
         if (hours != "") {
             ((TextView) findViewById(R.id.OpeningHours)).setText(hours);
         }
-        else ((TextView) findViewById(R.id.OpeningHours)).setText("Unknown");
+        else ((TextView) findViewById(R.id.OpeningHours)).setText("");
 
         float distance = barData.getDistance(this);
 
         if (distance < 0.0) {
-            ((TextView) findViewById(R.id.Distance)).setText("unable to calculate distance");
+            ((TextView) findViewById(R.id.Distance)).setText("");
         }
         else {
             distance = distance / 1000;
