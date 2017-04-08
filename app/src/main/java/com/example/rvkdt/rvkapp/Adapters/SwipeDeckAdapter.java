@@ -37,6 +37,7 @@ public class SwipeDeckAdapter extends BaseAdapter implements onClickCallback {
     private onClickCallback cb;
     private ImageManager imageManager;
 
+
     @Override
     public void onClick(View view) {
 
@@ -81,8 +82,10 @@ public class SwipeDeckAdapter extends BaseAdapter implements onClickCallback {
         Log.d("swipedeckadapter", "next log..");
         Log.d("SwipeDeckAdapater", data.get(position).getName());
 
-        String name = data.get(position).getName();
-        //if(name.length() > 20)
+        //String name = data.get(position).getName();
+
+        //Log.d("snug","length of name outside of if: " + name.length());
+
         ((TextView) v.findViewById(R.id.barTitle)).setText(data.get(position).getName());
         //((TextView) v.findViewById(R.id.textView)).setText(data.get(position).getAbout());
 
@@ -139,4 +142,6 @@ public class SwipeDeckAdapter extends BaseAdapter implements onClickCallback {
 
         return v;
     }
+
+
 }

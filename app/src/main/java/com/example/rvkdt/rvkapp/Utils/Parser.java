@@ -25,6 +25,8 @@ import java.util.Locale;
 
 public class Parser {
 
+    private final int MAX_CHARACTERS = 20;
+
 
     public ArrayList<Bar> parseBars (JSONArray data) {
         Log.d("snug","called parseBars with the following data: " + data.toString());
@@ -38,6 +40,7 @@ public class Parser {
                 JSONObject obj = data.getJSONObject(i);
                 int id = obj.getInt("id");
                 String name = obj.getString("name");
+                if(name.length() > MAX_CHARACTERS) name = shortenName(name);
                 String menu = obj.getString("menu");
                 String image = obj.getString("image");
                 image = image.replaceAll("\\\\","");
@@ -123,5 +126,28 @@ public class Parser {
             }
         }
         return res;
+    }
+
+    private String shortenName(String name){
+        String shortened_name = "";
+        int lastWordIndice = 0;
+        for (int i = 0; i < name.length(); i++)
+        {
+            if(i >= MAX_CHARACTERS || name.charAt(i) == '-' || name.charAt(i) == '/') return shortened_name;
+            if (name.charAt(i) == ' '){
+                if(shortened_name.equals(""))
+                {
+                    shortened_name += name.substring(lastWordIndice,i);
+                    //i++;
+                    lastWordIndice = i+1;
+                }
+                else {
+                    shortened_name += " " + name.substring(lastWordIndice,i);
+                    lastWordIndice = i+1;
+                }
+            }
+        }
+
+        return shortened_name;
     }
 }
