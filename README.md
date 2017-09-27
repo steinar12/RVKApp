@@ -1,9 +1,6 @@
 # Bara App
 
- <div id="container"> 
-     <img src="https://i.imgur.com/0eDKIFp.png" width="400" id="image" /> 
-     <p id="text">The app displays bars as cards with a picture of the bar and information about the distance to the bar, opening times, and the bar type.</p> 
- </div>
+<p align="center"> <img src="https://i.imgur.com/0eDKIFp.png" width="400" id="image" />The app displays bars as cards with a picture of the bar and information about the distance to the bar, opening times, and the bar type.</p> 
  
  <div id="container"> 
      <img src="https://i.imgur.com/vBVdIaT.png" width="400" id="image" /> 
